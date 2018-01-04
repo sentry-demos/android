@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
         Context ctx = this.getApplicationContext();
         // Use the Sentry DSN (client key) from the Project Settings page on Sentry
-        String sentryDsn = "https://80b8a795d2a14cf796acaae4fa6cab30:762e19f86e23471586cc4dd3b1ee15fb@sentry.io/261820";
+        String sentryDsn = "******:********@sentry.io/261820";
         Sentry.init(sentryDsn, new AndroidSentryClientFactory(ctx));
 
 
