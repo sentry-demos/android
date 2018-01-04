@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/vu/Documents/demos/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-port/values-port.xml",
+            "outputFile": "/Users/neilmanvar/git/sentry-demos/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-port/values-port.xml",
             "map": [
                 {
-                    "source": "/Users/vu/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/3aa558fa25ed313e796d74b969b95e26/res/values-port/values-port.xml",
+                    "source": "/Users/neilmanvar/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/2564330fbcd2ad2bf8db2b31323de226/res/values-port/values-port.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

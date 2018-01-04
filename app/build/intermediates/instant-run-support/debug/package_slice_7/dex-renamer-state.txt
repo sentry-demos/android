@@ -1,4 +1,0 @@
-#Wed Jan 03 15:56:59 PST 2018
-base.0=/Users/vu/Documents/demos/android/app/build/intermediates/transforms/dexMerger/debug/7
-path.0=classes.dex
-renamed.0=classes.dex

@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/vu/Documents/demos/android/app/build/intermediates/incremental/mergeDebugAndroidTestResources/merged.dir/values-v17/values-v17.xml",
+            "outputFile": "/Users/neilmanvar/git/sentry-demos/android/app/build/intermediates/incremental/mergeDebugAndroidTestResources/merged.dir/values-v17/values-v17.xml",
             "map": [
                 {
-                    "source": "/Users/vu/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/3aa558fa25ed313e796d74b969b95e26/res/values-v17/values-v17.xml",
+                    "source": "/Users/neilmanvar/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/2564330fbcd2ad2bf8db2b31323de226/res/values-v17/values-v17.xml",
                     "from": {
                         "startLines": "2,5,9,12,15,18,22,26,29,32,35,39,42,46",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4",
