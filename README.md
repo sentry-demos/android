@@ -21,3 +21,5 @@ Tools -> Android -> Sync Project with Gradle Files
 
 ```
 4. Update the DSN in the MainActivity.java file
+
+![Alt Text](android-demo.gif)
