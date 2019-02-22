@@ -1,6 +1,8 @@
 # Android Demo 
 
-This app demonstrates how to include and configure Sentry-Raven in an Android application. 
+This app demonstrates how to include and configure Sentry in an Android application. 
+
+See https://docs.sentry.io/clients/java/modules/android/ for more information.
 
 
 ## Prerequites  
