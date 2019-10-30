@@ -7,4 +7,4 @@
 /captures
 keystore.jks
 *.apk
-app/build
+app/build/*
