@@ -40,5 +40,8 @@ See https://docs.sentry.io/clients/java/modules/android/ for more information.
 
 - SDK configuration defined in `app/src/main/resources/sentry.properties` includes: dsn, ANR, tags (key values)
 
+![Android demo flow](android-demo.gif)
 
-![Alt Text](android-demo.gif)
+## Android ANR  
+
+![Alt Text](android-demo-anr.gif)
