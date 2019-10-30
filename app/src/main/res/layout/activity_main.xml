@@ -4,37 +4,55 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/sentrypattern"
+
     tools:context="com.example.vu.android.MainActivity">
 
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/sentrypattern"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
 
     <TextView
         android:id="@+id/errors"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Errors"
-        android:textColor="@android:color/holo_red_dark"
+        android:text="Trigger Events"
+        android:textColor="#673AB7"
         android:textSize="30sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.655" />
-
-    <Button
-        android:id="@+id/negative_index"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:text="Negative Index"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/div_zero" />
+        app:layout_constraintVertical_bias="0.6" />
 
     <Button
         android:id="@+id/file_not_found"
         android:layout_width="300dp"
-        android:layout_height="50dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="8dp"
+        android:background="#7733C5"
         android:text="File Not Found"
+        android:textColor="#FFFFFF"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/negative_index" />
+
+    <Button
+        android:id="@+id/anr_button"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="60dp"
+        android:background="#7733C5"
+        android:text="Application Not Responding (ANR)"
+        android:textColor="#FFFFFF"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/negative_index" />
@@ -42,51 +60,103 @@
     <Button
         android:id="@+id/div_zero"
         android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="36dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="32dp"
+        android:background="#7733C5"
         android:text="Divide by 0"
+        android:textColor="#FFFFFF"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/errors" />
 
     <Button
+        android:id="@+id/negative_index"
+        android:layout_width="300dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="8dp"
+        android:background="#7733C5"
+        android:text="Negative Index"
+        android:textColor="#FFFFFF"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/div_zero" />
+
+    <Button
         android:id="@+id/submit_email"
-        android:layout_width="168dp"
-        android:layout_height="76dp"
+        android:layout_width="363dp"
+        android:layout_height="43dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="12dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="24dp"
         android:text="Submit"
+        app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/email" />
 
     <TextView
         android:id="@+id/display"
-        android:layout_width="382dp"
-        android:layout_height="56dp"
+        android:layout_width="394dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="24dp"
         android:text="Hello!"
         android:textAlignment="center"
-        android:textColor="@color/colorPrimary"
-        android:textSize="30sp"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        tools:layout_editor_absoluteX="1dp" />
+        android:textColor="#673AB7"
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="371dp"
-        android:layout_height="94dp"
-        tools:layout_editor_absoluteX="7dp"
-        tools:layout_editor_absoluteY="0dp" />
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/iconContainer"
+        tools:layout_editor_absoluteX="7dp" />
+
 
     <EditText
         android:id="@+id/email"
         android:layout_width="381dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
         android:inputType="textEmailAddress"
+        android:textSize="14sp"
         app:layout_constraintTop_toBottomOf="@+id/display"
-        tools:layout_editor_absoluteX="2dp"
+        tools:layout_editor_absoluteX="13dp"
         tools:text="Email Address" />
 
+    <LinearLayout
+        android:id="@+id/iconContainer"
+        android:layout_width="366dp"
+        android:layout_height="111dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="parent"
+        tools:layout_editor_absoluteX="16dp">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="169dp"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/sentry_logo" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="24dp"
+            android:layout_weight="1"
+            android:lineSpacingExtra="18sp"
+            android:text="+"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="36sp" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="129dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:cropToPadding="true"
+            app:srcCompat="@mipmap/ic_launcher_round" />
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>

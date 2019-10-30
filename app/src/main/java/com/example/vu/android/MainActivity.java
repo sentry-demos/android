@@ -1,24 +1,20 @@
 package com.example.vu.android;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import io.sentry.android.AndroidSentryClientFactory;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.inputmethod.InputMethod;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Button;
-import android.widget.EditText;
-import android.view.View.OnClickListener;
 import io.sentry.Sentry;
+import io.sentry.event.Breadcrumb;
+import io.sentry.event.BreadcrumbBuilder;
 import io.sentry.event.UserBuilder;
 import android.content.Context;
-import java.io.File;
-import java.io.FileReader;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     TextView total;
@@ -29,10 +25,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Context ctx = this.getApplicationContext();
-        // Use the Sentry DSN (client key) from the Project Settings page on Sentry
-        String sentryDsn = "******:********@sentry.io/261820";
-        Sentry.init(sentryDsn, new AndroidSentryClientFactory(ctx));
+        //  Sentry DSN + configuration defined in app/sr/main/resources/sentry.properties file
+        Sentry.init(new AndroidSentryClientFactory(this));
 
 
         Button submit_email_button = (Button)findViewById(R.id.submit_email);
@@ -57,10 +51,30 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        final Button anr_button = (Button)findViewById(R.id.anr_button);
+        anr_button.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View view){
+//                Toast.makeText(getBaseContext(), "ANR...", Toast.LENGTH_LONG).show();
+//                anr_button.setBackgroundColor(Color.BLACK);
+                Sentry.getContext().recordBreadcrumb(
+                        new BreadcrumbBuilder().setLevel(Breadcrumb.Level.DEBUG).setCategory("custom").setType(Breadcrumb.Type.USER).setMessage("User clicked button: ANR").build()
+                );
+
+                while(true) {
+                    //Wait for ANR....
+                }
+            }
+        });
+
+
         Button div_by_zero_button = (Button)findViewById(R.id.div_zero);
         div_by_zero_button.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view){
+                Sentry.getContext().recordBreadcrumb(
+                    new BreadcrumbBuilder().setLevel(Breadcrumb.Level.DEBUG).setCategory("custom").setType(Breadcrumb.Type.USER).setMessage("User clicked button: DIVIDE BY ZERO").build()
+                );
                 int t = 5 / 0 ;
             }
         });
@@ -69,6 +83,9 @@ public class MainActivity extends AppCompatActivity {
         negative_index_button.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view){
+                Sentry.getContext().recordBreadcrumb(
+                    new BreadcrumbBuilder().setLevel(Breadcrumb.Level.DEBUG).setCategory("custom").setType(Breadcrumb.Type.USER).setMessage("User clicked button: NEGATIVE INDEX").build()
+                );
                 int[] a = new int[-5];
             }
         });
@@ -78,6 +95,9 @@ public class MainActivity extends AppCompatActivity {
         file_not_found_button.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view){
+                Sentry.getContext().recordBreadcrumb(
+                    new BreadcrumbBuilder().setLevel(Breadcrumb.Level.DEBUG).setCategory("custom").setType(Breadcrumb.Type.USER).setMessage("User clicked button: FILE NOT FOUND").build()
+                );
                 Integer.parseInt ("str");
             }
         });
