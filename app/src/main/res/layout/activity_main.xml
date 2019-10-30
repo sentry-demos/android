@@ -37,7 +37,7 @@
         android:layout_height="45dp"
         android:layout_marginTop="8dp"
         android:background="#7733C5"
-        android:text="File Not Found"
+        android:text="Handled Exception"
         android:textColor="#FFFFFF"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintLeft_toLeftOf="parent"

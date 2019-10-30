@@ -1,6 +1,5 @@
 package com.example.vu.android;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import io.sentry.android.AndroidSentryClientFactory;
 import android.support.v7.app.AppCompatActivity;
@@ -14,7 +13,6 @@ import io.sentry.event.Breadcrumb;
 import io.sentry.event.BreadcrumbBuilder;
 import io.sentry.event.UserBuilder;
 import android.content.Context;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     TextView total;
@@ -25,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //  Sentry DSN + configuration defined in app/sr/main/resources/sentry.properties file
+        //  Sentry DSN + configuration defined in app/src/main/resources/sentry.properties file
         Sentry.init(new AndroidSentryClientFactory(this));
 
 
@@ -55,14 +53,12 @@ public class MainActivity extends AppCompatActivity {
         anr_button.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view){
-//                Toast.makeText(getBaseContext(), "ANR...", Toast.LENGTH_LONG).show();
-//                anr_button.setBackgroundColor(Color.BLACK);
                 Sentry.getContext().recordBreadcrumb(
                         new BreadcrumbBuilder().setLevel(Breadcrumb.Level.DEBUG).setCategory("custom").setType(Breadcrumb.Type.USER).setMessage("User clicked button: ANR").build()
                 );
 
                 while(true) {
-                    //Wait for ANR....
+                    //Wait 5 seconds for ANR....
                 }
             }
         });
@@ -98,7 +94,13 @@ public class MainActivity extends AppCompatActivity {
                 Sentry.getContext().recordBreadcrumb(
                     new BreadcrumbBuilder().setLevel(Breadcrumb.Level.DEBUG).setCategory("custom").setType(Breadcrumb.Type.USER).setMessage("User clicked button: FILE NOT FOUND").build()
                 );
-                Integer.parseInt ("str");
+
+                try {
+                    Integer.parseInt ("str");
+                } catch (Exception e) {
+                    Sentry.capture(e);
+                }
+
             }
         });
 
