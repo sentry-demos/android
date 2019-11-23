@@ -83,6 +83,19 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/div_zero" />
 
+    <Button
+        android:id="@+id/ndk_crash"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="60dp"
+        android:background="#7733C5"
+        android:text="NDK Crash"
+        android:textColor="#FFFFFF"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/negative_index" />
+
 <!--    <Button-->
 <!--        android:id="@+id/submit_email"-->
 <!--        android:layout_width="363dp"-->
