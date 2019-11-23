@@ -24,7 +24,7 @@
         android:textColor="#673AB7"
         android:textSize="30sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -97,68 +97,19 @@
 <!--        app:layout_constraintRight_toRightOf="parent"-->
 <!--        app:layout_constraintTop_toBottomOf="@+id/email" />-->
 
-    <TextView
-        android:id="@+id/display"
-        android:layout_width="394dp"
-        android:layout_height="42dp"
-        android:layout_marginTop="24dp"
-        android:text="Hello!"
-        android:textAlignment="center"
-        android:textColor="#673AB7"
+<!--    <TextView-->
+<!--        android:id="@+id/display"-->
+<!--        android:layout_width="394dp"-->
+<!--        android:layout_height="42dp"-->
+<!--        android:layout_marginTop="24dp"-->
+<!--        android:text="Hello!"-->
+<!--        android:textAlignment="center"-->
+<!--        android:textColor="#673AB7"-->
 
-        android:textSize="30sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/iconContainer"
-        tools:layout_editor_absoluteX="7dp" />
+<!--        android:textSize="30sp"-->
+<!--        android:textStyle="bold"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/iconContainer"-->
+<!--        tools:layout_editor_absoluteX="7dp" />-->
 
 
-<!--    <EditText-->
-<!--        android:id="@+id/email"-->
-<!--        android:layout_width="381dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="16dp"-->
-<!--        android:ems="10"-->
-<!--        android:inputType="textEmailAddress"-->
-<!--        android:textSize="14sp"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/display"-->
-<!--        tools:layout_editor_absoluteX="13dp"-->
-<!--        tools:text="Email Address" />-->
-
-<!--    <LinearLayout-->
-<!--        android:id="@+id/iconContainer"-->
-<!--        android:layout_width="366dp"-->
-<!--        android:layout_height="111dp"-->
-<!--        android:layout_margin="16dp"-->
-<!--        android:orientation="horizontal"-->
-<!--        app:layout_constraintTop_toBottomOf="parent"-->
-<!--        tools:layout_editor_absoluteX="16dp">-->
-
-<!--        <ImageView-->
-<!--            android:id="@+id/imageView2"-->
-<!--            android:layout_width="169dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            app:srcCompat="@drawable/sentry_logo" />-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/textView"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_marginTop="24dp"-->
-<!--            android:layout_weight="1"-->
-<!--            android:lineSpacingExtra="18sp"-->
-<!--            android:text="+"-->
-<!--            android:textAlignment="textStart"-->
-<!--            android:textColor="#000000"-->
-<!--            android:textSize="36sp" />-->
-
-<!--        <ImageView-->
-<!--            android:id="@+id/imageView3"-->
-<!--            android:layout_width="129dp"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_marginTop="16dp"-->
-<!--            android:layout_marginRight="8dp"-->
-<!--            android:layout_marginBottom="16dp"-->
-<!--            android:cropToPadding="true"-->
-<!--            app:srcCompat="@mipmap/ic_launcher_round" />-->
-<!--    </LinearLayout>-->
 </androidx.constraintlayout.widget.ConstraintLayout>
