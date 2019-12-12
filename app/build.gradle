@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.ydq.android.gradle.native-aar.import'
 
 android {
     compileSdkVersion 29
