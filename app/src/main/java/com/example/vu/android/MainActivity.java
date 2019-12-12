@@ -1,20 +1,11 @@
 package com.example.vu.android;
 
 import android.os.Bundle;
-// are no longer relevant with io.sentry:sentry-android:2.0.+ ?
-//import io.sentry.android.AndroidSentryClientFactory;
-//import android.support.v7.app.AppCompatActivity;
+
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Button;
-//import io.sentry.Sentry;
-//import io.sentry.event.Breadcrumb;
-//import io.sentry.event.BreadcrumbBuilder;
-//import io.sentry.event.UserBuilder;
-import android.content.Context;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
