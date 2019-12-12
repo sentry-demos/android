@@ -52,13 +52,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // TODO
-        final Button anr_button = (Button)findViewById(R.id.anr_button);
+        final Button anr_button = (Button)findViewById(R.id.anr);
         anr_button.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view){
 
                 while(true) {
-                    //Wait 5 seconds for ANR....
+                    // Wait 5 seconds for ANR....
                 }
             }
         });
