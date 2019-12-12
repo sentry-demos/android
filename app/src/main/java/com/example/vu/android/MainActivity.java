@@ -8,6 +8,8 @@ import android.widget.TextView;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
+import io.sentry.core.Sentry;
+
 public class MainActivity extends AppCompatActivity {
     TextView total;
     EditText numerator;
@@ -78,11 +80,18 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-//        Button ndk_crash_button = (Button)findViewById(R.id.ndk_crash);
-//        ndk_crash_button.setOnClickListener( new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view){}
-//        });
+        Button handled_exception_button = (Button)findViewById(R.id.handled_exception);
+        handled_exception_button.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View view){
+                try {
+                    Integer.parseInt ("str");
+                } catch (Exception e) {
+                    Sentry.captureException(e);
+                }
+
+            }
+        });
 
         findViewById(R.id.ndk_crash).setOnClickListener(view -> NativeSample.message());
     }
