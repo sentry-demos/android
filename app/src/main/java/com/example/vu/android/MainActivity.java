@@ -85,24 +85,14 @@ public class MainActivity extends AppCompatActivity {
                 int[] a = new int[-5];
             }
         });
-        
 
-        Button ndk_crash_button = (Button)findViewById(R.id.ndk_crash);
-        ndk_crash_button.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View view){
-//                Sentry.getContext().recordBreadcrumb(
-//                    new BreadcrumbBuilder().setLevel(Breadcrumb.Level.DEBUG).setCategory("custom").setType(Breadcrumb.Type.USER).setMessage("User clicked button: FILE NOT FOUND").build()
-//                );
-//
-//                try {
-//                    Integer.parseInt ("str");
-//                } catch (Exception e) {
-//                    Sentry.capture(e);
-//                }
 
-            }
-        });
+//        Button ndk_crash_button = (Button)findViewById(R.id.ndk_crash);
+//        ndk_crash_button.setOnClickListener( new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view){}
+//        });
 
+        findViewById(R.id.ndk_crash).setOnClickListener(view -> NativeSample.message());
     }
 }
