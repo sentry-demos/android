@@ -31,31 +31,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.6" />
 
-    <Button
-        android:id="@+id/handled_exception"
-        android:layout_width="300dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="8dp"
-        android:background="#7733C5"
-        android:text="Handled Exception"
-        android:textColor="#FFFFFF"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/negative_index" />
-
-    <Button
-        android:id="@+id/anr_button"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="60dp"
-        android:background="#7733C5"
-        android:text="Application Not Responding (ANR)"
-        android:textColor="#FFFFFF"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/negative_index" />
 
     <Button
         android:id="@+id/div_zero"
@@ -84,17 +59,43 @@
         app:layout_constraintTop_toBottomOf="@+id/div_zero" />
 
     <Button
+        android:id="@+id/handled_exception"
+        android:layout_width="300dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="8dp"
+        android:background="#7733C5"
+        android:text="Handled Exception"
+        android:textColor="#FFFFFF"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/negative_index" />
+
+    <Button
+        android:id="@+id/anr_button"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:background="#7733C5"
+        android:text="Application Not Responding (ANR)"
+        android:textColor="#FFFFFF"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/handled_exception" />
+
+    <Button
         android:id="@+id/ndk_crash"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="8dp"
         android:background="#7733C5"
         android:text="NDK Crash"
         android:textColor="#FFFFFF"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/negative_index" />
+        app:layout_constraintTop_toBottomOf="@+id/anr_button" />
 
 <!--    <Button-->
 <!--        android:id="@+id/submit_email"-->
