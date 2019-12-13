@@ -1,0 +1,5 @@
+# ninja log v5
+0	1105	0	CMakeFiles/native-sample.dir/src/main/cpp/native-sample.cpp.o	4b02e87395900461
+1105	1224	0	../../../../build/intermediates/cmake/debug/obj/x86/libnative-sample.so	70c96045dd60ef90
+0	556	0	CMakeFiles/native-sample.dir/src/main/cpp/native-sample.cpp.o	4b02e87395900461
+556	628	0	../../../../build/intermediates/cmake/debug/obj/x86/libnative-sample.so	70c96045dd60ef90

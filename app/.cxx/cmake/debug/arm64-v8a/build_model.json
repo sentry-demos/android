@@ -1,0 +1,73 @@
+{
+  "variant": {
+    "module": {
+      "rootBuildGradleFolder": "/Users/wcap/thinkocapo/android",
+      "sdkFolder": "/Users/wcap/Library/Android/sdk",
+      "isNativeCompilerSettingsCacheEnabled": false,
+      "isBuildOnlyTargetAbiEnabled": true,
+      "splitsAbiFilterSet": [],
+      "intermediatesFolder": "/Users/wcap/thinkocapo/android/app/build/intermediates",
+      "gradleModulePathName": ":app",
+      "moduleRootFolder": "/Users/wcap/thinkocapo/android/app",
+      "makeFile": "/Users/wcap/thinkocapo/android/app/CMakeLists.txt",
+      "buildSystem": "CMAKE",
+      "compilerSettingsCacheFolder": "/Users/wcap/thinkocapo/android/.cxx",
+      "cxxFolder": "/Users/wcap/thinkocapo/android/app/.cxx",
+      "ndkFolder": "/Users/wcap/Library/Android/sdk/ndk/20.1.5948944",
+      "ndkVersion": "20.1.5948944",
+      "ndkSupportedAbiList": [
+        "ARMEABI_V7A",
+        "ARM64_V8A",
+        "X86",
+        "X86_64"
+      ],
+      "ndkDefaultAbiList": [
+        "ARMEABI_V7A",
+        "ARM64_V8A",
+        "X86",
+        "X86_64"
+      ],
+      "cmakeToolchainFile": "."
+    },
+    "buildSystemArgumentList": [
+      "-DANDROID_STL\u003dc++_static",
+      "-DANDROID_GRADLE_NATIVE_BUNDLE_PLUGIN_MK\u003d/Users/wcap/thinkocapo/android/app/build/nativeLib/gradle.mk"
+    ],
+    "cFlagList": [],
+    "cppFlagsList": [],
+    "variantName": "debug",
+    "soFolder": "/Users/wcap/thinkocapo/android/app/build/intermediates/cmake/debug/lib",
+    "objFolder": "/Users/wcap/thinkocapo/android/app/build/intermediates/cmake/debug/obj",
+    "jsonFolder": "/Users/wcap/thinkocapo/android/app/.cxx/cmake/debug",
+    "gradleBuildOutputFolder": "/Users/wcap/thinkocapo/android/app/.cxx/cxx/debug",
+    "isDebuggableEnabled": true,
+    "validAbiList": [
+      "ARMEABI_V7A",
+      "ARM64_V8A",
+      "X86",
+      "X86_64"
+    ],
+    "buildTargetSet": []
+  },
+  "abi": "ARM64_V8A",
+  "abiPlatformVersion": 21,
+  "cxxBuildFolder": "/Users/wcap/thinkocapo/android/app/.cxx/cmake/debug/arm64-v8a",
+  "jsonFile": "/Users/wcap/thinkocapo/android/app/.cxx/cmake/debug/arm64-v8a/android_gradle_build.json",
+  "gradleBuildOutputFolder": "/Users/wcap/thinkocapo/android/app/.cxx/cxx/debug/arm64-v8a",
+  "objFolder": "/Users/wcap/thinkocapo/android/app/build/intermediates/cmake/debug/obj/arm64-v8a",
+  "buildCommandFile": "/Users/wcap/thinkocapo/android/app/.cxx/cmake/debug/arm64-v8a/build_command.txt",
+  "buildOutputFile": "/Users/wcap/thinkocapo/android/app/.cxx/cmake/debug/arm64-v8a/build_output.txt",
+  "modelOutputFile": "/Users/wcap/thinkocapo/android/app/.cxx/cmake/debug/arm64-v8a/build_model.json",
+  "cmake": {
+    "cmakeListsWrapperFile": "/Users/wcap/thinkocapo/android/app/.cxx/cxx/debug/arm64-v8a/CMakeLists.txt",
+    "toolchainWrapperFile": "/Users/wcap/thinkocapo/android/app/.cxx/cxx/debug/arm64-v8a/android_gradle_build.toolchain.cmake",
+    "buildGenerationStateFile": "/Users/wcap/thinkocapo/android/app/.cxx/cxx/debug/arm64-v8a/build_generation_state.json",
+    "cacheKeyFile": "/Users/wcap/thinkocapo/android/app/.cxx/cxx/debug/arm64-v8a/compiler_cache_key.json",
+    "compilerCacheUseFile": "/Users/wcap/thinkocapo/android/app/.cxx/cxx/debug/arm64-v8a/compiler_cache_use.json",
+    "compilerCacheWriteFile": "/Users/wcap/thinkocapo/android/app/.cxx/cxx/debug/arm64-v8a/compiler_cache_write.json",
+    "toolchainSettingsFromCacheFile": "/Users/wcap/thinkocapo/android/app/.cxx/cxx/debug/arm64-v8a/compiler_settings_cache.cmake",
+    "cmakeWrappingBaseFolder": "."
+  },
+  "jsonGenerationLoggingRecordFile": "/Users/wcap/thinkocapo/android/app/.cxx/cmake/debug/arm64-v8a/json_generation_record.json",
+  "compileCommandsJsonFile": "/Users/wcap/thinkocapo/android/app/.cxx/cmake/debug/arm64-v8a/compile_commands.json"
+}

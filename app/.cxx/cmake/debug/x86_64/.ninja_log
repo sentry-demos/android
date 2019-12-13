@@ -1,0 +1,3 @@
+# ninja log v5
+0	62	0	CMakeFiles/native-sample.dir/src/main/cpp/native-sample.cpp.o	d617f13298164533
+62	93	0	../../../../build/intermediates/cmake/debug/obj/x86_64/libnative-sample.so	8bfee20108ee06d1

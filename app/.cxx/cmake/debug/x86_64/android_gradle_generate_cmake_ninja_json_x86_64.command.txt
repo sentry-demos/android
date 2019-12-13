@@ -1,0 +1,16 @@
+Executable : /Users/wcap/Library/Android/sdk/cmake/3.6.4111459/bin/cmake
+arguments : 
+-H/Users/wcap/thinkocapo/android/app
+-B/Users/wcap/thinkocapo/android/app/.cxx/cmake/debug/x86_64
+-DANDROID_ABI=x86_64
+-DANDROID_PLATFORM=android-21
+-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/Users/wcap/thinkocapo/android/app/build/intermediates/cmake/debug/obj/x86_64
+-DCMAKE_BUILD_TYPE=Debug
+-DANDROID_NDK=/Users/wcap/Library/Android/sdk/ndk/20.1.5948944
+-DCMAKE_TOOLCHAIN_FILE=/Users/wcap/Library/Android/sdk/ndk/20.1.5948944/build/cmake/android.toolchain.cmake
+-DCMAKE_MAKE_PROGRAM=/Users/wcap/Library/Android/sdk/cmake/3.6.4111459/bin/ninja
+-GAndroid Gradle - Ninja
+-DANDROID_STL=c++_static
+-DANDROID_GRADLE_NATIVE_BUNDLE_PLUGIN_MK=/Users/wcap/thinkocapo/android/app/build/nativeLib/gradle.mk
+jvmArgs : 
+

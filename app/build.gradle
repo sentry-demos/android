@@ -15,7 +15,23 @@ android {
         targetSdkVersion 29
         versionCode 11
         versionName "1.1"
+
+        externalNativeBuild {
+            cmake {
+                arguments.add(0, "-DANDROID_STL=c++_static")
+            }
+        }
+
+        ndk {
+            abiFilters("x86", "armeabi-v7a", "x86_64", "arm64-v8a")
+        }
     }
+    externalNativeBuild {
+        cmake {
+            setPath("CMakeLists.txt")
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false

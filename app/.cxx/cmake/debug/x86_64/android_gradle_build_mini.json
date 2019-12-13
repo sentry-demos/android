@@ -1,0 +1,16 @@
+{
+  "buildFiles": [
+    "/Users/wcap/thinkocapo/android/app/CMakeLists.txt"
+  ],
+  "cleanCommands": [
+    "/Users/wcap/Library/Android/sdk/cmake/3.6.4111459/bin/cmake --build /Users/wcap/thinkocapo/android/app/.cxx/cmake/debug/x86_64 --target clean"
+  ],
+  "libraries": {
+    "native-sample-Debug-x86_64": {
+      "artifactName": "native-sample",
+      "buildCommand": "/Users/wcap/Library/Android/sdk/cmake/3.6.4111459/bin/cmake --build /Users/wcap/thinkocapo/android/app/.cxx/cmake/debug/x86_64 --target native-sample",
+      "abi": "x86_64",
+      "output": "/Users/wcap/thinkocapo/android/app/build/intermediates/cmake/debug/obj/x86_64/libnative-sample.so"
+    }
+  }
+}

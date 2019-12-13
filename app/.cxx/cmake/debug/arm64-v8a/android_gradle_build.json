@@ -1,0 +1,38 @@
+
+{
+	"buildFiles" : [ "/Users/wcap/thinkocapo/android/app/CMakeLists.txt" ],
+	"cleanCommands" : 
+	[
+		"/Users/wcap/Library/Android/sdk/cmake/3.6.4111459/bin/cmake --build /Users/wcap/thinkocapo/android/app/.cxx/cmake/debug/arm64-v8a --target clean"
+	],
+	"cppFileExtensions" : [ "cpp" ],
+	"libraries" : 
+	{
+		"native-sample-Debug-arm64-v8a" : 
+		{
+			"abi" : "arm64-v8a",
+			"artifactName" : "native-sample",
+			"buildCommand" : "/Users/wcap/Library/Android/sdk/cmake/3.6.4111459/bin/cmake --build /Users/wcap/thinkocapo/android/app/.cxx/cmake/debug/arm64-v8a --target native-sample",
+			"buildType" : "debug",
+			"files" : 
+			[
+				
+				{
+					"flags" : "  --target=aarch64-none-linux-android21 --gcc-toolchain=/Users/wcap/Library/Android/sdk/ndk/20.1.5948944/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/wcap/Library/Android/sdk/ndk/20.1.5948944/toolchains/llvm/prebuilt/darwin-x86_64/sysroot  -Dnative_sample_EXPORTS -I../../../../build/nativeLib/io.sentry/sentry-android-ndk/jni/include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security   -O0 -fno-limit-debug-info -fno-experimental-isel  -fPIC    -c ",
+					"src" : "/Users/wcap/thinkocapo/android/app/src/main/cpp/native-sample.cpp",
+					"workingDirectory" : "/Users/wcap/thinkocapo/android/app/.cxx/cmake/debug/arm64-v8a"
+				}
+			],
+			"output" : "/Users/wcap/thinkocapo/android/app/build/intermediates/cmake/debug/obj/arm64-v8a/libnative-sample.so",
+			"toolchain" : "11217975659778912784"
+		}
+	},
+	"toolchains" : 
+	{
+		"11217975659778912784" : 
+		{
+			"cCompilerExecutable" : "/Users/wcap/Library/Android/sdk/ndk/20.1.5948944/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang",
+			"cppCompilerExecutable" : "/Users/wcap/Library/Android/sdk/ndk/20.1.5948944/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++"
+		}
+	}
+}
