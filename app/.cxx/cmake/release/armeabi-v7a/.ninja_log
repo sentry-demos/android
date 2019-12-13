@@ -1,3 +1,6 @@
 # ninja log v5
 0	430	0	CMakeFiles/native-sample.dir/src/main/cpp/native-sample.cpp.o	ff998790598e1357
 430	483	0	../../../../build/intermediates/cmake/release/obj/armeabi-v7a/libnative-sample.so	46ffc333c38806b2
+1	97	0	build.ninja	709983e9e2e64e5c
+0	593	0	CMakeFiles/native-sample.dir/src/main/cpp/native-sample.cpp.o	ff998790598e1357
+593	894	0	../../../../build/intermediates/cmake/release/obj/armeabi-v7a/libnative-sample.so	a517bdd856234218

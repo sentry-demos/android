@@ -196,7 +196,7 @@ CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 LOG_LIB:FILEPATH=/Users/wcap/Library/Android/sdk/ndk/20.1.5948944/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/lib/aarch64-linux-android/21/liblog.so
 
 //Dependencies for the target
-native-sample_LIB_DEPENDS:STATIC=general;/Users/wcap/Library/Android/sdk/ndk/20.1.5948944/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/lib/aarch64-linux-android/21/liblog.so;general;/Users/wcap/.gradle/caches/transforms-2/files-2.1/94a12a20141e81ae4c3f611993770225/sentry-android-ndk-2.0.0-beta02/jni/arm64-v8a/libsentry.so;general;/Users/wcap/.gradle/caches/transforms-2/files-2.1/94a12a20141e81ae4c3f611993770225/sentry-android-ndk-2.0.0-beta02/jni/arm64-v8a/libsentry-android.so;
+native-sample_LIB_DEPENDS:STATIC=general;/Users/wcap/Library/Android/sdk/ndk/20.1.5948944/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/lib/aarch64-linux-android/21/liblog.so;general;/Users/wcap/.gradle/caches/transforms-2/files-2.1/ceb3b307d7c398571954b75cbf0d89dd/sentry-android-ndk-2.0.0-beta02/jni/arm64-v8a/libsentry.so;general;/Users/wcap/.gradle/caches/transforms-2/files-2.1/ceb3b307d7c398571954b75cbf0d89dd/sentry-android-ndk-2.0.0-beta02/jni/arm64-v8a/libsentry-android.so;
 
 //Value Computed by CMake
 sentry-nativesample_BINARY_DIR:STATIC=/Users/wcap/thinkocapo/android/app/.cxx/cmake/release/arm64-v8a

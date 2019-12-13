@@ -64,6 +64,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // NATIVE CRASH
-        findViewById(R.id.ndk_crash).setOnClickListener(view -> NativeSample.message());
+        findViewById(R.id.ndk_crash).setOnClickListener(view -> NativeSample.crash());
     }
 }

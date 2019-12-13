@@ -1,3 +1,6 @@
 # ninja log v5
 0	71	0	CMakeFiles/native-sample.dir/src/main/cpp/native-sample.cpp.o	d5361b2e3ba5cc90
 71	108	0	../../../../build/intermediates/cmake/release/obj/x86_64/libnative-sample.so	b1aa9d5b334b5226
+0	46	0	build.ninja	2ea3f2846ebba465
+1	167	0	CMakeFiles/native-sample.dir/src/main/cpp/native-sample.cpp.o	d5361b2e3ba5cc90
+167	421	0	../../../../build/intermediates/cmake/release/obj/x86_64/libnative-sample.so	cbb4adc1bb388eb8

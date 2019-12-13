@@ -22,6 +22,9 @@ See https://docs.sentry.io/clients/java/modules/android/ for more information.
     ```
 
 4. Update the DSN in the `app/src/main/resources/sentry.properties` file
+5. `./gradlew build`
+6. `sentry-cli upload-dif -o testorg-az -p android app/build/intermediates/merged_native_libs/`
+7. `sentry-cli upload-dif -o {YOUR_ORG} -p {PROJECT} build/intermediates/merged_native_libs/`
 
 ## Running the Demo
 

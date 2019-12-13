@@ -1,2 +1,6 @@
+[1/1] Re-running CMake...
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /Users/wcap/thinkocapo/android/app/.cxx/cmake/release/arm64-v8a
 [1/2] Building CXX object CMakeFiles/native-sample.dir/src/main/cpp/native-sample.cpp.o
 [2/2] Linking CXX shared library ../../../../build/intermediates/cmake/release/obj/arm64-v8a/libnative-sample.so
