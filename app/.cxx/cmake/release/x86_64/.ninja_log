@@ -8,3 +8,5 @@
 151	189	0	../../../../build/intermediates/cmake/release/obj/x86_64/libnative-sample.so	cbb4adc1bb388eb8
 1	1366	0	CMakeFiles/native-sample.dir/src/main/cpp/native-sample.cpp.o	d5361b2e3ba5cc90
 1366	1411	0	../../../../build/intermediates/cmake/release/obj/x86_64/libnative-sample.so	cbb4adc1bb388eb8
+0	374	0	CMakeFiles/native-sample.dir/src/main/cpp/native-sample.cpp.o	d5361b2e3ba5cc90
+374	403	0	../../../../build/intermediates/cmake/release/obj/x86_64/libnative-sample.so	cbb4adc1bb388eb8

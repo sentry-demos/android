@@ -8,3 +8,5 @@
 142	186	0	../../../../build/intermediates/cmake/release/obj/arm64-v8a/libnative-sample.so	f469195bfaf03bf
 1	481	0	CMakeFiles/native-sample.dir/src/main/cpp/native-sample.cpp.o	fd792a77adf572df
 482	520	0	../../../../build/intermediates/cmake/release/obj/arm64-v8a/libnative-sample.so	f469195bfaf03bf
+1	359	0	CMakeFiles/native-sample.dir/src/main/cpp/native-sample.cpp.o	fd792a77adf572df
+359	401	0	../../../../build/intermediates/cmake/release/obj/arm64-v8a/libnative-sample.so	f469195bfaf03bf
