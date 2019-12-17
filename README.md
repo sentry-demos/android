@@ -25,9 +25,14 @@ See https://docs.sentry.io/clients/java/modules/android/ for more information.
 5. `./gradlew build` and run this after any code change, to produce updated debug files
 6. upload debug files
 ```
-sentry-cli upload-dif -o {YOUR ORGANISATION} -p {PROJECT} app/build/intermediates/cmake/
-sentry-cli upload-dif -o {YOUR ORGANISATION} -p {PROJECT} app/build/intermediates/stripped_native_libs
-sentry-cli upload-dif -o {YOUR ORGANISATION} -p {PROJECT} app/build/intermediates/merged_native_libs/
+sentry-cli upload-dif -o {YOUR ORGANISATION} -p {PROJECT} app/build/intermediates/cmake/ --include-sources
+sentry-cli upload-dif -o {YOUR ORGANISATION} -p {PROJECT} app/build/intermediates/stripped_native_libs --include-sources
+sentry-cli upload-dif -o {YOUR ORGANISATION} -p {PROJECT} app/build/intermediates/merged_native_libs/ --include-sources
+
+# e.g.
+sentry-cli upload-dif -o testorg-az -p android app/build/intermediates/cmake/ --include-sources
+sentry-cli upload-dif -o testorg-az -p android app/build/intermediates/stripped_native_libs --include-sources
+sentry-cli upload-dif -o testorg-az -p android app/build/intermediates/merged_native_libs/ --include-sources
 ```
 
 ## Running the Demo
