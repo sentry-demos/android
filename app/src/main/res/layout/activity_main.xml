@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     tools:context="com.example.vu.android.MainActivity">
 
     <ImageView
@@ -97,33 +96,17 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/anr" />
 
-<!--    <Button-->
-<!--        android:id="@+id/submit_email"-->
-<!--        android:layout_width="363dp"-->
-<!--        android:layout_height="43dp"-->
-<!--        android:layout_centerHorizontal="true"-->
-<!--        android:layout_marginLeft="24dp"-->
-<!--        android:layout_marginTop="8dp"-->
-<!--        android:layout_marginRight="24dp"-->
-<!--        android:text="Submit"-->
-<!--        app:layout_constraintHorizontal_bias="0.49"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"-->
-<!--        app:layout_constraintRight_toRightOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/email" />-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/display"-->
-<!--        android:layout_width="394dp"-->
-<!--        android:layout_height="42dp"-->
-<!--        android:layout_marginTop="24dp"-->
-<!--        android:text="Hello!"-->
-<!--        android:textAlignment="center"-->
-<!--        android:textColor="#673AB7"-->
-
-<!--        android:textSize="30sp"-->
-<!--        android:textStyle="bold"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/iconContainer"-->
-<!--        tools:layout_editor_absoluteX="7dp" />-->
-
+    <Button
+        android:id="@+id/ndk_handled_crash"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:background="#7733C5"
+        android:text="Handled NDK Crash"
+        android:textColor="#FFFFFF"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ndk_crash" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

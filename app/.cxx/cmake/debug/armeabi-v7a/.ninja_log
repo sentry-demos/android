@@ -4,3 +4,7 @@
 0	109	0	build.ninja	68b844a5f262eef5
 5	782	0	CMakeFiles/native-sample.dir/src/main/cpp/native-sample.cpp.o	f5dc1ae0d4fd7fec
 782	963	0	../../../../build/intermediates/cmake/debug/obj/armeabi-v7a/libnative-sample.so	36ff580a4939762a
+1	995	0	CMakeFiles/native-sample.dir/src/main/cpp/native-sample.cpp.o	f5dc1ae0d4fd7fec
+996	1219	0	../../../../build/intermediates/cmake/debug/obj/armeabi-v7a/libnative-sample.so	36ff580a4939762a
+1	999	0	CMakeFiles/native-sample.dir/src/main/cpp/native-sample.cpp.o	f5dc1ae0d4fd7fec
+1000	1108	0	../../../../build/intermediates/cmake/debug/obj/armeabi-v7a/libnative-sample.so	36ff580a4939762a

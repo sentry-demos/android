@@ -4,3 +4,7 @@
 0	45	0	build.ninja	1c02140a183f26d
 3	89	0	CMakeFiles/native-sample.dir/src/main/cpp/native-sample.cpp.o	9958e9fa9a554c61
 89	859	0	../../../../build/intermediates/cmake/debug/obj/arm64-v8a/libnative-sample.so	9e5cbab81183e7a4
+1	119	0	CMakeFiles/native-sample.dir/src/main/cpp/native-sample.cpp.o	9958e9fa9a554c61
+120	192	0	../../../../build/intermediates/cmake/debug/obj/arm64-v8a/libnative-sample.so	9e5cbab81183e7a4
+3	347	0	CMakeFiles/native-sample.dir/src/main/cpp/native-sample.cpp.o	9958e9fa9a554c61
+347	449	0	../../../../build/intermediates/cmake/debug/obj/arm64-v8a/libnative-sample.so	9e5cbab81183e7a4

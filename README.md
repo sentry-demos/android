@@ -23,7 +23,12 @@ See https://docs.sentry.io/clients/java/modules/android/ for more information.
 
 4. Put your DSN key in `app/src/main/resources/sentry.properties`
 5. `./gradlew build`
-6. `sentry-cli upload-dif -o {YOUR_ORG} -p {PROJECT} build/intermediates/merged_native_libs/`
+6. upload debug files
+```
+sentry-cli upload-dif -o {YOUR ORGANISATION} -p {PROJECT} build/intermediates/cmake/
+sentry-cli upload-dif -o {YOUR ORGANISATION} -p {PROJECT} build/intermediates/stripped_native_libs
+sentry-cli upload-dif -o {YOUR ORGANISATION} -p {PROJECT} build/intermediates/merged_native_libs/
+```
 
 ## Running the Demo
 

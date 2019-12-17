@@ -4,3 +4,7 @@
 0	73	0	build.ninja	5e77285c7094de9c
 1	116	0	CMakeFiles/native-sample.dir/src/main/cpp/native-sample.cpp.o	d617f13298164533
 116	547	0	../../../../build/intermediates/cmake/debug/obj/x86_64/libnative-sample.so	cda79d4215c7b9d1
+0	104	0	CMakeFiles/native-sample.dir/src/main/cpp/native-sample.cpp.o	d617f13298164533
+104	195	0	../../../../build/intermediates/cmake/debug/obj/x86_64/libnative-sample.so	cda79d4215c7b9d1
+5	363	0	CMakeFiles/native-sample.dir/src/main/cpp/native-sample.cpp.o	d617f13298164533
+363	445	0	../../../../build/intermediates/cmake/debug/obj/x86_64/libnative-sample.so	cda79d4215c7b9d1

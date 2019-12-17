@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // TODO
+        // ANR
         final Button anr_button = (Button)findViewById(R.id.anr);
         anr_button.setOnClickListener( new View.OnClickListener() {
             @Override
@@ -65,5 +65,8 @@ public class MainActivity extends AppCompatActivity {
 
         // NATIVE CRASH
         findViewById(R.id.ndk_crash).setOnClickListener(view -> NativeSample.crash());
+
+        // HANDLED NATIVE CRASH
+        findViewById(R.id.ndk_handled_crash).setOnClickListener(view -> NativeSample.handledCrash());
     }
 }
