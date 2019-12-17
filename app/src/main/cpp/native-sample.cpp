@@ -37,7 +37,7 @@ JNIEXPORT void JNICALL Java_com_example_vu_android_NativeSample_message(JNIEnv *
     sentry_value_t event = sentry_value_new_message_event(
       /*   level */ SENTRY_LEVEL_INFO,
       /*  logger */ "custom",
-      /* message */ "It works!"
+      /* message */ "Sentry Message - It works!"
     );
     sentry_capture_event(event);
 }
