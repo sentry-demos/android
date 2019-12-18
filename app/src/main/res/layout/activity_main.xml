@@ -16,17 +16,31 @@
         tools:layout_editor_absoluteY="0dp" />
 
     <TextView
-        android:id="@+id/errors"
+        android:id="@+id/sentryandroiddemo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Java Errors"
-        android:textColor="#673AB7"
-        android:textSize="30sp"
+        android:text="Sentry Android Demo"
+        android:textColor="#333333"
+        android:textSize="42sp"
         android:textStyle="bold"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.6" />
+
+    <TextView
+        android:id="@+id/errors"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Java Errors"
+        android:textColor="#333333"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sentryandroiddemo"
         app:layout_constraintVertical_bias="0.6" />
 
 
@@ -74,7 +88,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Application Not Responding"
-        android:textColor="#673AB7"
+        android:textColor="#333333"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintHorizontal_bias="0.498"
@@ -101,7 +115,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="NDK/C++"
-        android:textColor="#673AB7"
+        android:textColor="#333333"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintHorizontal_bias="0.498"
