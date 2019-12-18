@@ -20,8 +20,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        Sentry.addBreadcrumb(new Breadcrumb(this.getClass().getSimpleName() + " was created"));
+        String activity = this.getClass().getSimpleName();
+        Sentry.setTag("activity", activity);
+        Sentry.addBreadcrumb(new Breadcrumb(activity + " was created"));
 
         // DIVIDE BY ZERO
         Button div_by_zero_button = (Button)findViewById(R.id.div_zero);
