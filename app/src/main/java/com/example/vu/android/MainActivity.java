@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // NATIVE CRASH
-        findViewById(R.id.ndk_crash).setOnClickListener(view -> NativeSample.crash());
+        findViewById(R.id.native_crash).setOnClickListener(view -> NativeSample.crash());
 
 // TBD 12/17/19 not needed at this point in time
 //         HANDLED NATIVE CRASH
