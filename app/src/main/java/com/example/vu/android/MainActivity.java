@@ -72,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // NATIVE CRASH
-//        findViewById(R.id.native_crash).setOnClickListener(view -> NativeSample.crash());
         findViewById(R.id.native_crash).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
