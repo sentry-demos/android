@@ -35,6 +35,9 @@ sentry-cli upload-dif -o testorg-az -p android app/build/intermediates/stripped_
 sentry-cli upload-dif -o testorg-az -p android app/build/intermediates/merged_native_libs/ --include-sources
 ```
 
+You can see they were uploaded in your Sentry Project Settings > Debug Info Files:
+`https://sentry.io/settings/${ORG}/projects/${PROJECT}/debug-symbols/`
+
 ## Running the Demo
 
 The MainActivity has 5 buttons
@@ -43,8 +46,6 @@ The MainActivity has 5 buttons
 3. **HANDLED EXCEPTION**: Catches a runtime exception in a try/catch clause using `Sentry.captureException(e);`
 4. **APPLICATION NOT RESPONDING (ANR)**: Uses an infinite loop to crash the app after 5 seconds and reports event to Sentry.
 5. **NATIVE CRASH**: Generates a native crash in c++ that the Sentry NDK will send to Sentry.io for symbolication
-
-- TODO - Clicking any button will add a **custom breadcrumb** to the event
 
 ## Android Java Exception
 
