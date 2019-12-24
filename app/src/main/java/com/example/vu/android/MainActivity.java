@@ -1,10 +1,7 @@
 package com.example.vu.android;
 
 import android.os.Bundle;
-
 import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,16 +11,15 @@ import io.sentry.core.Sentry;
 import io.sentry.core.SentryLevel;
 
 public class MainActivity extends AppCompatActivity {
-    TextView total;
-    EditText numerator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // SENTRY
         SentryAndroid.init(this, options -> {
-            // Add a callback that will be used before the event is sent to Sentry.
-            // With this callback, you can modify the event or, when returning null, also discard the event.
+            // This callback is used before the event is sent to Sentry.
+            // You can modify the event or, when returning null, also discard the event.
             options.setBeforeSend((event, hint) -> {
                 if (SentryLevel.DEBUG.equals(event.getLevel()))
                     return null;
@@ -32,13 +28,14 @@ public class MainActivity extends AppCompatActivity {
             });
         });
 
-
         setContentView(R.layout.activity_main);
+
+        // Sentry Tag and Breadcrumb
         String activity = this.getClass().getSimpleName();
         Sentry.setTag("activity", activity);
         Sentry.addBreadcrumb(new Breadcrumb(activity + " was created"));
 
-        // DIVIDE BY ZERO
+        // DIVIDE BY ZERO - ArithmeticException
         Button div_by_zero_button = (Button)findViewById(R.id.div_zero);
         div_by_zero_button.setOnClickListener( new View.OnClickListener() {
             @Override
@@ -48,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // NEGATIVE INDEX
+        // NEGATIVE INDEX - NegativeArraySizeException
         Button negative_index_button = (Button)findViewById(R.id.negative_index);
         negative_index_button.setOnClickListener( new View.OnClickListener() {
             @Override
@@ -58,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // HANDLED EXCEPTION
+        // HANDLED EXCEPTION - NumberFormatException
         Button handled_exception_button = (Button)findViewById(R.id.handled_exception);
         handled_exception_button.setOnClickListener( new View.OnClickListener() {
             @Override
@@ -73,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // ANR
+        // APPLICATION NOT RESPONDING
         final Button anr_button = (Button)findViewById(R.id.anr);
         anr_button.setOnClickListener( new View.OnClickListener() {
             @Override
@@ -85,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // NATIVE CRASH
+        // NATIVE CRASH c++
         findViewById(R.id.native_crash).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){

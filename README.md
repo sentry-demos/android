@@ -54,6 +54,6 @@ The MainActivity has 5 buttons
 
 ![Alt Text](android-demo-anr.gif)
 
-## Android Native Crash
+## Android Native Crash c++
 
 ![Native Crash](android-native-crash-175.gif)

@@ -28,6 +28,7 @@
             android:value="https://80b8a795d2a14cf796acaae4fa6cab30@sentry.io/261820"/>
         <meta-data android:name="io.sentry.debug" android:value="true" />
         <meta-data android:name="io.sentry.auto-init" android:value="false" />
+        <meta-data android:name="io.sentry.anr.timeout-interval-mills" android:value="2000" />
     </application>
 
 </manifest>
