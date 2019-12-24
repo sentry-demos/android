@@ -8,8 +8,10 @@ import android.widget.TextView;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
+import io.sentry.android.core.SentryAndroid;
 import io.sentry.core.Breadcrumb;
 import io.sentry.core.Sentry;
+import io.sentry.core.SentryLevel;
 
 public class MainActivity extends AppCompatActivity {
     TextView total;
@@ -18,8 +20,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
+        SentryAndroid.init(this, options -> {
+            // Add a callback that will be used before the event is sent to Sentry.
+            // With this callback, you can modify the event or, when returning null, also discard the event.
+            options.setBeforeSend((event, hint) -> {
+                if (SentryLevel.DEBUG.equals(event.getLevel()))
+                    return null;
+                else
+                    return event;
+            });
+        });
+
+
+        setContentView(R.layout.activity_main);
         String activity = this.getClass().getSimpleName();
         Sentry.setTag("activity", activity);
         Sentry.addBreadcrumb(new Breadcrumb(activity + " was created"));
@@ -82,6 +96,18 @@ public class MainActivity extends AppCompatActivity {
 
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 // TBD 12/17/19 not needed at this point in time
 //         HANDLED NATIVE CRASH

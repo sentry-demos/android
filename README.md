@@ -54,8 +54,14 @@ sentry-cli upload-dif -o testorg-az -p android app/build/intermediates/merged_na
 
 - SDK configuration defined in `app/src/main/resources/sentry.properties` includes: DSN, ANR, tags (key values)
 
+## Android Java Exception
+
 ![Android demo flow](android-demo.gif)
 
 ## Android ANR  
 
 ![Alt Text](android-demo-anr.gif)
+
+## Android Native Crash
+
+![Native Crash](android-native-crash-175.gif)
