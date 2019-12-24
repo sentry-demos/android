@@ -9,7 +9,19 @@ See https://docs.sentry.io/clients/java/modules/android/ for more information.
 * Android Studio
 * Gradle
 
-## Setup Instructions
+#### Testing was last performed with
+```
+// 12/23/19
+Android Studio 3.5.3
+Build #AI-191.8026.42.35.6010548, built on November 15, 2019
+JRE: 1.8.0_202-release-1483-b49-5587405 x86_64
+JVM: OpenJDK 64-Bit Server VM by JetBrains s.r.o
+macOS 10.14.4
+```
+AVD `Nexus 5x API 29 x86`
+Gradle `.gradle/.5.6.4`
+
+## Setup
 
 1. Clone this repo
 
@@ -38,7 +50,7 @@ sentry-cli upload-dif -o testorg-az -p android app/build/intermediates/merged_na
 You can see they were uploaded in your Sentry Project Settings > Debug Info Files:
 `https://sentry.io/settings/${ORG}/projects/${PROJECT}/debug-symbols/`
 
-## Running the Demo
+## Run
 
 The MainActivity has 5 buttons
 1. **DIVIDE BY 0**: Generates an **unhandled exception**
