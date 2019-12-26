@@ -49,7 +49,7 @@ sentry-cli upload-dif -o testorg-az -p android app/build/intermediates/merged_na
 
 You can see they were uploaded in your Sentry Project Settings > Debug Info Files:
 `https://sentry.io/settings/${ORG}/projects/${PROJECT}/debug-symbols/`
-
+`https://sentry.io/settings/testorg-az/projects/android/debug-symbols/`
 ## Run
 
 The MainActivity has 5 buttons

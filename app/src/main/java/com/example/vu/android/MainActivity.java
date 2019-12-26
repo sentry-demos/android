@@ -1,7 +1,6 @@
 package com.example.vu.android;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -30,65 +29,49 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        // Sentry Tag and Breadcrumb
+        // SENTRY Tag and Breadcrumb
         String activity = this.getClass().getSimpleName();
         Sentry.setTag("activity", activity);
         Sentry.addBreadcrumb(new Breadcrumb(activity + " was created"));
 
         // DIVIDE BY ZERO - ArithmeticException
-        Button div_by_zero_button = (Button)findViewById(R.id.div_zero);
-        div_by_zero_button.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View view){
-                Sentry.addBreadcrumb(new Breadcrumb("Button for Error 1 clicked..."));
-                int t = 5 / 0 ;
-            }
+        Button div_by_zero_button = findViewById(R.id.div_zero);
+        div_by_zero_button.setOnClickListener(view -> {
+            Sentry.addBreadcrumb(new Breadcrumb("Button for Error 1 clicked..."));
+            int t = 5 / 0;
         });
 
         // NEGATIVE INDEX - NegativeArraySizeException
-        Button negative_index_button = (Button)findViewById(R.id.negative_index);
-        negative_index_button.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View view){
-                Sentry.addBreadcrumb(new Breadcrumb("Button for Error 2 clicked..."));
-                int[] a = new int[-5];
-            }
+        Button negative_index_button = findViewById(R.id.negative_index);
+        negative_index_button.setOnClickListener(view -> {
+            Sentry.addBreadcrumb(new Breadcrumb("Button for Error 2 clicked..."));
+            int[] a = new int[-5];
         });
 
         // HANDLED EXCEPTION - NumberFormatException
-        Button handled_exception_button = (Button)findViewById(R.id.handled_exception);
-        handled_exception_button.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View view){
+        Button handled_exception_button = findViewById(R.id.handled_exception);
+        handled_exception_button.setOnClickListener(view -> {
                 Sentry.addBreadcrumb(new Breadcrumb("Button for Error 3 (Handled Exception) clicked..."));
                 try {
                     Integer.parseInt ("str");
                 } catch (Exception e) {
                     Sentry.captureException(e);
                 }
-
-            }
         });
 
         // APPLICATION NOT RESPONDING
-        final Button anr_button = (Button)findViewById(R.id.anr);
-        anr_button.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View view){
-                Sentry.addBreadcrumb(new Breadcrumb("Button for ANR clicked..."));
-                while(true) {
-                    // Wait 5 seconds for ANR....
-                }
+        Button anr_button = findViewById(R.id.anr);
+        anr_button.setOnClickListener(view -> {
+            Sentry.addBreadcrumb(new Breadcrumb("Button for ANR clicked..."));
+            while(true) {
+                // Wait 2 seconds for ANR....
             }
         });
 
-        // NATIVE CRASH c++
-        findViewById(R.id.native_crash).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view){
-                Sentry.addBreadcrumb(new Breadcrumb("Button for Native Crash clicked..."));
-                NativeSample.crash();
-            }
+        // NATIVE CRASH
+        findViewById(R.id.native_crash).setOnClickListener(view -> {
+            Sentry.addBreadcrumb(new Breadcrumb("Button for Native Crash clicked..."));
+            NativeSample.crash();
         });
 
     }
