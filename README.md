@@ -44,7 +44,7 @@ macOS 10.14.4
     Tools -> Android -> Sync Project with Gradle Files
     ```
 
-4. Put your DSN key in `app/src/main/resources/sentry.properties`
+4. Put your Sentry DSN key in `AndroidManifest.xml`
 5. `./gradlew build` and run this after any code change, to produce updated debug files
 6. upload debug files
 ```
