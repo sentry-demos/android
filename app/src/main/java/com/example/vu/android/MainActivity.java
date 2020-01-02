@@ -15,18 +15,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // SENTRY
-        SentryAndroid.init(this, options -> {
-            // This callback is used before the event is sent to Sentry.
-            // You can modify the event or, when returning null, also discard the event.
-            options.setBeforeSend((event, hint) -> {
-                if (SentryLevel.DEBUG.equals(event.getLevel()))
-                    return null;
-                else
-                    return event;
-            });
-        });
-
         setContentView(R.layout.activity_main);
 
         // SENTRY Tag and Breadcrumb
