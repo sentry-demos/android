@@ -1,25 +1,36 @@
 # Android Demo
 
-This app demonstrates how to include and configure Sentry in an Android application.
+This app demonstrates how to use Sentry in an Android application for capturing 4 types of exceptions:
 
-See https://docs.sentry.io/clients/java/modules/android/ for more information.
+- Unhandled Exceptions (2)
+- Handled Exceptions
+- Application Not Responding
+- Native Crashes from c++ native code
 
-## Prerequisites  
+This app has all configuration (e.g. gradle) set to include Sentry SDK and ANR and NDK (crash) events.
 
-* Android Studio
-* Gradle
+Sentry NDK libraries are used in addition to the Sentry SDK, for capturing errors and crashes in c++.
 
-#### Testing was last performed with
+For use in **Production** see the [Official Sentry Android Documentation](https://docs.sentry.io/platforms/android/)
+Additional documentation:
+[ANR Configuration](https://docs.sentry.io/platforms/android/#configuration-options)
+[NDK Configuration](https://docs.sentry.io/platforms/android/#integrating-the-ndk)
+
+## Versions
+
+* Android Studio 3.5.3
+* Gradle 5.6.4
+* AVD `Nexus 5x API 29 x86`
+
 ```
-// 12/23/19
+// testing last performed 01/01/19
 Android Studio 3.5.3
 Build #AI-191.8026.42.35.6010548, built on November 15, 2019
 JRE: 1.8.0_202-release-1483-b49-5587405 x86_64
 JVM: OpenJDK 64-Bit Server VM by JetBrains s.r.o
 macOS 10.14.4
 ```
-AVD `Nexus 5x API 29 x86`
-Gradle `.gradle/.5.6.4`
+
 
 ## Setup
 
@@ -41,32 +52,36 @@ sentry-cli upload-dif -o {YOUR ORGANISATION} -p {PROJECT} app/build/intermediate
 sentry-cli upload-dif -o {YOUR ORGANISATION} -p {PROJECT} app/build/intermediates/stripped_native_libs --include-sources
 sentry-cli upload-dif -o {YOUR ORGANISATION} -p {PROJECT} app/build/intermediates/merged_native_libs/ --include-sources
 
-# e.g.
 sentry-cli upload-dif -o testorg-az -p android app/build/intermediates/cmake/ --include-sources
 sentry-cli upload-dif -o testorg-az -p android app/build/intermediates/stripped_native_libs --include-sources
 sentry-cli upload-dif -o testorg-az -p android app/build/intermediates/merged_native_libs/ --include-sources
 ```
 
-You can see they were uploaded in your Sentry Project Settings > Debug Info Files:
+You can see they were uploaded in your Sentry Project Settings:
 `https://sentry.io/settings/${ORG}/projects/${PROJECT}/debug-symbols/`
 `https://sentry.io/settings/testorg-az/projects/android/debug-symbols/`
+
 ## Run
+1. Run it in Android Studio on an Android Virtual Device.
 
-The MainActivity has 5 buttons
-1. **DIVIDE BY 0**: Generates an **unhandled exception**
-2. **NEGATIVE INDEX**: Generates an **unhandled exception**
-3. **HANDLED EXCEPTION**: Catches a runtime exception in a try/catch clause using `Sentry.captureException(e);`
-4. **APPLICATION NOT RESPONDING (ANR)**: Uses an infinite loop to crash the app after 5 seconds and reports event to Sentry.
-5. **NATIVE CRASH**: Generates a native crash in c++ that the Sentry NDK will send to Sentry.io for symbolication
+## What's Happening
 
-## Android Java Exception
+The MainActivity has 5 buttons that generate the following exception types:
+
+1. DIVIDE BY 0: **Unhandled Exception** of type Arithmetic Eception
+2. NEGATIVE INDEX: **Unhandled Exception** of type NegativeArraySizeException
+3. HANDLED EXCEPTION: **Handled Exception** of type NumberFormatException
+4. APPLICATION NOT RESPONDING (ANR): **ApplicationNotResponding** Uses an infinite loop to crash the app after 5 seconds and reports event to Sentry.
+5. NATIVE CRASH: **Native Crash** of type SIGSEGV from native c++. The Sentry NDK sends this to Sentry.io for symbolication
+
+## GIF Android Java Exception
 
 ![Android demo flow](android-demo.gif)
 
-## Android ANR  
+## GIF Android ANR
 
 ![Alt Text](android-demo-anr.gif)
 
-## Android Native Crash c++
+## GIF Android Native Crash c++
 
 ![Native Crash](android-native-crash-175.gif)
