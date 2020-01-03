@@ -8,3 +8,9 @@
 keystore.jks
 *.apk
 app/build/*
+app/.cxx
+.project
+.settings/
+app/.project
+app/.settings/
+app/.classpath

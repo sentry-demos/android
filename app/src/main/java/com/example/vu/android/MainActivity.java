@@ -1,108 +1,81 @@
 package com.example.vu.android;
 
 import android.os.Bundle;
-import io.sentry.android.AndroidSentryClientFactory;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Button;
-import io.sentry.Sentry;
-import io.sentry.event.Breadcrumb;
-import io.sentry.event.BreadcrumbBuilder;
-import io.sentry.event.UserBuilder;
-import android.content.Context;
+import androidx.appcompat.app.AppCompatActivity;
+
+import io.sentry.android.core.SentryAndroid;
+import io.sentry.core.Breadcrumb;
+import io.sentry.core.Sentry;
+import io.sentry.core.SentryLevel;
 
 public class MainActivity extends AppCompatActivity {
-    TextView total;
-    EditText numerator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
-        //  Sentry DSN + configuration defined in app/src/main/resources/sentry.properties file
-        Sentry.init(new AndroidSentryClientFactory(this));
+        // SENTRY Tag and Breadcrumb
+        String activity = this.getClass().getSimpleName();
+        Sentry.setTag("activity", activity);
+        Sentry.addBreadcrumb(activity + " was created");
 
-
-        Button submit_email_button = (Button)findViewById(R.id.submit_email);
-        submit_email_button.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View view){
-
-                InputMethodManager input = (InputMethodManager)
-                        getSystemService(Context.INPUT_METHOD_SERVICE);
-                input.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
-
-                EditText email = (EditText) findViewById(R.id.email);
-                TextView display = (TextView) findViewById(R.id.display);
-                String email_string = email.getText().toString();
-                Sentry.getContext().setUser(
-                  new UserBuilder().setEmail(email_string).build()
-                );
-                String greeting = "Hello, " + email_string + "!";
-                display.setText(greeting);
-
-
-            }
+        // DIVIDE BY ZERO - ArithmeticException
+        Button div_by_zero_button = findViewById(R.id.div_zero);
+        div_by_zero_button.setOnClickListener(view -> {
+            Sentry.addBreadcrumb("Button for Error 1 clicked...");
+            int t = 5 / 0;
         });
 
-        final Button anr_button = (Button)findViewById(R.id.anr_button);
-        anr_button.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View view){
-                Sentry.getContext().recordBreadcrumb(
-                        new BreadcrumbBuilder().setLevel(Breadcrumb.Level.DEBUG).setCategory("custom").setType(Breadcrumb.Type.USER).setMessage("User clicked button: ANR").build()
-                );
-
-                while(true) {
-                    //Wait 5 seconds for ANR....
-                }
-            }
+        // NEGATIVE INDEX - NegativeArraySizeException
+        Button negative_index_button = findViewById(R.id.negative_index);
+        negative_index_button.setOnClickListener(view -> {
+            Sentry.addBreadcrumb("Button for Error 2 clicked...");
+            int[] a = new int[-5];
         });
 
-
-        Button div_by_zero_button = (Button)findViewById(R.id.div_zero);
-        div_by_zero_button.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View view){
-                Sentry.getContext().recordBreadcrumb(
-                    new BreadcrumbBuilder().setLevel(Breadcrumb.Level.DEBUG).setCategory("custom").setType(Breadcrumb.Type.USER).setMessage("User clicked button: DIVIDE BY ZERO").build()
-                );
-                int t = 5 / 0 ;
-            }
-        });
-
-        Button negative_index_button = (Button)findViewById(R.id.negative_index);
-        negative_index_button.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View view){
-                Sentry.getContext().recordBreadcrumb(
-                    new BreadcrumbBuilder().setLevel(Breadcrumb.Level.DEBUG).setCategory("custom").setType(Breadcrumb.Type.USER).setMessage("User clicked button: NEGATIVE INDEX").build()
-                );
-                int[] a = new int[-5];
-            }
-        });
-
-
-        Button file_not_found_button = (Button)findViewById(R.id.file_not_found);
-        file_not_found_button.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View view){
-                Sentry.getContext().recordBreadcrumb(
-                    new BreadcrumbBuilder().setLevel(Breadcrumb.Level.DEBUG).setCategory("custom").setType(Breadcrumb.Type.USER).setMessage("User clicked button: FILE NOT FOUND").build()
-                );
-
+        // HANDLED EXCEPTION - NumberFormatException
+        Button handled_exception_button = findViewById(R.id.handled_exception);
+        handled_exception_button.setOnClickListener(view -> {
+                Sentry.addBreadcrumb("Button for Error 3 (Handled Exception) clicked...");
                 try {
                     Integer.parseInt ("str");
                 } catch (Exception e) {
-                    Sentry.capture(e);
+                    Sentry.captureException(e);
                 }
+        });
 
+        // APPLICATION NOT RESPONDING
+        Button anr_button = findViewById(R.id.anr);
+        anr_button.setOnClickListener(view -> {
+            Sentry.addBreadcrumb("Button for ANR clicked...");
+            while(true) {
+                // Wait 2 seconds for ANR....
             }
+        });
+
+        // NATIVE CRASH
+        findViewById(R.id.native_crash).setOnClickListener(view -> {
+            NativeSample.crash();
         });
 
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+// TBD 12/17/19 not needed at this point in time
+//         HANDLED NATIVE CRASH
+//        findViewById(R.id.ndk_handled_crash).setOnClickListener(view -> NativeSample.handledCrash());
