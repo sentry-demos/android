@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
 
         // NATIVE CRASH
         findViewById(R.id.native_crash).setOnClickListener(view -> {
-            Sentry.addBreadcrumb("Button for Native Crash clicked...");
             NativeSample.crash();
         });
 
