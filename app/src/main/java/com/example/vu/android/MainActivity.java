@@ -4,10 +4,10 @@ import android.os.Bundle;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
-import io.sentry.android.core.SentryAndroid;
-import io.sentry.core.Breadcrumb;
+//import io.sentry.android.core.SentryAndroid;
+//import io.sentry.core.Breadcrumb;
 import io.sentry.core.Sentry;
-import io.sentry.core.SentryLevel;
+//import io.sentry.core.SentryLevel;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,21 +22,21 @@ public class MainActivity extends AppCompatActivity {
         Sentry.setTag("activity", activity);
         Sentry.addBreadcrumb(activity + " was created");
 
-        // DIVIDE BY ZERO - ArithmeticException
+        // Unhandled - ArithmeticException
         Button div_by_zero_button = findViewById(R.id.div_zero);
         div_by_zero_button.setOnClickListener(view -> {
             Sentry.addBreadcrumb("Button for Error 1 clicked...");
             int t = 5 / 0;
         });
 
-        // NEGATIVE INDEX - NegativeArraySizeException
+        // Unhandled - NegativeArraySizeException
         Button negative_index_button = findViewById(R.id.negative_index);
         negative_index_button.setOnClickListener(view -> {
             Sentry.addBreadcrumb("Button for Error 2 clicked...");
             int[] a = new int[-5];
         });
 
-        // HANDLED EXCEPTION - NumberFormatException
+        // Handled - NumberFormatException
         Button handled_exception_button = findViewById(R.id.handled_exception);
         handled_exception_button.setOnClickListener(view -> {
                 Sentry.addBreadcrumb("Button for Error 3 (Handled Exception) clicked...");
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
                 }
         });
 
-        // APPLICATION NOT RESPONDING
+        // ANR - ApplicationNotResponding
         Button anr_button = findViewById(R.id.anr);
         anr_button.setOnClickListener(view -> {
             Sentry.addBreadcrumb("Button for ANR clicked...");
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // NATIVE CRASH
+        // Native Crash - SIGSEGV
         findViewById(R.id.native_crash).setOnClickListener(view -> {
             NativeSample.crash();
         });
