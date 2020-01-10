@@ -5,11 +5,11 @@ This app demonstrates how to use Sentry in an Android application for capturing 
 - Unhandled Exceptions (2)
 - Handled Exceptions
 - Application Not Responding
-- Native Crashes from c++ native code
+- Native Crashes from C++ native code
 
 This app has all configuration (e.g. gradle) set to include Sentry SDK and ANR and NDK (crash) events.
 
-Sentry NDK libraries are used in addition to the Sentry SDK, for capturing errors and crashes in c++.
+Sentry NDK libraries are used in addition to the Sentry SDK, for capturing errors and crashes in C++.
 
 For use in **Production** see the [Official Sentry Android Documentation](https://docs.sentry.io/platforms/android/)
 Additional documentation:
@@ -59,7 +59,7 @@ sentry-cli upload-dif -o testorg-az -p android app/build/intermediates/merged_na
 
 You can see they were uploaded in your Sentry Project Settings:
 `https://sentry.io/settings/${YOUR_ORG}/projects/${PROJECT}/debug-symbols/`
-`https://sentry.io/settings/testorg-az/projects/android/debug-symbols/`
+![gif](screenshots/debug-information-files-settings.png)
 
 ## Run
 1. Run it in Android Studio on an Android Virtual Device.
@@ -72,7 +72,7 @@ The MainActivity has 5 buttons that generate the following exception types:
 2. NEGATIVE INDEX: **Unhandled Exception** of type NegativeArraySizeException
 3. HANDLED EXCEPTION: **Handled Exception** of type NumberFormatException
 4. APPLICATION NOT RESPONDING (ANR): **ApplicationNotResponding** Uses an infinite loop to crash the app after 5 seconds and reports event to Sentry.
-5. NATIVE CRASH: **Native Crash** of type SIGSEGV from native c++. The Sentry NDK sends this to Sentry.io for symbolication
+5. NATIVE CRASH: **Native Crash** of type SIGSEGV from native C++. The Sentry NDK sends this to Sentry.io for symbolication
 
 ## GIF Android Java Exception
 
@@ -82,6 +82,6 @@ The MainActivity has 5 buttons that generate the following exception types:
 
 ![Alt Text](android-demo-anr.gif)
 
-## GIF Android Native Crash c++
+## GIF Android Native Crash C++
 
 ![Native Crash](android-native-crash-175.gif)

@@ -10,6 +10,9 @@ gradle_build:
 
 
 upload_debug_files:
+    sentry-cli upload-dif -o testorg-az -p android app/build/intermediates/cmake/ --include-sources
+    sentry-cli upload-dif -o testorg-az -p android app/build/intermediates/stripped_native_libs --include-sources
+    sentry-cli upload-dif -o testorg-az -p android app/build/intermediates/merged_native_libs/ --include-sources
 
 # SENTRY ?
 setup_release: create_release associate_commits
