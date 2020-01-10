@@ -7,7 +7,7 @@ This app demonstrates how to use Sentry in an Android application for capturing 
 - Application Not Responding
 - Native Crashes from C++ native code
 
-This app has all configuration (e.g. gradle) set to include Sentry SDK and ANR and NDK (crash) events.
+This app has all configuration (e.g. gradle) set to include Sentry SDK and ANR (Application Not Responding) and NDK (crash) events.
 
 Sentry NDK libraries are used in addition to the Sentry SDK, for capturing errors and crashes in C++.
 
@@ -18,19 +18,16 @@ Additional documentation:
 
 ## Versions
 
-* Android Studio 3.5.3
-* Gradle 5.6.4
-* AVD `Nexus 5x API 29 x86`
+| dependency    | version
+| ------------- |:-------------:|
+| Android Studio | 3.5.3 |
+| Gradle | 5.6.4 |
+| AVD | Nexus 5x API 29 x86 |
+| sentry-cli | 1.4.9 |
+| macOS | Mojave 10.14.4 |
 
-```
-// testing last performed 01/01/19
-Android Studio 3.5.3
-Build #AI-191.8026.42.35.6010548, built on November 15, 2019
-JRE: 1.8.0_202-release-1483-b49-5587405 x86_64
-JVM: OpenJDK 64-Bit Server VM by JetBrains s.r.o
-macOS 10.14.4
-```
 
+![gif](screenshots/about-android-studio-1.png)
 
 ## Setup
 
@@ -57,8 +54,7 @@ sentry-cli upload-dif -o testorg-az -p android app/build/intermediates/stripped_
 sentry-cli upload-dif -o testorg-az -p android app/build/intermediates/merged_native_libs/ --include-sources
 ```
 
-You can see they were uploaded in your Sentry Project Settings:
-`https://sentry.io/settings/${YOUR_ORG}/projects/${PROJECT}/debug-symbols/`
+You can see they were uploaded in your Project Settings
 ![gif](screenshots/debug-information-files-settings.png)
 
 ## Run
