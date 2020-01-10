@@ -31,7 +31,7 @@ Additional documentation:
 
 ## Setup
 
-1. Clone this repo
+1. `git clone git@github.com:sentry-demos/android.git`
 
 2. Open project using Android Studio
 
