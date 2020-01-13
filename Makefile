@@ -2,7 +2,7 @@ SENTRY_ORG=testorg-az
 SENTRY_PROJECT=sentry-native
 VERSION=`sentry-cli releases propose-version`
 
-all: gradle_build upload_debug_files setup_release
+all: gradle_build setup_release upload_debug_files
 
 gradle_build:
     ./gradlew build
@@ -21,6 +21,9 @@ associate_commits:
     sentry-cli releases -o $(SENTRY_ORG) -p $(SENTRY_PROJECT) set-commits $(VERSION) --auto
 
 
-run: ?play...
+run: ?
 
-clean: ?
+clean:
+    rm -rf app/build
+    rm -rf app/.cxx
+    rm -rf build

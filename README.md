@@ -35,7 +35,7 @@ Additional documentation:
 
 2. Open project using Android Studio
 
-3. You may need to sync the project with the Gradle files
+3. Sync the project with the Gradle files
 
     ```
     Tools -> Android -> Sync Project with Gradle Files
