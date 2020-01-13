@@ -58,7 +58,7 @@ You can see they were uploaded in your Project Settings
 ![gif](screenshots/debug-information-files-settings.png)
 
 ## Run
-1. Run it in Android Studio on an Android Virtual Device.
+1. Run 'app' in Android Studio on an Android Virtual Device.
 
 ## What's Happening
 
