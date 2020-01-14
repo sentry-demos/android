@@ -30,10 +30,10 @@
         app:layout_constraintVertical_bias="0.6" />
 
     <TextView
-        android:id="@+id/errors"
+        android:id="@+id/unhandled_java_errors"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Java Errors"
+        android:text="Unhandled Java Errors"
         android:textColor="#333333"
         android:textSize="30sp"
         android:textStyle="bold"
@@ -50,12 +50,12 @@
         android:layout_height="45dp"
         android:layout_marginTop="8dp"
         android:background="#7733C5"
-        android:text="Error 1 - Divide by 0"
+        android:text="ArithmeticException"
         android:textColor="#FFFFFF"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/errors" />
+        app:layout_constraintTop_toBottomOf="@+id/unhandled_java_errors" />
 
     <Button
         android:id="@+id/negative_index"
@@ -63,12 +63,26 @@
         android:layout_height="45dp"
         android:layout_marginTop="8dp"
         android:background="#7733C5"
-        android:text="Error 2 - Negative Index"
+        android:text="NegativeArraySizeException"
         android:textColor="#FFFFFF"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/div_zero" />
+
+    <TextView
+        android:id="@+id/handled_java_errors"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Handled Java Errors"
+        android:textColor="#333333"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/negative_index"
+        app:layout_constraintVertical_bias="0.6" />
 
     <Button
         android:id="@+id/handled_exception"
@@ -76,15 +90,15 @@
         android:layout_height="45dp"
         android:layout_marginTop="8dp"
         android:background="#7733C5"
-        android:text="Error 3 - Handled Exception"
+        android:text="NumberFormatException"
         android:textColor="#FFFFFF"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/negative_index" />
+        app:layout_constraintTop_toBottomOf="@+id/handled_java_errors" />
 
     <TextView
-        android:id="@+id/applicationnotresponding"
+        android:id="@+id/application_not_responding"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Application Not Responding"
@@ -103,15 +117,15 @@
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
         android:background="#7733C5"
-        android:text="ANR Error"
+        android:text="ANR - ApplicationNotResponding"
         android:textColor="#FFFFFF"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/applicationnotresponding" />
+        app:layout_constraintTop_toBottomOf="@+id/application_not_responding" />
 
     <TextView
-        android:id="@+id/ndkcpp"
+        android:id="@+id/ndk_cpp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="NDK/C++"
@@ -130,24 +144,11 @@
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
         android:background="#7733C5"
-        android:text="Native Crash"
+        android:text="Native Crash - SIGSEGV"
         android:textColor="#FFFFFF"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ndkcpp" />
-
-<!--    <Button-->
-<!--        android:id="@+id/ndk_handled_crash"-->
-<!--        android:layout_width="300dp"-->
-<!--        android:layout_height="50dp"-->
-<!--        android:layout_marginTop="8dp"-->
-<!--        android:background="#7733C5"-->
-<!--        android:text="Handled NDK Crash"-->
-<!--        android:textColor="#FFFFFF"-->
-<!--        app:layout_constraintHorizontal_bias="0.495"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"-->
-<!--        app:layout_constraintRight_toRightOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/ndk_crash" />-->
+        app:layout_constraintTop_toBottomOf="@+id/ndk_cpp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
