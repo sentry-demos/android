@@ -42,19 +42,9 @@ Additional documentation:
     ```
 
 4. Put your Sentry DSN key in `AndroidManifest.xml`
-5. `./gradlew build` and run this after any code change, to produce updated debug files
-6. upload debug files
-```
-sentry-cli upload-dif -o {YOUR ORGANISATION} -p {PROJECT} app/build/intermediates/cmake/ --include-sources
-sentry-cli upload-dif -o {YOUR ORGANISATION} -p {PROJECT} app/build/intermediates/stripped_native_libs --include-sources
-sentry-cli upload-dif -o {YOUR ORGANISATION} -p {PROJECT} app/build/intermediates/merged_native_libs/ --include-sources
+5. `make all`
 
-sentry-cli upload-dif -o testorg-az -p android app/build/intermediates/cmake/ --include-sources
-sentry-cli upload-dif -o testorg-az -p android app/build/intermediates/stripped_native_libs --include-sources
-sentry-cli upload-dif -o testorg-az -p android app/build/intermediates/merged_native_libs/ --include-sources
-```
-
-You can see they were uploaded in your Project Settings
+You can see debug files were uploaded in your Project Settings
 ![gif](screenshots/debug-information-files-settings.png)
 
 ## Run
@@ -64,11 +54,11 @@ You can see they were uploaded in your Project Settings
 
 The MainActivity has 5 buttons that generate the following exception types:
 
-1. DIVIDE BY 0: **Unhandled Exception** of type Arithmetic Eception
-2. NEGATIVE INDEX: **Unhandled Exception** of type NegativeArraySizeException
-3. HANDLED EXCEPTION: **Handled Exception** of type NumberFormatException
-4. APPLICATION NOT RESPONDING (ANR): **ApplicationNotResponding** Uses an infinite loop to crash the app after 5 seconds and reports event to Sentry.
-5. NATIVE CRASH: **Native Crash** of type SIGSEGV from native C++. The Sentry NDK sends this to Sentry.io for symbolication
+1. **Unhandled Exception** of type Arithmetic Eception
+2. **Unhandled Exception** of type NegativeArraySizeException
+3. **Handled Exception** of type NumberFormatException
+4. **ApplicationNotResponding (ANR)** Uses an infinite loop to crash the app after 5 seconds and reports event to Sentry.
+5. **Native Crash** of type SIGSEGV from native C++. The Sentry NDK sends this to Sentry.io for symbolication
 
 ## GIF Android Java Exception
 
@@ -80,4 +70,4 @@ The MainActivity has 5 buttons that generate the following exception types:
 
 ## GIF Android Native Crash C++
 
-![Native Crash](android-native-crash-175.gif)
+![Native Crash](android-native-crash-take-1.gif)
