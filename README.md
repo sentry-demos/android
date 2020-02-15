@@ -39,6 +39,10 @@ Additional documentation:
 
     ```
     Tools -> Android -> Sync Project with Gradle Files
+
+    In some Android Studio version this will be available under:
+
+    File -> Sync Project with Gradle Files
     ```
 
 4. Put your Sentry DSN key in `AndroidManifest.xml`
@@ -48,6 +52,7 @@ You can see debug files were uploaded in your Project Settings
 ![gif](screenshots/debug-information-files-settings.png)
 
 ## Run
+
 1. Run 'app' in Android Studio on an Android Virtual Device.
 
 ## What's Happening
@@ -59,6 +64,20 @@ The MainActivity has 5 buttons that generate the following exception types:
 3. **Handled Exception** of type NumberFormatException
 4. **ApplicationNotResponding (ANR)** Uses an infinite loop to crash the app after 5 seconds and reports event to Sentry.
 5. **Native Crash** of type SIGSEGV from native C++. The Sentry NDK sends this to Sentry.io for symbolication
+
+
+## Android Native Crash: Missing Symbols for System Libraries
+
+The Android team has added Android system symbol files to our built-in repositories (Add the new Android option in your project settings). If the native crash generated from your emulator is not fully symbolicated, this probably means our symbol server doesn't have the files relevant for your (virtual) device. 
+In this case, you can fix that by updating Sentry's server. To do that:
+
+1. Download the `Symbol Collector` app  (**o.sentry.symbol.collector-Signed.apk**) which is available in this [release](https://github.com/getsentry/symbol-collector/releases/tag/1.0.5)
+2. Install it on to your emulator by drag-and-dropping the apk into the emulator screen.
+3. Run the Symbol Collector application
+4. Configure the target URL to transport the symbols to: `https://symbol-collector.services.sentry.io`
+5. Click `Collect Symbols`
+6. Once the transport completes, re-generate the crash.
+
 
 ## GIF Android Java Exception
 
