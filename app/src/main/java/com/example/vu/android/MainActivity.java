@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         // ANR - ApplicationNotResponding
         Button anr_button = findViewById(R.id.anr);
         anr_button.setOnClickListener(view -> {
-            Sentry.addBreadcrumb("Button for ANR clicked..");
+            Sentry.addBreadcrumb("Button for ANR clicked...");
             while(true) {
                 // Wait 2 seconds for ANR....
             }
