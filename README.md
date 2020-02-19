@@ -59,7 +59,7 @@ You can see debug files were uploaded in your Project Settings
 
 The MainActivity has 5 buttons that generate the following exception types:
 
-1. **Unhandled Exception** of type Arithmetic Eception
+1. **Unhandled Exception** of type Arithmetic Exception
 2. **Unhandled Exception** of type NegativeArraySizeException
 3. **Handled Exception** of type NumberFormatException
 4. **ApplicationNotResponding (ANR)** Uses an infinite loop to crash the app after 5 seconds and reports event to Sentry.

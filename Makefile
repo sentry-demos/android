@@ -1,11 +1,11 @@
 SENTRY_ORG=testorg-az
-SENTRY_PROJECT=android
+SENTRY_PROJECT=paranoid-android
 VERSION=`sentry-cli releases propose-version`
 
 all: gradle_build setup_release upload_debug_files
 
 gradle_build:
-	gradlew build
+	./gradlew build
 
 upload_debug_files:
 	sentry-cli upload-dif -o $(SENTRY_ORG) -p $(SENTRY_PROJECT) app/build/intermediates/cmake/ --include-sources
@@ -19,6 +19,5 @@ create_release:
 
 associate_commits:
 	sentry-cli releases -o $(SENTRY_ORG) -p $(SENTRY_PROJECT) set-commits --auto $(VERSION)
-
 clean:
 	gradlew clean build

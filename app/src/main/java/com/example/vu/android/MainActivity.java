@@ -25,6 +25,11 @@ public class MainActivity extends AppCompatActivity {
         // Unhandled - ArithmeticException
         Button div_by_zero_button = findViewById(R.id.div_zero);
         div_by_zero_button.setOnClickListener(view -> {
+//            Breadcrumb breadcrumb = new Breadcrumb();
+//            breadcrumb.setMessage("Https Call to Sentry");
+//            breadcrumb.setData("url", "https://sentry.io");
+//
+//            Sentry.addBreadcrumb(breadcrumb);
             Sentry.addBreadcrumb("Button for Error 1 clicked...");
             int t = 5 / 0;
         });
