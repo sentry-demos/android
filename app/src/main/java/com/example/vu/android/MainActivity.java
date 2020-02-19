@@ -42,11 +42,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Handled - NumberFormatException
+        //Handled - NumberFormatException
         Button handled_exception_button = findViewById(R.id.handled_exception);
         handled_exception_button.setOnClickListener(view -> {
                 Sentry.addBreadcrumb("Button for Error 3 (Handled Exception) clicked..");
                 try {
-                    Integer.parseInt ("str");
+                    //Integer.parseInt ("str");
+                    String[] strArr = new String[1];
+                    String s1 = strArr[2];
                 } catch (Exception e) {
                     Sentry.captureException(e);
                 }
