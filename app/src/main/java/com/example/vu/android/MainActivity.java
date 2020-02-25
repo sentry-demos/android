@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Native Crash - SIGSEGV
         findViewById(R.id.native_crash).setOnClickListener(view -> {
+            NativeSample.message(); // or create another button
             NativeSample.crash();
         });
 

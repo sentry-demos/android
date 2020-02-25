@@ -147,7 +147,7 @@
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
         android:background="#7733C5"
-        android:text="Native Crash - SIGSEGV"
+        android:text="Native Crash - Message + SIGSEGV"
         android:textColor="#FFFFFF"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintLeft_toLeftOf="parent"
