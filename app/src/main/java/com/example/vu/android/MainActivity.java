@@ -69,6 +69,11 @@ public class MainActivity extends AppCompatActivity {
             NativeSample.crash();
         });
 
+        // Native Message
+        findViewById(R.id.native_message).setOnClickListener(view -> {
+            NativeSample.message();
+        });
+
     }
 }
 

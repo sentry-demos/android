@@ -2,7 +2,7 @@ SENTRY_ORG=testorg-az
 SENTRY_PROJECT=paranoid-android
 VERSION=`sentry-cli releases propose-version`
 
-all: gradle_build setup_release upload_debug_files
+all: gradle_build setup_release
 
 gradle_build:
 	./gradlew build
