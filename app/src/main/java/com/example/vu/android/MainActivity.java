@@ -60,8 +60,6 @@ public class MainActivity extends AppCompatActivity {
         // Handled - ArrayIndexOutOfBoundsException
         Button handled_exception_button = findViewById(R.id.handled_exception);
         handled_exception_button.setOnClickListener(view -> {
-            handled_exception_button.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-
             Sentry.addBreadcrumb("Button for ArrayIndexOutOfBoundsException clicked..");
                 try {
                     String[] strArr = new String[1];
@@ -97,29 +95,6 @@ public class MainActivity extends AppCompatActivity {
 
         WifiManager wm = (WifiManager) this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         return Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
-
-//        try {
-//            List<NetworkInterface> interfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
-//            for (NetworkInterface intf : interfaces) {
-//                List<InetAddress> addrs = Collections.list(intf.getInetAddresses());
-//                for (InetAddress addr : addrs) {
-//                    if (!addr.isLoopbackAddress()) {
-//                        String sAddr = addr.getHostAddress().toUpperCase();
-//                        boolean isIPv4 = InetAddressUtils.isIPv4Address(sAddr);
-//                        if (useIPv4) {
-//                            if (isIPv4)
-//                                return sAddr;
-//                        } else {
-//                            if (!isIPv4) {
-//                                int delim = sAddr.indexOf('%'); // drop ip6 port suffix
-//                                return delim<0 ? sAddr : sAddr.substring(0, delim);
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        } catch (Exception ex) { } // for now eat exceptions
-//        return "";
     }
 
 }
