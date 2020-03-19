@@ -2,7 +2,7 @@ SENTRY_ORG=testorg-az
 SENTRY_PROJECT=paranoid-android
 VERSION=`sentry-cli releases propose-version`
 
-all: gradle_build setup_release
+all: gradle_build setup_release upload_debug_files
 
 gradle_build:
 	./gradlew build
@@ -19,5 +19,6 @@ create_release:
 
 associate_commits:
 	sentry-cli releases -o $(SENTRY_ORG) -p $(SENTRY_PROJECT) set-commits --auto $(VERSION)
+
 clean:
-	gradlew clean build
+	./gradlew clean build

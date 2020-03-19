@@ -1,18 +1,21 @@
 package com.example.vu.android;
 
+import android.content.Context;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.text.format.Formatter;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
-
-//import io.sentry.android.core.SentryAndroid;
-//import io.sentry.core.Breadcrumb;
+import io.sentry.core.Breadcrumb;
 import io.sentry.core.Sentry;
-//import io.sentry.core.SentryLevel;
+import io.sentry.core.SentryLevel;
+import io.sentry.core.protocol.User;
 
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
@@ -20,34 +23,47 @@ public class MainActivity extends AppCompatActivity {
         // SENTRY Tag and Breadcrumb
         String activity = this.getClass().getSimpleName();
         Sentry.setTag("activity", activity);
-        Sentry.addBreadcrumb(activity + " was created");
+
+        Breadcrumb breadcrumb = new Breadcrumb();
+        breadcrumb.setMessage("Android activity was created");
+        breadcrumb.setLevel(SentryLevel.INFO);
+        breadcrumb.setData("Activity Name", activity);
+        Sentry.addBreadcrumb( breadcrumb );
+
+
+        // Set the user in the current context.
+        User user = new User();
+        user.setIpAddress(this.getIPAddress());
+        Sentry.setUser(user);
+
 
         // Unhandled - ArithmeticException
         Button div_by_zero_button = findViewById(R.id.div_zero);
         div_by_zero_button.setOnClickListener(view -> {
-//            Breadcrumb breadcrumb = new Breadcrumb();
-//            breadcrumb.setMessage("Https Call to Sentry");
-//            breadcrumb.setData("url", "https://sentry.io");
-//
-//            Sentry.addBreadcrumb(breadcrumb);
-            Sentry.addBreadcrumb("Button for Error 1 clicked...");
+
+            Breadcrumb bc = new Breadcrumb();
+            bc.setMessage("Button for ArithmeticException clicked...");
+            bc.setLevel(SentryLevel.ERROR);
+            bc.setData("url", "https://sentry.io");
+            Sentry.addBreadcrumb(bc);
+
             int t = 5 / 0;
         });
 
         // Unhandled - NegativeArraySizeException
         Button negative_index_button = findViewById(R.id.negative_index);
         negative_index_button.setOnClickListener(view -> {
-            Sentry.addBreadcrumb("Button for Error 2 clicked...");
+            Sentry.addBreadcrumb("Button for NegativeArraySizeException clicked...");
             int[] a = new int[-5];
         });
 
-        // Handled - NumberFormatException
         // Handled - ArrayIndexOutOfBoundsException
         Button handled_exception_button = findViewById(R.id.handled_exception);
         handled_exception_button.setOnClickListener(view -> {
-                Sentry.addBreadcrumb("Button for Error 3 (Handled Exception) clicked..");
+            handled_exception_button.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+
+            Sentry.addBreadcrumb("Button for ArrayIndexOutOfBoundsException clicked..");
                 try {
-                    //Integer.parseInt ("str");
                     String[] strArr = new String[1];
                     String s1 = strArr[2];
                 } catch (Exception e) {
@@ -75,20 +91,36 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
+
+    private String getIPAddress(){
+
+        WifiManager wm = (WifiManager) this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        return Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
+
+//        try {
+//            List<NetworkInterface> interfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
+//            for (NetworkInterface intf : interfaces) {
+//                List<InetAddress> addrs = Collections.list(intf.getInetAddresses());
+//                for (InetAddress addr : addrs) {
+//                    if (!addr.isLoopbackAddress()) {
+//                        String sAddr = addr.getHostAddress().toUpperCase();
+//                        boolean isIPv4 = InetAddressUtils.isIPv4Address(sAddr);
+//                        if (useIPv4) {
+//                            if (isIPv4)
+//                                return sAddr;
+//                        } else {
+//                            if (!isIPv4) {
+//                                int delim = sAddr.indexOf('%'); // drop ip6 port suffix
+//                                return delim<0 ? sAddr : sAddr.substring(0, delim);
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        } catch (Exception ex) { } // for now eat exceptions
+//        return "";
+    }
+
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-// TBD 12/17/19 not needed at this point in time
-//         HANDLED NATIVE CRASH
-//        findViewById(R.id.ndk_handled_crash).setOnClickListener(view -> NativeSample.handledCrash());
