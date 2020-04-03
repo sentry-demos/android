@@ -6,43 +6,40 @@
     android:layout_height="match_parent"
     tools:context="com.example.vu.android.MainActivity">
 
+<!-- 04/03/2020 We're now doing just a blank white background, so this is no longer needed-->
+<!--    <ImageView-->
+<!--        android:id="@+id/imageView5"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:scaleType="centerCrop"-->
+<!--        android:src="@drawable/sentrypattern"-->
+<!--        tools:layout_editor_absoluteX="0dp"-->
+<!--        tools:layout_editor_absoluteY="0dp" />-->
+
+<!--   04/03/2020 This was the previous header that we're deprecating -->
+<!--    <TextView-->
+<!--        android:id="@+id/sentryandroiddemo"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="24dp"-->
+<!--        android:text="Sentry Android Demo"-->
+<!--        android:textColor="#333333"-->
+<!--        android:textSize="36sp"-->
+<!--        android:textStyle="bold"-->
+<!--        app:layout_constraintHorizontal_bias="0.498"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintRight_toRightOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
+
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/navigation_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/unhandled_java_errors"
         android:scaleType="centerCrop"
-        android:src="@drawable/sentrypattern"
+        android:src="@drawable/navigation_bar"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp" />
-
-    <Button
-        android:id="@+id/native_message"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="76dp"
-        android:background="@drawable/mybutton"
-        android:text="Native Message"
-        android:textColor="#FFFFFF"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ndk_cpp" />
-
-
-
-    <TextView
-        android:id="@+id/sentryandroiddemo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Sentry Android Demo"
-        android:textColor="#333333"
-        android:textSize="36sp"
-        android:textStyle="bold"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/unhandled_java_errors"
@@ -58,7 +55,6 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sentryandroiddemo"
         app:layout_constraintVertical_bias="0.6" />
 
 
@@ -163,6 +159,19 @@
         android:layout_marginTop="8dp"
         android:background="#7733C5"
         android:text="Native Crash - SIGSEGV"
+        android:textColor="#FFFFFF"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ndk_cpp" />
+
+    <Button
+        android:id="@+id/native_message"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="76dp"
+        android:background="@drawable/mybutton"
+        android:text="Native Message"
         android:textColor="#FFFFFF"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintLeft_toLeftOf="parent"
