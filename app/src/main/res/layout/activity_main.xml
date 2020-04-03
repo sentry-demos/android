@@ -6,6 +6,12 @@
     android:layout_height="match_parent"
     tools:context="com.example.vu.android.MainActivity">
 
+<!-- android:theme=-->
+    <!--    @android:style/Theme.Holo.NoActionBar.Fullscreen -->
+    <!--    @android:style/Theme.Black.NoTitleBar -->
+    <!--    @android:style/Theme.Black.NoTitleBar.Fullscreen-->
+    <!--    android:theme="@android:style/Theme.NoTitleBar"-->
+
 <!-- 04/03/2020 We're now doing just a blank white background, so this is no longer needed-->
 <!--    <ImageView-->
 <!--        android:id="@+id/imageView5"-->

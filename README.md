@@ -96,14 +96,9 @@ In this case, you can fix that by updating Sentry's server. To do that:
 https://developer.android.com/reference/android/widget/ImageView
 
 
-Looks decent in the preview in AndroidStudio, but won't build:
-```
-    <ImageView
-        android:id="@+id/navigation_bar"
-        android:layout_width="match_parent"
+## Design
 
-        android:scaleType="centerCrop"
-        android:src="@drawable/navigation_bar"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp" />
-```
+https://developer.android.com/guide/topics/ui/look-and-feel/themes
+
+font is 'Rubik'
+https://fonts.google.com/specimen/Rubik
