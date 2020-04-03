@@ -5,10 +5,12 @@ buildscript {
     repositories {
         google()
         jcenter()
+        mavenCentral()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.3'
-        classpath 'com.ydq.android.gradle.build.tool:nativeBundle:1.0.3'
+        classpath 'com.ydq.android.gradle.build.tool:nativeBundle:1.0.4'
+        classpath 'io.sentry:sentry-android-gradle-plugin:1.7.31'
     }
 }
 

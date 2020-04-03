@@ -19,5 +19,6 @@ create_release:
 
 associate_commits:
 	sentry-cli releases -o $(SENTRY_ORG) -p $(SENTRY_PROJECT) set-commits --auto $(VERSION)
+
 clean:
-	gradlew clean build
+	./gradlew clean build

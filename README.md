@@ -60,10 +60,11 @@ You can see debug files were uploaded in your Project Settings
 The MainActivity has 5 buttons that generate the following exception types:
 
 1. **Unhandled Exception** of type Arithmetic Exception
-2. **Unhandled Exception** of type NegativeArraySizeException
+2. **Unhandled Exception** of type NegativeArraySizeException + Strips PII (removes user IP address in beforeSend)
 3. **Handled Exception** of type NumberFormatException
 4. **ApplicationNotResponding (ANR)** Uses an infinite loop to crash the app after 5 seconds and reports event to Sentry.
 5. **Native Crash** of type SIGSEGV from native C++. The Sentry NDK sends this to Sentry.io for symbolication
+6. **Native Message" send custom event/message from native C++.
 
 
 ## Android Native Crash: Missing Symbols for System Libraries
