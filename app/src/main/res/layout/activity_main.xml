@@ -6,13 +6,14 @@
     android:layout_height="match_parent"
     tools:context="com.example.vu.android.MainActivity">
 
+<!--  04/03/2020 Couldn't get these to work, they belong on a <activity> element but we're using <androiconstraintlayout> -->
 <!-- android:theme=-->
     <!--    @android:style/Theme.Holo.NoActionBar.Fullscreen -->
     <!--    @android:style/Theme.Black.NoTitleBar -->
     <!--    @android:style/Theme.Black.NoTitleBar.Fullscreen-->
     <!--    android:theme="@android:style/Theme.NoTitleBar"-->
 
-<!-- 04/03/2020 We're now doing just a blank white background, so this is no longer needed-->
+<!-- 04/03/2020 DEPRECATE We're now doing just a blank white background, so this is no longer needed-->
 <!--    <ImageView-->
 <!--        android:id="@+id/imageView5"-->
 <!--        android:layout_width="match_parent"-->
@@ -22,7 +23,7 @@
 <!--        tools:layout_editor_absoluteX="0dp"-->
 <!--        tools:layout_editor_absoluteY="0dp" />-->
 
-<!--   04/03/2020 This was the previous header that we're deprecating -->
+<!--   04/03/2020 DEPRECATE This was the previous header that we're deprecating -->
 <!--    <TextView-->
 <!--        android:id="@+id/sentryandroiddemo"-->
 <!--        android:layout_width="wrap_content"-->
@@ -57,6 +58,7 @@
         android:textColor="#333333"
         android:textSize="24sp"
         android:textStyle="bold"
+        android:fontFamily="@font/rubik_regular"
         app:layout_constraintBottom_toTopOf="@+id/div_zero"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -99,6 +101,7 @@
         android:textColor="#333333"
         android:textSize="24sp"
         android:textStyle="bold"
+        android:fontFamily="@font/rubik_regular"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -126,6 +129,7 @@
         android:textColor="#333333"
         android:textSize="24sp"
         android:textStyle="bold"
+        android:fontFamily="@font/rubik_regular"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -153,6 +157,7 @@
         android:textColor="#333333"
         android:textSize="24sp"
         android:textStyle="bold"
+        android:fontFamily="@font/rubik_regular"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

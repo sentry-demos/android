@@ -102,3 +102,5 @@ https://developer.android.com/guide/topics/ui/look-and-feel/themes
 
 font is 'Rubik'
 https://fonts.google.com/specimen/Rubik
+
+https://developer.android.com/guide/topics/ui/look-and-feel/fonts-in-xml
