@@ -13,31 +13,6 @@
     <!--    @android:style/Theme.Black.NoTitleBar.Fullscreen-->
     <!--    android:theme="@android:style/Theme.NoTitleBar"-->
 
-<!-- 04/03/2020 DEPRECATE We're now doing just a blank white background, so this is no longer needed-->
-<!--    <ImageView-->
-<!--        android:id="@+id/imageView5"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:scaleType="centerCrop"-->
-<!--        android:src="@drawable/sentrypattern"-->
-<!--        tools:layout_editor_absoluteX="0dp"-->
-<!--        tools:layout_editor_absoluteY="0dp" />-->
-
-<!--   04/03/2020 DEPRECATE This was the previous header that we're deprecating -->
-<!--    <TextView-->
-<!--        android:id="@+id/sentryandroiddemo"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="24dp"-->
-<!--        android:text="Sentry Android Demo"-->
-<!--        android:textColor="#333333"-->
-<!--        android:textSize="36sp"-->
-<!--        android:textStyle="bold"-->
-<!--        app:layout_constraintHorizontal_bias="0.498"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"-->
-<!--        app:layout_constraintRight_toRightOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
-
     <ImageView
         android:id="@+id/navigation_bar"
         android:layout_width="match_parent"
@@ -55,7 +30,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginBottom="24dp"
         android:text="Unhandled Java Errors"
-        android:textColor="#333333"
+        android:textColor="#4A3E56"
         android:textSize="24sp"
         android:textStyle="bold"
         android:fontFamily="@font/rubik_regular"
@@ -100,7 +75,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="Handled Java Errors"
-        android:textColor="#333333"
+        android:textColor="#4A3E56"
         android:textSize="24sp"
         android:textStyle="bold"
         android:fontFamily="@font/rubik_regular"
@@ -129,7 +104,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="ANR"
-        android:textColor="#333333"
+        android:textColor="#4A3E56"
         android:textSize="24sp"
         android:textStyle="bold"
         android:fontFamily="@font/rubik_regular"
@@ -158,7 +133,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="NDK/C++"
-        android:textColor="#333333"
+        android:textColor="#4A3E56"
         android:textSize="24sp"
         android:textStyle="bold"
         android:fontFamily="@font/rubik_regular"
