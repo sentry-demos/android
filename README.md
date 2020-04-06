@@ -92,18 +92,10 @@ In this case, you can fix that by updating Sentry's server. To do that:
 
 ![Native Crash](android-native-crash-take-1.gif)
 
-
-https://developer.android.com/reference/android/widget/ImageView
-
-
 ## Design
-
-https://developer.android.com/guide/topics/ui/look-and-feel/themes
 
 font is 'Rubik'
 https://fonts.google.com/specimen/Rubik
-
 https://developer.android.com/guide/topics/ui/look-and-feel/fonts-in-xml
 
-
-mybutton.xml for button color
+store the ~/Downloads/android-assets
