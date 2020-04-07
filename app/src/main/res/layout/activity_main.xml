@@ -6,13 +6,6 @@
     android:layout_height="match_parent"
     tools:context="com.example.vu.android.MainActivity">
 
-<!--  04/03/2020 Couldn't get these to work, they belong on a <activity> element but we're using <androiconstraintlayout> -->
-<!-- android:theme=-->
-    <!--    @android:style/Theme.Holo.NoActionBar.Fullscreen -->
-    <!--    @android:style/Theme.Black.NoTitleBar -->
-    <!--    @android:style/Theme.Black.NoTitleBar.Fullscreen-->
-    <!--    android:theme="@android:style/Theme.NoTitleBar"-->
-
     <ImageView
         android:id="@+id/navigation_bar"
         android:layout_width="match_parent"
@@ -40,7 +33,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintVertical_bias="0.6" />
-
 
     <Button
         android:id="@+id/div_zero"
