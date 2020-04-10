@@ -1,4 +1,4 @@
-package com.example.vu.android;
+git remote -vpackage com.example.vu.android;
 
 import android.content.Context;
 import android.net.wifi.WifiManager;
