@@ -1,172 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.vu.android.MainActivity">
+    android:orientation="vertical">
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/navigation_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:scaleType="centerCrop"
-        android:src="@drawable/sentrypattern"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp" />
+        android:src="@drawable/navigation_bar" />
 
-    <Button
-        android:id="@+id/native_message"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="76dp"
-        android:background="@drawable/mybutton"
-        android:text="Native Message"
-        android:textColor="#FFFFFF"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ndk_cpp" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="32dp"
+            android:paddingBottom="32dp"
+            android:layout_gravity="center_horizontal">
 
+            <TextView
+                android:id="@+id/unhandled_java_errors"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Unhandled Java Errors"
+                android:textColor="#4A3E56"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/rubik_regular" />
 
-    <TextView
-        android:id="@+id/sentryandroiddemo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Sentry Android Demo"
-        android:textColor="#333333"
-        android:textSize="36sp"
-        android:textStyle="bold"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            <Button
+                android:id="@+id/div_zero"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/mybutton"
+                android:text="ArithmeticException"
+                android:textColor="#FFFFFF"
+                android:fontFamily="@font/rubik_medium"
+                android:textAllCaps="false"/>
 
-    <TextView
-        android:id="@+id/unhandled_java_errors"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="24dp"
-        android:text="Unhandled Java Errors"
-        android:textColor="#333333"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/div_zero"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sentryandroiddemo"
-        app:layout_constraintVertical_bias="0.6" />
+            <Button
+                android:id="@+id/negative_index"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/mybutton"
+                android:text="RTE and Strip PII"
+                android:textColor="#FFFFFF"
+                android:fontFamily="@font/rubik_medium"
+                android:textAllCaps="false" />
 
+            <TextView
+                android:id="@+id/handled_java_errors"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Handled Java Errors"
+                android:textColor="#4A3E56"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/rubik_regular" />
 
-    <Button
-        android:id="@+id/div_zero"
-        android:layout_width="300dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/mybutton"
-        android:text="ArithmeticException"
-        android:textColor="#FFFFFF"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/unhandled_java_errors" />
+            <Button
+                android:id="@+id/handled_exception"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/mybutton"
+                android:text="NumberFormatException"
+                android:textColor="#FFFFFF"
+                android:fontFamily="@font/rubik_medium"
+                android:textAllCaps="false" />
 
-    <Button
-        android:id="@+id/negative_index"
-        android:layout_width="300dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/mybutton"
-        android:text="RTE + STRIP PII"
-        android:textColor="#FFFFFF"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/div_zero" />
+            <TextView
+                android:id="@+id/application_not_responding"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="ANR"
+                android:textColor="#4A3E56"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/rubik_regular" />
 
-    <TextView
-        android:id="@+id/handled_java_errors"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Handled Java Errors"
-        android:textColor="#333333"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/negative_index" />
+            <Button
+                android:id="@+id/anr"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/mybutton"
+                android:text="Application Not Responding"
+                android:textColor="#FFFFFF"
+                android:fontFamily="@font/rubik_medium"
+                android:textAllCaps="false" />
 
-    <Button
-        android:id="@+id/handled_exception"
-        android:layout_width="300dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/mybutton"
-        android:text="NumberFormatException"
-        android:textColor="#FFFFFF"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/handled_java_errors" />
+            <TextView
+                android:id="@+id/ndk_cpp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="NDK/C++"
+                android:textColor="#4A3E56"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/rubik_regular" />
 
-    <TextView
-        android:id="@+id/application_not_responding"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="ANR"
-        android:textColor="#333333"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/handled_exception" />
+            <Button
+                android:id="@+id/native_crash"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/mybutton"
+                android:text="Native Crash - SIGSEGV"
+                android:textColor="#FFFFFF"
+                android:fontFamily="@font/rubik_medium"
+                android:textAllCaps="false" />
 
-    <Button
-        android:id="@+id/anr"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/mybutton"
-        android:text="Application Not Responding"
-        android:textColor="#FFFFFF"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/application_not_responding" />
+            <Button
+                android:id="@+id/native_message"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/mybutton"
+                android:text="Native Message"
+                android:textColor="#FFFFFF"
+                android:fontFamily="@font/rubik_medium"
+                android:textAllCaps="false" />
 
-    <TextView
-        android:id="@+id/ndk_cpp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="NDK/C++"
-        android:textColor="#333333"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/anr" />
+        </LinearLayout>
 
-    <Button
-        android:id="@+id/native_crash"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="8dp"
-        android:background="#7733C5"
-        android:text="Native Crash - SIGSEGV"
-        android:textColor="#FFFFFF"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ndk_cpp" />
+    </ScrollView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

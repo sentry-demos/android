@@ -20,7 +20,7 @@ Additional documentation:
 
 | dependency    | version
 | ------------- |:-------------:|
-| Android Studio | 3.5.3 |
+| Android Studio | 3.6.2 |
 | Gradle | 5.6.4 |
 | AVD | Nexus 5x API 29 x86 |
 | sentry-cli | 1.4.9 |
@@ -46,7 +46,11 @@ Additional documentation:
     ```
 
 4. Put your Sentry DSN key in `AndroidManifest.xml`
-5. `make all`
+5. Put your AUTH Token in sentry.properties
+
+6. `make all`
+
+7. Android Studio install ANdroid NDK in Preferences > System & Behavior > System Settings > Android SDK > SDK Tools > select NDK for download
 
 You can see debug files were uploaded in your Project Settings
 ![gif](screenshots/debug-information-files-settings.png)
@@ -91,3 +95,11 @@ In this case, you can fix that by updating Sentry's server. To do that:
 ## GIF Android Native Crash C++
 
 ![Native Crash](android-native-crash-take-1.gif)
+
+## Design
+
+font is 'Rubik'
+https://fonts.google.com/specimen/Rubik
+https://developer.android.com/guide/topics/ui/look-and-feel/fonts-in-xml
+
+store the ~/Downloads/android-assets

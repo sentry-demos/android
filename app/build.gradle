@@ -53,9 +53,7 @@ dependencies {
     implementation 'io.sentry:sentry-android:2.0.2'
 }
 
-//sentry {
-//    uploadNativeSymbols false
-//    includeNativeSources false
-//}
-
-
+sentry {
+    uploadNativeSymbols true
+    includeNativeSources true
+}
