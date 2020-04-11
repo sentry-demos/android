@@ -53,8 +53,6 @@ dependencies {
     implementation 'io.sentry:sentry-android:2.0.2'
 }
 
-
-// TODO: configure sentry.properties
 sentry {
     uploadNativeSymbols true
     includeNativeSources true

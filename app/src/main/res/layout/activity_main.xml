@@ -132,39 +132,6 @@
                 android:fontFamily="@font/rubik_medium"
                 android:textAllCaps="false" />
 
-            <Button
-                android:id="@+id/native_message2"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/mybutton"
-                android:text="Native Message"
-                android:textColor="#FFFFFF"
-                android:fontFamily="@font/rubik_medium"
-                android:textAllCaps="false" />
-
-            <Button
-                android:id="@+id/native_message3"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/mybutton"
-                android:text="Native Message"
-                android:textColor="#FFFFFF"
-                android:fontFamily="@font/rubik_medium"
-                android:textAllCaps="false" />
-
-            <Button
-                android:id="@+id/native_message4"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/mybutton"
-                android:text="Native Message"
-                android:textColor="#FFFFFF"
-                android:fontFamily="@font/rubik_medium"
-                android:textAllCaps="false" />
-
         </LinearLayout>
 
     </ScrollView>
