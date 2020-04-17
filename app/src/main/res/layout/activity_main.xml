@@ -72,7 +72,7 @@
                 android:layout_height="45dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/mybutton"
-                android:text="NumberFormatException"
+                android:text="ArrayIndexOutOfBoundsException"
                 android:textColor="#FFFFFF"
                 android:fontFamily="@font/rubik_medium"
                 android:textAllCaps="false" />
