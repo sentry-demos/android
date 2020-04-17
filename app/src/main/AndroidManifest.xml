@@ -28,11 +28,12 @@
         </activity>
 
         <meta-data android:name="io.sentry.dsn"
-            android:value="https://3d2ac63d6e1a4c6e9214443678f119a3@sentry.io/1801383"/>
+            android:value="https://80b8a795d2a14cf796acaae4fa6cab30@o87286.ingest.sentry.io/261820"/>
         <meta-data android:name="io.sentry.debug" android:value="true" />
         <meta-data android:name="io.sentry.auto-init" android:value="false" />
         <meta-data android:name="io.sentry.anr.timeout-interval-mills" android:value="2000" />
 
+        <meta-data android:name="io.sentry.release" android:value="com.example.vu.android-1.2" />
 <!--    <meta-data android:name="io.sentry.ndk.enable" android:value="false" />
         <meta-data android:name="io.sentry.anr.enable" android:value="false" />
 -->

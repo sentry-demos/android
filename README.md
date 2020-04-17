@@ -45,7 +45,8 @@ Additional documentation:
     File -> Sync Project with Gradle Files
     ```
 
-4. Put your Sentry DSN key in `AndroidManifest.xml`
+4. Put your Sentry DSN key in `AndroidManifest.xml` and your project in Makefile
+
 5. Put your AUTH Token in sentry.properties
 
 6. `make all`
