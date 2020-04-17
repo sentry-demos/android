@@ -6,6 +6,7 @@ This app demonstrates how to use Sentry in an Android application for capturing 
 - Handled Exceptions
 - Application Not Responding
 - Native Crashes from C++ native code
+- Message Capture
 
 This app has all configuration (e.g. gradle) set to include Sentry SDK and ANR (Application Not Responding) and NDK (crash) events.
 
@@ -20,14 +21,12 @@ Additional documentation:
 
 | dependency    | version
 | ------------- |:-------------:|
+| sentry-android | 2.1.0-beta.1 |
 | Android Studio | 3.6.2 |
-| Gradle | 5.6.4 |
+| Gradle | 6.4 |
 | AVD | Nexus 5x API 29 x86 |
-| sentry-cli | 1.4.9 |
+| sentry-cli | 1.49.0 |
 | macOS | Mojave 10.14.4 |
-
-
-![gif](screenshots/about-android-studio-1.png)
 
 ## Setup
 
@@ -45,7 +44,7 @@ Additional documentation:
     File -> Sync Project with Gradle Files
     ```
 
-4. Put your Sentry DSN key in `AndroidManifest.xml` and your project in Makefile
+4. Put your Sentry DSN key in `AndroidManifest.xml` and your 'project' name in the Makefile
 
 5. Put your AUTH Token in sentry.properties
 
@@ -66,10 +65,10 @@ The MainActivity has 5 buttons that generate the following exception types:
 
 1. **Unhandled Exception** of type Arithmetic Exception
 2. **Unhandled Exception** of type NegativeArraySizeException + Strips PII (removes user IP address in beforeSend)
-3. **Handled Exception** of type NumberFormatException
+3. **Handled Exception** of type ArrayIndexOutOfBoundsException
 4. **ApplicationNotResponding (ANR)** Uses an infinite loop to crash the app after 5 seconds and reports event to Sentry.
 5. **Native Crash** of type SIGSEGV from native C++. The Sentry NDK sends this to Sentry.io for symbolication
-6. **Native Message" send custom event/message from native C++.
+6. **Native Message** send custom event/message from native C++.
 
 
 ## Android Native Crash: Missing Symbols for System Libraries
