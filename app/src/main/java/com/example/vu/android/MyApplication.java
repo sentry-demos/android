@@ -20,6 +20,7 @@ public class MyApplication extends Application {
 
             // This callback is used before the event is sent to Sentry.
             // You can modify the event or, when returning null, also discard the event.
+            options.setEnableSessionTracking(true);
             options.setBeforeSend((event, hint) -> {
 
                 //Remove PII
