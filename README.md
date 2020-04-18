@@ -76,7 +76,7 @@ The MainActivity has 5 buttons that generate the following exception types:
 The Android team has added Android system symbol files to our built-in repositories (Add the new Android option in your project settings). If the native crash generated from your emulator is not fully symbolicated, this probably means our symbol server doesn't have the files relevant for your (virtual) device. 
 In this case, you can fix that by updating Sentry's server. To do that:
 
-1. Download the `Symbol Collector` app  (**o.sentry.symbol.collector-Signed.apk**) which is available in this [release](https://github.com/getsentry/symbol-collector/releases/tag/1.0.5)
+1. Download the `Symbol Collector` app  (**io.sentry.symbol.collector-Signed.apk**) which is available in the latest [release](https://github.com/getsentry/symbol-collector/releases/)
 2. Install it on to your emulator by drag-and-dropping the apk into the emulator screen.
 3. Run the Symbol Collector application
 4. Configure the target URL to transport the symbols to: `https://symbol-collector.services.sentry.io`
