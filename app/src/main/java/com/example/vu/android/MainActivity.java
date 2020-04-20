@@ -70,11 +70,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // ANR - ApplicationNotResponding
+        // no OS pop-up but UI is frozen during the pause
         Button anr_button = findViewById(R.id.anr);
         anr_button.setOnClickListener(view -> {
             Sentry.addBreadcrumb("Button for ANR clicked...");
-            while(true) {
-                // Wait 2 seconds for ANR....
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
             }
         });
 
