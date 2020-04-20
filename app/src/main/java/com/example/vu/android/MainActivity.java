@@ -73,8 +73,10 @@ public class MainActivity extends AppCompatActivity {
         Button anr_button = findViewById(R.id.anr);
         anr_button.setOnClickListener(view -> {
             Sentry.addBreadcrumb("Button for ANR clicked...");
-            while(true) {
-                // Wait 2 seconds for ANR....
+            try {
+                Thread.sleep(2500);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
             }
         });
 
