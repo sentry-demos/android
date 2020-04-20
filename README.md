@@ -23,7 +23,7 @@ Additional documentation:
 | ------------- |:-------------:|
 | sentry-android | 2.1.0-beta.1 |
 | Android Studio | 3.6.2 |
-| Gradle | 6.4 |
+| Gradle | 6.3 |
 | AVD | Nexus 5x API 29 x86 |
 | sentry-cli | 1.49.0 |
 | macOS | Mojave 10.14.4 |
@@ -54,6 +54,8 @@ Additional documentation:
 
 You can see debug files were uploaded in your Project Settings
 ![gif](screenshots/debug-information-files-settings.png)
+
+You can maintain a separate branch which has your auth token.
 
 ## Run
 
