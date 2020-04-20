@@ -73,11 +73,14 @@ public class MainActivity extends AppCompatActivity {
         Button anr_button = findViewById(R.id.anr);
         anr_button.setOnClickListener(view -> {
             Sentry.addBreadcrumb("Button for ANR clicked...");
-            try {
-                Thread.sleep(2500);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
+            while (true) {
+                try {
+                    Thread.sleep(2500);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
             }
+
         });
 
         // Native Crash - SIGSEGV
