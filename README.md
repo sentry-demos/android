@@ -105,3 +105,36 @@ https://fonts.google.com/specimen/Rubik
 https://developer.android.com/guide/topics/ui/look-and-feel/fonts-in-xml
 
 store the ~/Downloads/android-assets
+
+
+## TODO
+1.
+<meta-data android:name="io.sentry.release" android:value="io.sentry.sample@1.0.0+1" />
+^ But this is good if you really had a reason to override, eg. Paid vs Free versions of your apps
+^ not generally for customer.x just for testing so I get a new Release# when i'm testing.
+
+vs.
+
+2.
+Release was being done here:
+build.gradle
+defaultConfig {
+    applicationId "com.example.vu.android"
+    minSdkVersion 21
+    targetSdkVersion 29
+    versionCode 11
+    versionName "1.2"
+- ^ this would make for a release of `1.1.0 (11) com.example.vu@androidh1.2+11`
+- the version code is unique
+- this is already part of build system o Android. app won't compile without to.
+
+the info in AndroidManifest.xml will override what's in build.gradle
+
+
+
+
+2.1.1 fixed putting the Release in the App
+"we always set the release of the version that it was running on"
+
+
+sometimes you'll see extra ANR events, because you have setting set to 3seconds

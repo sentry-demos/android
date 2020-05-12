@@ -31,11 +31,20 @@
             android:value="https://80b8a795d2a14cf796acaae4fa6cab30@o87286.ingest.sentry.io/261820"/>
         <meta-data android:name="io.sentry.debug" android:value="true" />
         <meta-data android:name="io.sentry.auto-init" android:value="false" />
-        <meta-data android:name="io.sentry.anr.timeout-interval-mills" android:value="2000" />
 
-        <meta-data android:name="io.sentry.release" android:value="io.sentry.sample@1.0.0+1" />
-        <meta-data android:name="io.sentry.session-tracking.enable" android:value="true" />
+        <!-- Default is 5seconds but we do 2 seconds for testing and demo's -->
+        <meta-data android:name="io.sentry.anr.timeout-interval-mills" android:value="3000" />
 
+        <!-- Easy way to get a new release if you're testing, to separate from past releases with lots of crashes/sessions. overrides what's in app/build.gradle -->
+        <!-- <meta-data android:name="io.sentry.release" android:value="io.sentry.sample@1.0.0+1" />-->
+
+        <!-- default interval for testing a session is 30seconds. Session starts when they open app. Session ends when user leaves app and it's idle for 30 seconds -->
+        <meta-data android:name="io.sentry.session-tracking.timeout-interval-millis" android:value="3000" />
+
+        <!-- Enables automatic session tracking. Disabled by default because back-end is not GA yet. SDK is GA. works for us for testing right now -->
+        <!-- <meta-data android:name="io.sentry.session-tracking.enable" android:value="true" />-->
+
+<!-- these are enabled by default, these are optional for us to disable the feature -->
 <!--    <meta-data android:name="io.sentry.ndk.enable" android:value="false" />
         <meta-data android:name="io.sentry.anr.enable" android:value="false" />
 -->
