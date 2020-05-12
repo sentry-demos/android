@@ -25,7 +25,7 @@ public class MyApplication extends Application {
 
                 //Remove PII
                 List<SentryException> exceptions = event.getExceptions();
-                if(exceptions.size() > 0){
+                if(exceptions != null && exceptions.size() > 0){
                     SentryException exception = exceptions.get(0);
                     if(exception.getType().contains("NegativeArraySizeException")){
                         User user = event.getUser();

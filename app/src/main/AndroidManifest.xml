@@ -33,6 +33,9 @@
         <meta-data android:name="io.sentry.auto-init" android:value="false" />
         <meta-data android:name="io.sentry.anr.timeout-interval-mills" android:value="2000" />
 
+        <meta-data android:name="io.sentry.release" android:value="io.sentry.sample@1.0.0+1" />
+        <meta-data android:name="io.sentry.session-tracking.enable" android:value="true" />
+
 <!--    <meta-data android:name="io.sentry.ndk.enable" android:value="false" />
         <meta-data android:name="io.sentry.anr.enable" android:value="false" />
 -->
