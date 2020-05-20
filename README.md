@@ -121,5 +121,5 @@ This would make for a release of `1.1.0 (11) com.example.vu@androidh1.2+11`. The
 The info in AndroidManifest.xml will override what's in build.gradle.
 
 **Other**
-Sometimes you'll see extra ANR events, because you have setting set to 3seconds
-Hard to compare Total Number of Crashes to a report in Discover on handled:no and the release, because when a crash happens, you have to wait for the device to come back online again. There are some other technical reasons as well, which are still being sorted out.
+Sometimes you'll see extra ANR events, because you have setting set to 3 seconds
+Hard to compare Total Number of Crashes to a report in Discover on handled:no and the release, because when a crash happens, you have to wait for the device to come back online again. There are some other technical reasons as well, which are still being sorted out. For instance, if you're evering filtering, sampling or Rate Limiting events/crashes out, then it's possible that the Sessions data isn ot getting filtered/sampled and so your Crash Free rate will appear higher than it actually is.
