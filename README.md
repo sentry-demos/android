@@ -78,7 +78,7 @@ The MainActivity has 5 buttons that generate the following exception types:
 The Android team has added Android system symbol files to our built-in repositories (Add the new Android option in your project settings). If the native crash generated from your emulator is not fully symbolicated, this probably means our symbol server doesn't have the files relevant for your (virtual) device. 
 In this case, you can fix that by updating Sentry's server. To do that:
 
-1. Download the `Symbol Collector` app  (**o.sentry.symbol.collector-Signed.apk**) which is available in this [release](https://github.com/getsentry/symbol-collector/releases/tag/1.0.5)
+1. Download the `Symbol Collector` app  (**io.sentry.symbol.collector-Signed.apk**) which is available in the latest [release](https://github.com/getsentry/symbol-collector/releases/)
 2. Install it on to your emulator by drag-and-dropping the apk into the emulator screen.
 3. Run the Symbol Collector application
 4. Configure the target URL to transport the symbols to: `https://symbol-collector.services.sentry.io`
@@ -107,7 +107,7 @@ This is not generally for a customer. It's for testing so I can quickly iterate 
 ```
 
 **Release Technique #2**
-Release was being done here:
+Can use the version numbers here to become the Release:
 ```
 build.gradle
 defaultConfig {
@@ -117,9 +117,12 @@ defaultConfig {
     versionCode 11
     versionName "1.2"
 ```
-This would make for a release of `1.1.0 (11) com.example.vu@androidh1.2+11`. The version code is unique. This is already part of build system o Android. app won't compile without to.
+This would make for a release of `1.1.0 (11) com.example.vu@androidh1.2+11`. 
+The version code is unique. This is already part of build system in Android. The app won't compile without it.
 The info in AndroidManifest.xml will override what's in build.gradle.
 
 **Other**
 Sometimes you'll see extra ANR events, because you have setting set to 3 seconds
-Hard to compare Total Number of Crashes to a report in Discover on handled:no and the release, because when a crash happens, you have to wait for the device to come back online again. There are some other technical reasons as well, which are still being sorted out. For instance, if you're evering filtering, sampling or Rate Limiting events/crashes out, then it's possible that the Sessions data isn ot getting filtered/sampled and so your Crash Free rate will appear higher than it actually is.
+Hard to compare Total Number of Crashes to a report in Discover on handled:no and the release, because when a crash happens, you have to wait for the device to come back online again. 
+There are some other technical reasons as well, which are still being sorted out. 
+For instance, if you're evering filtering, sampling or Rate Limiting events/crashes out, then it's possible that the Sessions data isn ot getting filtered/sampled and so your Crash Free rate will appear higher than it actually is.
