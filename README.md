@@ -46,11 +46,11 @@ Additional documentation:
 
 4. Put your Sentry DSN key in `AndroidManifest.xml` and your 'project' name in the Makefile
 
-5. Put your AUTH Token in sentry.properties
+5. Put your AUTH Token and project name in sentry.properties
 
 6. `make all`
 
-7. Android Studio install ANdroid NDK in Preferences > System & Behavior > System Settings > Android SDK > SDK Tools > select NDK for download
+7. Android Studio install Android NDK in Preferences > System & Behavior > System Settings > Android SDK > SDK Tools > select NDK for download
 
 You can see debug files were uploaded in your Project Settings
 ![gif](screenshots/debug-information-files-settings.png)
