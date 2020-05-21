@@ -32,7 +32,7 @@ Additional documentation:
 
 1. `git clone git@github.com:sentry-demos/android.git`
 
-2. Open project using Android Studio
+2. Open project using Android Studio and set your Build Variant to 'release' instead of debug.
 
 3. Sync the project with the Gradle files
 
