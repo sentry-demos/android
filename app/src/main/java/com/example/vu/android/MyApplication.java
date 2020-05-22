@@ -20,14 +20,17 @@ public class MyApplication extends Application {
 
             // This callback is used before the event is sent to Sentry.
             // You can modify the event or, when returning null, also discard the event.
-            options.setEnableSessionTracking(true);
+
+            // we now enable this in AndroidManifest.xml
+            // options.setEnableSessionTracking(true);
+
             options.setBeforeSend((event, hint) -> {
 
                 //Remove PII
                 List<SentryException> exceptions = event.getExceptions();
-                if(exceptions.size() > 0){
+                if(exceptions != null && exceptions.size() > 0){
                     SentryException exception = exceptions.get(0);
-                    if(exception.getType().contains("NegativeArraySizeException")){
+                    if("NegativeArraySizeException".equals(exception.getType())) {
                         User user = event.getUser();
                         user.setIpAddress(null);
                     }

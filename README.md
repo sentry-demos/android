@@ -32,7 +32,7 @@ Additional documentation:
 
 1. `git clone git@github.com:sentry-demos/android.git`
 
-2. Open project using Android Studio
+2. Open project using Android Studio and set your Build Variant to 'release' instead of debug.
 
 3. Sync the project with the Gradle files
 
@@ -46,11 +46,11 @@ Additional documentation:
 
 4. Put your Sentry DSN key in `AndroidManifest.xml` and your 'project' name in the Makefile
 
-5. Put your AUTH Token in sentry.properties
+5. Put your AUTH Token and project name in sentry.properties
 
 6. `make all`
 
-7. Android Studio install ANdroid NDK in Preferences > System & Behavior > System Settings > Android SDK > SDK Tools > select NDK for download
+7. Android Studio install Android NDK in Preferences > System & Behavior > System Settings > Android SDK > SDK Tools > select NDK for download
 
 You can see debug files were uploaded in your Project Settings
 ![gif](screenshots/debug-information-files-settings.png)
@@ -98,10 +98,31 @@ In this case, you can fix that by updating Sentry's server. To do that:
 
 ![Native Crash](android-native-crash-take-1.gif)
 
-## Design
+## Technical Notes
+**Release Technique #1**
+Setting the release here is good if you really had a reason to override, eg. Paid vs Free versions of your apps
+This is not generally for a customer. It's for testing so I can quickly iterate new releases while I'm testing.
+```
+<meta-data android:name="io.sentry.release" android:value="io.sentry.sample@1.0.0+1" />
+```
 
-font is 'Rubik'
-https://fonts.google.com/specimen/Rubik
-https://developer.android.com/guide/topics/ui/look-and-feel/fonts-in-xml
+**Release Technique #2**
+Can use the version numbers here to become the Release:
+```
+build.gradle
+defaultConfig {
+    applicationId "com.example.vu.android"
+    minSdkVersion 21
+    targetSdkVersion 29
+    versionCode 11
+    versionName "1.2"
+```
+This would make for a release of `1.1.0 (11) com.example.vu@androidh1.2+11`. 
+The version code is unique. This is already part of build system in Android. The app won't compile without it.
+The info in AndroidManifest.xml will override what's in build.gradle.
 
-store the ~/Downloads/android-assets
+**Other**
+Sometimes you'll see extra ANR events, because you have setting set to 3 seconds
+Hard to compare Total Number of Crashes to a report in Discover on handled:no and the release, because when a crash happens, you have to wait for the device to come back online again. 
+There are some other technical reasons as well, which are still being sorted out. 
+For instance, if you're evering filtering, sampling or Rate Limiting events/crashes out, then it's possible that the Sessions data isn ot getting filtered/sampled and so your Crash Free rate will appear higher than it actually is.
