@@ -32,7 +32,7 @@ Additional documentation:
 
 1. `git clone git@github.com:sentry-demos/android.git`
 
-2. Open project using Android Studio and set your Build Variant to 'release' instead of debug.
+2. Open project using Android Studio and set your Build Variant to 'release' instead of debug. Or else debug symbols won't get uploaded.
 
 3. Sync the project with the Gradle files
 
@@ -55,11 +55,12 @@ Additional documentation:
 You can see debug files were uploaded in your Project Settings
 ![gif](screenshots/debug-information-files-settings.png)
 
-You can maintain a separate branch which has your auth token.
+9. Maintain a separate branch which has your auth token.
 
 ## Run
 
-1. Run 'app' in Android Studio on an Android Virtual Device.
+1. `make all` if you haven't yet, or have made significant changes to your code. otherwise run the app.
+2. Run 'app' in Android Studio on an Android Virtual Device.
 
 ## What's Happening
 
@@ -86,25 +87,30 @@ In this case, you can fix that by updating Sentry's server. To do that:
 6. Once the transport completes, re-generate the crash.
 
 ## Release Health Testing
-two different devices (ie. two different android emulators). Have one device is crash free and one that has crashes so you can compare the crash free user rate.
-1. select second device, different from primary device whci hyou threw errors on
-2. click Play/run
-3. Remember - do NOT click buttons and cause errors! you want to keep this one Crash Free. could always make a new release
+Use two different devices (ie. two different android emulators). Keep one device crash free and one that has crashes so you can compare the crash free user rates.
+1. Select second device, different from the primary device you threw errors and crashes in
+2. Click Play/run
+3. Remember - do NOT click buttons and cause errors! you want to keep this one Crash Free. You could always make a new release if you want 100% crash free rates again.
 
 1st device - errors, so you see Crash Free Rate go Down
 2nd device - sessions w/out errors, so if you keep creaitng healthy sessions, the nCrash Free Rate should go back up
 
 ANR - click button, then start clicking on other areas of the screen. The second click (not the button click) is when it starts counting the seconds
-right when pop-up comes , event should be sent to Sentry. click 'close-up'
+right when pop-up comes , event should be sent to Sentry. click 'close-up'.
 
-## How To Upgrade SDK
-1. increment sdk number in src/build.gradle like `implementation 'io.sentry:sentry-android:2.1.4'`
-2. Consider making a new Release by incrementing these numbers in src/build.gradle
+See AndroidManifest.xml for different settings we tweak for demo's (e.g. default Session time, default ANR time
+
+## How To Make a New Release
+Incrementing these numbers in src/build.gradle
 ```
 // change only versionCode, or both. can match like 14, 1.4
     versionCode 13
     versionName "1.3"
 ```
+
+## How To Upgrade SDK
+1. increment sdk number in src/build.gradle like `implementation 'io.sentry:sentry-android:2.1.4'`
+2. Consider making a new Release
 3. click 'Sync Now' for sync'ing your gradle files in AndroidStudio
 4. `make all` will do a new `./gradlew build`
 
