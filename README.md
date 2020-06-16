@@ -101,11 +101,23 @@ right when pop-up comes , event should be sent to Sentry. click 'close-up'.
 See AndroidManifest.xml for different settings we tweak for demo's (e.g. default Session time, default ANR time
 
 ## How To Make a New Release
-Incrementing these numbers in src/build.gradle
+Standard - Incrementing these numbers in src/build.gradle. Change only versionCode, or both. can match like 14, 1.4
 ```
-// change only versionCode, or both. can match like 14, 1.4
+defaultConfig {
+    applicationId "com.example.vu.android"
+    minSdkVersion 21
+    targetSdkVersion 29
     versionCode 13
     versionName "1.3"
+}
+```
+This would make for a release of `1.3.0 (13) com.example.vu@androidh1.3+13`.
+The version code is unique. This is already part of build system in Android. The app won't compile without it.
+
+Optional - Setting the release here is good if you really had a reason to override, eg. Paid vs Free versions of your apps
+This is not generally for a customer. It's for testing so I can quickly iterate new releases while I'm testing. This info in AndroidManifest.xml will override what's in build.gradle.
+```
+<meta-data android:name="io.sentry.release" android:value="io.sentry.sample@1.0.0+1" />
 ```
 
 ## How To Upgrade SDK
@@ -113,32 +125,6 @@ Incrementing these numbers in src/build.gradle
 2. Consider making a new Release
 3. click 'Sync Now' for sync'ing your gradle files in AndroidStudio
 4. `make all` will do a new `./gradlew build`
-
-
-TechChallenges
-- Release dashboard, open 1, 'All Issues' is issues across all the releases
-- Release dashboard, open 1, 'New Issue' sometimes not populating...
-- view Data in Discover if things aren't adding up / looking right in the Release Page
-- see Notion page on 'Crashes in SDKs and Product' for status updates on this stuff
-- mechanism:`signalHandler` comes from sentry-native and mechanism:`uncaughtException` comes from java/kotlin
-- Now (06/02/2020) ANR reported only if the pop-up comes up. doing 5seconds like Google does
-- when there's not a lot data yet, it's hard to calculate/show things.
-- Unique Users isn't the user's email, it's the Device. so in Discover could try things (but not working) like user.id, device.uuid, device. We didn't want to use sensistive data for Sessions. We generate a uuid for the user - Installation ID of the app on that device
-- check Documentation, may have changed.
-- if you put app to background, and put to foreground in less than 30seconds, it does not create new Session
-- if you put app to background, and wait more than 30seconds, then put to foreground, it will create new session
-- swiping up "close"", there's no way to know what happened to the Session. it's not a error/crash. it's a normal exited session.
-    - opening the app again right away, should great a fresh new session
-- i write 30seconds here, but we set our default in AndroidManifest.xml to "3seconds" for demo purposes
-- if device has a stable connection, events sent right away
-    - SentryServer has a pipeline that's queuing events, depends on state of Sentry
-    - c++ crashes go through Symbolicator which has its own queuing and symbolication takes longer
-        - need to restart the app
-
-- Session (ending) is sent when App goes to Background OR there's a crash
-- Session data is sent when Session Starts and when Session Ends
-- So if you make a Handled Error, the Session data is not sent just yet. updates the session only locally in the device.
-
 
 ## GIF Android Java Exception
 
@@ -152,30 +138,35 @@ TechChallenges
 
 ![Native Crash](android-native-crash-take-1.gif)
 
-## Technical Notes
-**Release Technique #1**
-Setting the release here is good if you really had a reason to override, eg. Paid vs Free versions of your apps
-This is not generally for a customer. It's for testing so I can quickly iterate new releases while I'm testing.
-```
-<meta-data android:name="io.sentry.release" android:value="io.sentry.sample@1.0.0+1" />
-```
+## Technical Notes / Knowledge
 
-**Release Technique #2**
-Can use the version numbers here to become the Release in `app/build.gradle`:
-```
-defaultConfig {
-    applicationId "com.example.vu.android"
-    minSdkVersion 21
-    targetSdkVersion 29
-    versionCode 11
-    versionName "1.2"
-```
-This would make for a release of `1.1.0 (11) com.example.vu@androidh1.2+11`. 
-The version code is unique. This is already part of build system in Android. The app won't compile without it.
-The info in AndroidManifest.xml will override what's in build.gradle.
-
-**Other**
+#### ANR
 Sometimes you'll see extra ANR events, because you have setting set to 3 seconds
 Hard to compare Total Number of Crashes to a report in Discover on handled:no and the release, because when a crash happens, you have to wait for the device to come back online again. 
 There are some other technical reasons as well, which are still being sorted out. 
-For instance, if you're evering filtering, sampling or Rate Limiting events/crashes out, then it's possible that the Sessions data isn ot getting filtered/sampled and so your Crash Free rate will appear higher than it actually is.
+For instance, if you're ever filtering, sampling or Rate Limiting events/crashes out, then it's possible that the Sessions data isn ot getting filtered/sampled and so your Crash Free rate will appear higher than it actually is.
+
+#### Sessions
+- if you put app to background, and put to foreground in less than 30seconds, it does not create new Session
+- if you put app to background, and wait more than 30seconds, then put to foreground, it will create new session
+- swiping up "close"", there's no way to know what happened to the Session. it's not a error/crash. it's a normal exited session.
+    - opening the app again right away, should great a fresh new session
+- i write 30seconds here, but we set our default in AndroidManifest.xml to "3seconds" for demo purposes
+- if device has a stable connection, events sent right away
+    - SentryServer has a pipeline that's queuing events, depends on state of Sentry
+    - c++ crashes go through Symbolicator which has its own queuing and symbolication takes longer
+        - need to restart the app
+- Session (ending) is sent when App goes to Background OR there's a crash
+- Session data is sent when Session Starts and when Session Ends
+- So if you make a Handled Error, the Session data is not sent just yet. updates the session only locally in the device.
+
+#### Misc Knowledge
+- Release dashboard, open 1, 'All Issues' is issues across all the releases
+- Release dashboard, open 1, 'New Issue' sometimes not populating...
+- View Data in Discover if things aren't adding up / looking right in the Release Page
+- see Notion page on 'Crashes in SDKs and Product' for status updates on this stuff
+- `mechanism:signalHandler` comes from sentry-native and `mechanism:uncaughtException` comes from java/kotlin
+- Now (06/02/2020) ANR reported only if the pop-up comes up. doing 5seconds like Google does
+- When there's not a lot data yet, it's hard to calculate/show things.
+- Unique Users isn't the user's email, it's the Device. so in Discover could try things (but not working) like user.id, device.uuid, device. We didn't want to use sensitive data for Sessions. We generate a uuid for the user - Installation ID of the app on that device
+- Check Documentation, things may have changed.
