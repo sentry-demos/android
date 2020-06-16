@@ -126,27 +126,13 @@ This is not generally for a customer. It's for testing so I can quickly iterate 
 3. click 'Sync Now' for sync'ing your gradle files in AndroidStudio
 4. `make all` will do a new `./gradlew build`
 
-## GIF Android Java Exception
-
-![Android demo flow](android-demo.gif)
-
-## GIF Android ANR
-
-![Alt Text](android-demo-anr.gif)
-
-## GIF Android Native Crash C++
-
-![Native Crash](android-native-crash-take-1.gif)
-
-## Technical Notes / Knowledge
-
-#### ANR
+## ANR
 Sometimes you'll see extra ANR events, because you have setting set to 3 seconds
-Hard to compare Total Number of Crashes to a report in Discover on handled:no and the release, because when a crash happens, you have to wait for the device to come back online again. 
-There are some other technical reasons as well, which are still being sorted out. 
+Hard to compare Total Number of Crashes to a report in Discover on handled:no and the release, because when a crash happens, you have to wait for the device to come back online again.
+There are some other technical reasons as well, which are still being sorted out.
 For instance, if you're ever filtering, sampling or Rate Limiting events/crashes out, then it's possible that the Sessions data isn ot getting filtered/sampled and so your Crash Free rate will appear higher than it actually is.
 
-#### Sessions
+## Sessions
 - if you put app to background, and put to foreground in less than 30seconds, it does not create new Session
 - if you put app to background, and wait more than 30seconds, then put to foreground, it will create new session
 - swiping up "close"", there's no way to know what happened to the Session. it's not a error/crash. it's a normal exited session.
@@ -160,7 +146,7 @@ For instance, if you're ever filtering, sampling or Rate Limiting events/crashes
 - Session data is sent when Session Starts and when Session Ends
 - So if you make a Handled Error, the Session data is not sent just yet. updates the session only locally in the device.
 
-#### Misc Knowledge
+## Misc Knowledge
 - Release dashboard, open 1, 'All Issues' is issues across all the releases
 - Release dashboard, open 1, 'New Issue' sometimes not populating...
 - View Data in Discover if things aren't adding up / looking right in the Release Page
@@ -170,3 +156,16 @@ For instance, if you're ever filtering, sampling or Rate Limiting events/crashes
 - When there's not a lot data yet, it's hard to calculate/show things.
 - Unique Users isn't the user's email, it's the Device. so in Discover could try things (but not working) like user.id, device.uuid, device. We didn't want to use sensitive data for Sessions. We generate a uuid for the user - Installation ID of the app on that device
 - Check Documentation, things may have changed.
+
+## GIF Android Java Exception
+
+![Android demo flow](android-demo.gif)
+
+## GIF Android ANR
+
+![Alt Text](android-demo-anr.gif)
+
+## GIF Android Native Crash C++
+
+![Native Crash](android-native-crash-take-1.gif)
+
