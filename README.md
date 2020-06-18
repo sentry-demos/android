@@ -111,11 +111,14 @@ defaultConfig {
     versionName "1.3"
 }
 ```
-This would make for a release of `1.3.0 (13) com.example.vu@androidh1.3+13`.
+This would make for a release of `1.3.0 (13) com.example.vu.androidh@1.3+13`.
 The version code is unique. This is already part of build system in Android. The app won't compile without it.
 
-Optional - Setting the release here is good if you really had a reason to override, eg. Paid vs Free versions of your apps
-This is not generally for a customer. It's for testing so I can quickly iterate new releases while I'm testing. This info in AndroidManifest.xml will override what's in build.gradle.
+Optional - Setting the release in AndroidManifest.xml will override what's set in src/build.gradle. Possible uses cases would be:
+1. indicating Paid vs Free versions of your apps
+2. match versionf for your Android and iOS apps together. force a release name.
+3. the pattern 'package@name+version' is new from Sentry, so you could override that in AndroidManifest.xml
+4. Good for testing if you're iterating quickly, but not publishing your app.
 ```
 <meta-data android:name="io.sentry.release" android:value="io.sentry.sample@1.0.0+1" />
 ```
