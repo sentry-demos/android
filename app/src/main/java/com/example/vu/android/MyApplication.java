@@ -25,7 +25,6 @@ public class MyApplication extends Application {
             // options.setEnableSessionTracking(true);
 
             options.setBeforeSend((event, hint) -> {
-
                 //Remove PII
                 List<SentryException> exceptions = event.getExceptions();
                 if(exceptions != null && exceptions.size() > 0){
