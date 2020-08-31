@@ -21,15 +21,21 @@ Additional documentation:
 
 | dependency    | version
 | ------------- |:-------------:|
-| sentry-android | 2.1.0-beta.1 |
-| Android Studio | 3.6.2 |
+| sentry-android | 2.3.1 |
+| sentry-android-gradle-plugin | 1.7.35 |
+| Android Studio | 4.0.1 |
 | Gradle | 6.3 |
-| AVD | Nexus 5x API 29 x86 |
-| sentry-cli | 1.49.0 |
-| macOS | Mojave 10.14.4 |
-| jdk | ? |
+| AVD | Nexus 5x API 29 x86, Pixel 2 API 29 |
+| sentry-cli | 1.55.1 |
+| macOS | Mojave 10.15.6 |
+| java | 1.8.0_261 |
+| jdk | 1.8 |
 
-JDK 14 does not work
+Do not use JDK 14
+```
+which java
+/usr/bin/java
+```
 
 ## Setup
 
