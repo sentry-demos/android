@@ -27,12 +27,16 @@ Additional documentation:
 | AVD | Nexus 5x API 29 x86 |
 | sentry-cli | 1.49.0 |
 | macOS | Mojave 10.14.4 |
+| jdk | ? |
+
+JDK 14 does not work
 
 ## Setup
 
 1. `git clone git@github.com:sentry-demos/android.git`
 
 2. Open project using Android Studio and set your Build Variant to 'release' instead of debug. Or else debug symbols won't get uploaded.
+ Build Variants tab (left side of Android Studio) > Select 'release' under Active Build Variant Column > if that's missing then go to Build > Edit Build Types.
 
 3. Sync the project with the Gradle files
 
@@ -50,7 +54,7 @@ Additional documentation:
 
 6. `make all`
 
-7. Android Studio install Android NDK in Preferences > System & Behavior > System Settings > Android SDK > SDK Tools > select NDK for download
+7. Android Studio install Android NDK in Preferences > System & Behavior > System Settings > Android SDK > SDK Tools > select NDK for download, and CMake
 
 You can see debug files were uploaded in your Project Settings
 ![gif](screenshots/debug-information-files-settings.png)
