@@ -60,9 +60,9 @@ which java
 
 6. `make all`
 
-7. Android Studio install Android NDK in Preferences > System & Behavior > System Settings > Android SDK > SDK Tools > select NDK for download, and CMake
+7. Android Studio install Android NDK in Preferences > System & Behavior > System Settings > Android SDK > SDK Tools > and install the following:
+![AndroidTools](screenshots/android-tools.png)
 
-You can see debug files were uploaded in your Project Settings
 ![gif](screenshots/debug-information-files-settings.png)
 
 9. Maintain a separate branch which has your auth token.
