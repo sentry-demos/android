@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
             bc.setLevel(SentryLevel.ERROR);
             bc.setData("url", "https://sentry.io");
             Sentry.addBreadcrumb(bc);
-            //needs fixing...
+            //needs fixing........
             int t = 5 / 0;
 
         });
