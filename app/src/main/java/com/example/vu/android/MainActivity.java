@@ -6,6 +6,10 @@ import android.os.Bundle;
 import android.text.format.Formatter;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import io.sentry.core.Breadcrumb;
 import io.sentry.core.Sentry;
 import io.sentry.core.SentryLevel;
@@ -15,6 +19,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+//        Sentry.startSession();
 
         super.onCreate(savedInstanceState);
 
@@ -34,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
         // Set the user in the current context.
         User user = new User();
         user.setIpAddress(this.getIPAddress());
+        Map<String, String> userAtts = new HashMap<String,String>();
+        userAtts.put("Locale", "en");
+        user.setOthers(userAtts);
         Sentry.setUser(user);
 
 
@@ -46,8 +55,9 @@ public class MainActivity extends AppCompatActivity {
             bc.setLevel(SentryLevel.ERROR);
             bc.setData("url", "https://sentry.io");
             Sentry.addBreadcrumb(bc);
-
+            //needs fixing...
             int t = 5 / 0;
+
         });
 
         // Unhandled - NegativeArraySizeException
