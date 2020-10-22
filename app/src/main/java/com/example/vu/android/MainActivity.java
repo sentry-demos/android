@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
         // SENTRY Tag and Breadcrumb
         String activity = this.getClass().getSimpleName();
-        Sentry.setTag("activity", activity);
+        //Sentry.setTag("activity", activity);
 
         Breadcrumb breadcrumb = new Breadcrumb();
         breadcrumb.setMessage("Android activity was created");
