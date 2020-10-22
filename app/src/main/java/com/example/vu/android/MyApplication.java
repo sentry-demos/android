@@ -5,9 +5,9 @@ import android.app.Application;
 import java.util.List;
 
 import io.sentry.android.core.SentryAndroid;
-import io.sentry.core.SentryLevel;
-import io.sentry.core.protocol.SentryException;
-import io.sentry.core.protocol.User;
+import io.sentry.SentryLevel;
+import io.sentry.protocol.SentryException;
+import io.sentry.protocol.User;
 
 public class MyApplication extends Application {
     @Override
@@ -23,7 +23,7 @@ public class MyApplication extends Application {
 
             // we now enable this in AndroidManifest.xml
             // options.setEnableSessionTracking(true);
-
+            options.setEnvironment("Staging");
             options.setBeforeSend((event, hint) -> {
                 //Remove PII
                 List<SentryException> exceptions = event.getExceptions();
