@@ -6,10 +6,10 @@ import android.os.Bundle;
 import android.text.format.Formatter;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
-import io.sentry.core.Breadcrumb;
-import io.sentry.core.Sentry;
-import io.sentry.core.SentryLevel;
-import io.sentry.core.protocol.User;
+import io.sentry.Breadcrumb;
+import io.sentry.Sentry;
+import io.sentry.SentryLevel;
+import io.sentry.protocol.User;
 
 public class MainActivity extends AppCompatActivity {
 
