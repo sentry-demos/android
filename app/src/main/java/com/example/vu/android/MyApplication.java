@@ -5,9 +5,9 @@ import android.app.Application;
 import java.util.List;
 
 import io.sentry.android.core.SentryAndroid;
-import io.sentry.core.SentryLevel;
-import io.sentry.core.protocol.SentryException;
-import io.sentry.core.protocol.User;
+import io.sentry.SentryLevel;
+import io.sentry.protocol.SentryException;
+import io.sentry.protocol.User;
 
 public class MyApplication extends Application {
     @Override
@@ -16,7 +16,6 @@ public class MyApplication extends Application {
 
         // SENTRY
         SentryAndroid.init(this, options -> {
-
 
             // This callback is used before the event is sent to Sentry.
             // You can modify the event or, when returning null, also discard the event.
