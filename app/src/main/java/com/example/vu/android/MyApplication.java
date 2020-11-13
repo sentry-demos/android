@@ -13,11 +13,9 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
         // SENTRY
         SentryAndroid.init(this, options -> {
-
-
+            options.setEnableSessionTracking(true);
             // This callback is used before the event is sent to Sentry.
             // You can modify the event or, when returning null, also discard the event.
 
@@ -34,6 +32,8 @@ public class MyApplication extends Application {
                         user.setIpAddress(null);
                     }
                 }
+
+                event.setF
 
                 //Drop event
                 if (SentryLevel.DEBUG.equals(event.getLevel()))
