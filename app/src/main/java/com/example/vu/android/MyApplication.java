@@ -4,10 +4,12 @@ import android.app.Application;
 
 import java.util.List;
 
+//import io.sentry.Sentry;
 import io.sentry.android.core.SentryAndroid;
 import io.sentry.SentryLevel;
 import io.sentry.protocol.SentryException;
 import io.sentry.protocol.User;
+import io.sentry.*;
 
 public class MyApplication extends Application {
     @Override
@@ -19,10 +21,6 @@ public class MyApplication extends Application {
 
             // This callback is used before the event is sent to Sentry.
             // You can modify the event or, when returning null, also discard the event.
-
-            // we now enable this in AndroidManifest.xml
-            // options.setEnableSessionTracking(true);
-
             options.setBeforeSend((event, hint) -> {
 
                 //Remove PII
@@ -41,7 +39,14 @@ public class MyApplication extends Application {
                 else
                     return event;
             });
+            options.setTracesSampleRate(1.0);
         });
+
+        SentryTransaction activityTransaction = Sentry.startTransaction("MainActivity.onCreate");
+        activityTransaction.finish();
+
+        // we now enable this in AndroidManifest.xml
+        // options.setEnableSessionTracking(true);
     }
 
 }

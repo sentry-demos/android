@@ -32,6 +32,9 @@
         <meta-data android:name="io.sentry.debug" android:value="true" />
         <meta-data android:name="io.sentry.auto-init" android:value="false" />
 
+        <!-- how to enable Transactions and set a sampleRate (anything between 0.01 and 1.0), it's disabled by default-->
+        <meta-data android:name="io.sentry.traces-sample-rate" android:value="1.0" />
+
 <!--        This line not needed any more, because now we have a safe guard, waiting for the Operating System to raise an ANR in the processor, it waits 5seconds. Lowering this number just makes it to check the state of the processor more times.-->
 <!--        lowering this number below 5000ms overrides the 5000ms, we check the state of the processor faster. doesn't mean we're detecting more ANR's or not-->
 
