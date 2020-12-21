@@ -42,8 +42,8 @@ public class MyApplication extends Application {
             options.setTracesSampleRate(1.0);
         });
 
-        SentryTransaction activityTransaction = Sentry.startTransaction("MainActivity.onCreate");
-        activityTransaction.finish();
+//        SentryTransaction activityTransaction = Sentry.startTransaction("MainActivity.onCreate");
+//        activityTransaction.finish();
 
         // we now enable this in AndroidManifest.xml
         // options.setEnableSessionTracking(true);
