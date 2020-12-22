@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import io.sentry.Breadcrumb;
 import io.sentry.Sentry;
 import io.sentry.SentryLevel;
+import io.sentry.SentryTransaction;
 import io.sentry.protocol.User;
 
 public class MainActivity extends AppCompatActivity {
@@ -19,6 +20,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
+        //   TODO - try before .onCreate
+        SentryTransaction activityTransaction = Sentry.startTransaction("MainActivity.onCreate");
 
         // SENTRY Tag and Breadcrumb
         String activity = this.getClass().getSimpleName();
@@ -91,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
             NativeSample.message();
         });
 
+        activityTransaction.finish();
     }
 
 
