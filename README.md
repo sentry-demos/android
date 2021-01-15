@@ -21,7 +21,7 @@ Additional documentation:
 
 | dependency    | version
 | ------------- |:-------------:|
-| sentry-android | 2.3.1 |
+| sentry-android | 3.2.0 |
 | sentry-android-gradle-plugin | 1.7.35 |
 | Android Studio | 4.0.1 |
 | Gradle | 6.3 |
@@ -77,8 +77,8 @@ which java
 The MainActivity has 5 buttons that generate the following exception types:
 
 1. **Unhandled Exception** of type Arithmetic Exception
-2. **Unhandled Exception** of type NegativeArraySizeException + Strips PII (removes user IP address in beforeSend)
-3. **Handled Exception** of type ArrayIndexOutOfBoundsException
+2. **Handled Exception** of type ArrayIndexOutOfBoundsException
+3. **Handled Exception** logged through **Timber Integration**
 4. **ApplicationNotResponding (ANR)** Uses an infinite loop to crash the app after 5 seconds and reports event to Sentry.
 5. **Native Crash** of type SIGSEGV from native C++. The Sentry NDK sends this to Sentry.io for symbolication
 6. **Native Message** send custom event/message from native C++.
