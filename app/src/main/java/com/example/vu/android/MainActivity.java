@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.native_message).setOnClickListener(view -> {
             NativeSample.message();
         });
-        
+
 
     }
 
