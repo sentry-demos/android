@@ -6,22 +6,31 @@ import java.util.List;
 
 import io.sentry.android.core.SentryAndroid;
 import io.sentry.SentryLevel;
+import io.sentry.android.timber.SentryTimberIntegration;
 import io.sentry.protocol.SentryException;
 import io.sentry.protocol.User;
+import timber.log.Timber;
 
 public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        if(BuildConfig.DEBUG){
+            Timber.plant(new Timber.DebugTree());
+        }
+
         // SENTRY
         SentryAndroid.init(this, options -> {
-            options.setEnableSessionTracking(true);
-            // This callback is used before the event is sent to Sentry.
-            // You can modify the event or, when returning null, also discard the event.
 
-            // we now enable this in AndroidManifest.xml
-            // options.setEnableSessionTracking(true);
             options.setEnvironment("Staging");
+
+            // default values:
+            // minEventLevel = ERROR
+            // minBreadcrumbLevel = INFO
+            options.addIntegration(
+                        new SentryTimberIntegration(SentryLevel.ERROR, SentryLevel.INFO));
+
             options.setBeforeSend((event, hint) -> {
                 //Remove PII
                 List<SentryException> exceptions = event.getExceptions();
@@ -32,8 +41,6 @@ public class MyApplication extends Application {
                         user.setIpAddress(null);
                     }
                 }
-
-                event.setF
 
                 //Drop event
                 if (SentryLevel.DEBUG.equals(event.getLevel()))

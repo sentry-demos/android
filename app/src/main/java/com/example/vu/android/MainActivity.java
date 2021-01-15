@@ -7,6 +7,8 @@ import android.text.format.Formatter;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,36 +16,29 @@ import io.sentry.Breadcrumb;
 import io.sentry.Sentry;
 import io.sentry.SentryLevel;
 import io.sentry.protocol.User;
+import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Sentry.startSession();
-
         super.onCreate(savedInstanceState);
+
+        Timber.i("timber log entry...   ");
 
         setContentView(R.layout.activity_main);
 
         // SENTRY Tag and Breadcrumb
         String activity = this.getClass().getSimpleName();
-        //Sentry.setTag("activity", activity);
+        Sentry.setTag("activity", activity);
+        Sentry.setTag("customerType", "business-plan");
 
         Breadcrumb breadcrumb = new Breadcrumb();
         breadcrumb.setMessage("Android activity was created");
         breadcrumb.setLevel(SentryLevel.INFO);
         breadcrumb.setData("Activity Name", activity);
         Sentry.addBreadcrumb( breadcrumb );
-
-
-        // Set the user in the current context.
-        User user = new User();
-        user.setIpAddress(this.getIPAddress());
-        Map<String, String> userAtts = new HashMap<String,String>();
-        userAtts.put("Locale", "en");
-        user.setOthers(userAtts);
-        Sentry.setUser(user);
 
 
         // Unhandled - ArithmeticException
@@ -55,16 +50,20 @@ public class MainActivity extends AppCompatActivity {
             bc.setLevel(SentryLevel.ERROR);
             bc.setData("url", "https://sentry.io");
             Sentry.addBreadcrumb(bc);
-            //needs fixing........
+
             int t = 5 / 0;
 
         });
 
-        // Unhandled - NegativeArraySizeException
+        // Handled [Timber logged Exception] - NegativeArraySizeException
         Button negative_index_button = findViewById(R.id.negative_index);
         negative_index_button.setOnClickListener(view -> {
             Sentry.addBreadcrumb("Button for NegativeArraySizeException clicked...");
-            int[] a = new int[-5];
+            try{
+                int[] a = new int[-5];
+            }catch(Exception e){
+                Timber.e(e, "Negative array size");
+            }
         });
 
         // Handled - ArrayIndexOutOfBoundsException
@@ -93,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Native Crash - SIGSEGV
         findViewById(R.id.native_crash).setOnClickListener(view -> {
+
             NativeSample.crash();
         });
 
@@ -100,15 +100,10 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.native_message).setOnClickListener(view -> {
             NativeSample.message();
         });
+        
 
     }
 
-
-    private String getIPAddress(){
-
-        WifiManager wm = (WifiManager) this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        return Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
-    }
 
 }
 
