@@ -38,44 +38,6 @@ public class MainActivity extends AppCompatActivity {
         user.setIpAddress(this.getIPAddress());
         Sentry.setUser(user);
 
-        // Create a File and Add as attachment
-        File f = null;
-
-        try {
-            // creates temporary file
-            f = File.createTempFile("tmp", ".txt", new File("C:/"));
-            Sentry.setTag("filePath", f.getAbsolutePath());
-            // prints absolute path
-            System.out.println("File path: "+f.getAbsolutePath());
-
-            // deletes file when the virtual machine terminate
-            f.deleteOnExit();
-
-            // creates temporary file
-            f = File.createTempFile("tmp", null, new File("D:/"));
-
-            // prints absolute path
-            System.out.print("File path: "+f.getAbsolutePath());
-
-            // deletes file when the virtual machine terminate
-            f.deleteOnExit();
-
-            Attachment attachment = new Attachment(f.getAbsolutePath());
-
-            Sentry.configureScope(
-                    scope -> {
-                        scope.addAttachment(attachment);
-                    });
-
-        } catch(Exception e) {
-            // if any error occurs
-            Sentry.captureException(e);
-            e.printStackTrace();
-
-        }
-
-
-
         // Unhandled - ArithmeticException
         Button div_by_zero_button = findViewById(R.id.div_zero);
         div_by_zero_button.setOnClickListener(view -> {
@@ -99,6 +61,46 @@ public class MainActivity extends AppCompatActivity {
         // Handled - ArrayIndexOutOfBoundsException
         Button handled_exception_button = findViewById(R.id.handled_exception);
         handled_exception_button.setOnClickListener(view -> {
+            // Create a File and Add as attachment
+            File f = null;
+            try {
+                // creates temporary file
+                // f = File.createTempFile("tmp", ".txt", new File("C:/"));
+                Context c = view.getContext();
+                File cacheDirectory = c.getCacheDir();
+                f = File.createTempFile("tmp", ".txt", cacheDirectory);
+
+                Sentry.setTag("filePath", f.getAbsolutePath());
+
+                // prints absolute path
+                System.out.println("File path: "+f.getAbsolutePath());
+
+                // deletes file when the virtual machine terminate
+                f.deleteOnExit();
+
+                // creates temporary file
+                f = File.createTempFile("tmp", null, new File("D:/"));
+
+                // prints absolute path
+                System.out.print("File path: "+f.getAbsolutePath());
+
+                // deletes file when the virtual machine terminate
+                f.deleteOnExit();
+
+                Attachment attachment = new Attachment(f.getAbsolutePath());
+
+                Sentry.configureScope(
+                        scope -> {
+                            scope.addAttachment(attachment);
+                        });
+
+            } catch(Exception e) {
+                // if any error occurs
+                Sentry.captureException(e);
+                e.printStackTrace();
+
+            }
+
             Sentry.addBreadcrumb("Button for ArrayIndexOutOfBoundsException clicked..");
                 try {
                     String[] strArr = new String[1];
