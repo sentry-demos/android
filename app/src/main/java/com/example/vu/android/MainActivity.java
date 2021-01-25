@@ -10,6 +10,7 @@ import io.sentry.Breadcrumb;
 import io.sentry.Sentry;
 import io.sentry.SentryLevel;
 import io.sentry.protocol.User;
+import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,6 +18,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+        Timber.i("Log message logged through Timber as Sentry Breadcrumb");
 
         setContentView(R.layout.activity_main);
 
@@ -54,7 +57,11 @@ public class MainActivity extends AppCompatActivity {
         Button negative_index_button = findViewById(R.id.negative_index);
         negative_index_button.setOnClickListener(view -> {
             Sentry.addBreadcrumb("Button for NegativeArraySizeException clicked...");
-            int[] a = new int[-5];
+            try{
+                int[] a = new int[-5];
+            }catch (Exception e){
+                Timber.e(e, "Sentry captured exception via Timber logger..");
+            }
         });
 
         // Handled - ArrayIndexOutOfBoundsException

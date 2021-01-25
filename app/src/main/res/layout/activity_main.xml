@@ -44,17 +44,6 @@
                 android:fontFamily="@font/rubik_medium"
                 android:textAllCaps="false"/>
 
-            <Button
-                android:id="@+id/negative_index"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/mybutton"
-                android:text="RTE and Strip PII"
-                android:textColor="#FFFFFF"
-                android:fontFamily="@font/rubik_medium"
-                android:textAllCaps="false" />
-
             <TextView
                 android:id="@+id/handled_java_errors"
                 android:layout_width="wrap_content"
@@ -76,6 +65,17 @@
                 android:textColor="#FFFFFF"
                 android:fontFamily="@font/rubik_medium"
                 android:textAllCaps="false" />
+
+            <Button
+                android:id="@+id/negative_index"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/mybutton"
+                android:fontFamily="@font/rubik_medium"
+                android:text="Error logged via Timber"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF" />
 
             <TextView
                 android:id="@+id/application_not_responding"
