@@ -52,7 +52,9 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation group: 'androidx.constraintlayout', name: 'constraintlayout', version: '1.1.3'
-    implementation 'io.sentry:sentry-android:3.1.0'
+    implementation 'io.sentry:sentry-android:3.2.1'
+    implementation 'io.sentry:sentry-android-timber:3.2.1'
+    implementation 'com.jakewharton.timber:timber:4.7.1'
 }
 
 sentry {
