@@ -10,6 +10,8 @@ import io.sentry.Breadcrumb;
 import io.sentry.Sentry;
 import io.sentry.SentryLevel;
 import io.sentry.protocol.User;
+import io.sentry.Attachment;
+import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,6 +37,41 @@ public class MainActivity extends AppCompatActivity {
         User user = new User();
         user.setIpAddress(this.getIPAddress());
         Sentry.setUser(user);
+
+        // Create a File and Add as attachment
+        File f = null;
+
+        try {
+            // creates temporary file
+            f = File.createTempFile("tmp", ".txt", new File("C:/"));
+
+            // prints absolute path
+            System.out.println("File path: "+f.getAbsolutePath());
+
+            // deletes file when the virtual machine terminate
+            f.deleteOnExit();
+
+            // creates temporary file
+            f = File.createTempFile("tmp", null, new File("D:/"));
+
+            // prints absolute path
+            System.out.print("File path: "+f.getAbsolutePath());
+
+            // deletes file when the virtual machine terminate
+            f.deleteOnExit();
+
+            Attachment attachment = new Attachment(f.getAbsolutePath());
+
+            Sentry.configureScope(
+                    scope -> {
+                        scope.addAttachment(attachment);
+                    });
+
+        } catch(Exception e) {
+            // if any error occurs
+            e.printStackTrace();
+        }
+
 
 
         // Unhandled - ArithmeticException
