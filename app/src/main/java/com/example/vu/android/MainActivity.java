@@ -13,6 +13,9 @@ import io.sentry.SentryLevel;
 import io.sentry.protocol.User;
 import io.sentry.Attachment;
 import java.io.File;
+import java.io.FileOutputStream;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         // Unhandled - ArithmeticException
         Button div_by_zero_button = findViewById(R.id.div_zero);
         div_by_zero_button.setOnClickListener(view -> {
-
+            addAttachment(view);
             Breadcrumb bc = new Breadcrumb();
             bc.setMessage("Button for ArithmeticException clicked...");
             bc.setLevel(SentryLevel.ERROR);
@@ -55,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         // Unhandled - NegativeArraySizeException
         Button negative_index_button = findViewById(R.id.negative_index);
         negative_index_button.setOnClickListener(view -> {
+            addAttachment(view);
             Sentry.addBreadcrumb("Button for NegativeArraySizeException clicked...");
             int[] a = new int[-5];
         });
@@ -92,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Native Message
         findViewById(R.id.native_message).setOnClickListener(view -> {
+            addAttachment(view);
             NativeSample.message();
         });
 
@@ -112,6 +117,10 @@ public class MainActivity extends AppCompatActivity {
 
             // deletes file when the virtual machine terminate
             f.deleteOnExit();
+
+            try (FileOutputStream fos = new FileOutputStream(f)) {
+                fos.write("test".getBytes(UTF_8));
+            }
 
             Attachment attachment = new Attachment(f.getAbsolutePath());
 
