@@ -69,7 +69,9 @@ public class MainActivity extends AppCompatActivity {
 
         } catch(Exception e) {
             // if any error occurs
+            Sentry.captureException(e);
             e.printStackTrace();
+
         }
 
 
