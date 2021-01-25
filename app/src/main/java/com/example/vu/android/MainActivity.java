@@ -78,15 +78,6 @@ public class MainActivity extends AppCompatActivity {
                 // deletes file when the virtual machine terminate
                 f.deleteOnExit();
 
-                // creates temporary file
-                f = File.createTempFile("tmp", null, new File("D:/"));
-
-                // prints absolute path
-                System.out.print("File path: "+f.getAbsolutePath());
-
-                // deletes file when the virtual machine terminate
-                f.deleteOnExit();
-
                 Attachment attachment = new Attachment(f.getAbsolutePath());
 
                 Sentry.configureScope(
