@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             // creates temporary file
             f = File.createTempFile("tmp", ".txt", new File("C:/"));
-
+            Sentry.setTag("filePath", f.getAbsolutePath());
             // prints absolute path
             System.out.println("File path: "+f.getAbsolutePath());
 
