@@ -148,7 +148,7 @@ public class ToolstoreActivity extends AppCompatActivity {
                 }){
                     @Override
                     public Map<String, String> getHeaders() throws AuthFailureError {
-                        Map<String, String>  headers = headers = new HashMap<>();
+                        Map<String, String>  headers = new HashMap<>();
                         headers.put(traceHeader.getName(),traceHeader.getValue());
                         return headers;
                     }
