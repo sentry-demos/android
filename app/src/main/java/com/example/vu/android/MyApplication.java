@@ -22,6 +22,13 @@ public class MyApplication extends Application {
 
             // we now enable this in AndroidManifest.xml
             // options.setEnableSessionTracking(true);
+            // To set a uniform sample rate
+            //options.setTracesSampleRate(1.0);
+            // OR if you prefer, determine traces sample rate based on the sampling context
+//            options.setTracesSampler(
+//                    context -> {
+//                        // return a number between 0 and 1
+//                    });
 
             options.setBeforeSend((event, hint) -> {
 

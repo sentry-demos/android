@@ -1,12 +1,16 @@
 package com.example.vu.android;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.text.format.Formatter;
 import android.view.View;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.vu.android.toolstore.ToolstoreActivity;
+
 import io.sentry.Breadcrumb;
 import io.sentry.Sentry;
 import io.sentry.SentryLevel;
@@ -58,9 +62,16 @@ public class MainActivity extends AppCompatActivity {
         // Unhandled - NegativeArraySizeException
         Button negative_index_button = findViewById(R.id.negative_index);
         negative_index_button.setOnClickListener(view -> {
-            addAttachment(view);
-            Sentry.addBreadcrumb("Button for NegativeArraySizeException clicked...");
-            int[] a = new int[-5];
+//            addAttachment(view);
+//            Sentry.addBreadcrumb("Button for NegativeArraySizeException clicked...");
+//            int[] a = new int[-5];
+
+            //navigate to 2nd activity
+            Intent intent = new Intent(this, ToolstoreActivity.class);
+//            EditText editText = (EditText) findViewById(R.id.editText);
+//            String message = editText.getText().toString();
+//            intent.putExtra(EXTRA_MESSAGE, message);
+            startActivity(intent);
         });
 
         // Handled - ArrayIndexOutOfBoundsException
@@ -101,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
 
     private Boolean addAttachment(View view) {
         // Create a File and Add as attachment
