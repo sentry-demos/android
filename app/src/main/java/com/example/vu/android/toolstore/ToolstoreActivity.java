@@ -112,8 +112,6 @@ public class ToolstoreActivity extends AppCompatActivity {
                             @Override
                             public void onResponse(JSONArray jsonArray) {
                                 try {
-
-                                    String names = "";
                                     for(int i = 0; i < jsonArray.length(); i++){
                                         JSONObject jsonObject = jsonArray.getJSONObject(i);
 
@@ -127,13 +125,10 @@ public class ToolstoreActivity extends AppCompatActivity {
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
-                                    Sentry.captureException(e);
                                     progressDialog.dismiss();
-                                    ISpan span = Sentry.getSpan();
-                                    if (span != null) {
-                                        span.setThrowable(e);
-                                        span.finish(SpanStatus.INTERNAL_ERROR);
-                                    }
+                                    innerSpan2.setThrowable(e);
+                                    innerSpan2.finish(SpanStatus.INTERNAL_ERROR);
+                                    transaction.finish(SpanStatus.INTERNAL_ERROR);
                                 }
                                 adapter.notifyDataSetChanged();
                                 progressDialog.dismiss();
@@ -146,21 +141,16 @@ public class ToolstoreActivity extends AppCompatActivity {
                         Log.e("Volley", error.toString());
                         progressDialog.dismiss();
                         error.printStackTrace();
-                        Sentry.captureException(error);
-                        ISpan span = Sentry.getSpan();
-                        if (span != null) {
-                            span.setThrowable(error);
-                            span.finish(SpanStatus.INTERNAL_ERROR);
-                            transaction.finish(SpanStatus.INTERNAL_ERROR);
-                        }
+                        innerSpan2.setThrowable(error);
+                        innerSpan2.finish(SpanStatus.INTERNAL_ERROR);
+                        transaction.finish(SpanStatus.INTERNAL_ERROR);
                     }
                 }){
                     @Override
                     public Map<String, String> getHeaders() throws AuthFailureError {
-                        Map<String, String>  params = new HashMap<>();
-                        params.put(traceHeader.getName(),traceHeader.getValue());
-
-                        return params;
+                        Map<String, String>  headers = headers = new HashMap<>();
+                        headers.put(traceHeader.getName(),traceHeader.getValue());
+                        return headers;
                     }
                 };
 
