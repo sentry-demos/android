@@ -1,6 +1,7 @@
 package com.example.vu.android.toolstore;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,10 +36,21 @@ public class StoreItemAdapter extends RecyclerView.Adapter<StoreItemAdapter.View
     public void onBindViewHolder(ViewHolder holder, int position) {
         StoreItem storeItem = list.get(position);
 
-        holder.textName.setText(storeItem.getName());
-        holder.textSKU.setText(String.valueOf(storeItem.getSku()));
-        holder.textPrice.setText(String.valueOf(storeItem.getPrice()));
-        //holder.imageItem.setImageURI(new URi(String.valueOf(storeItem.getImage())));
+        holder.textName.setText("Product: " + storeItem.getName());
+        holder.textSKU.setText("SKU: " + String.valueOf(storeItem.getSku()));
+        holder.textPrice.setText("Price: " + String.valueOf(storeItem.getPrice()));
+
+        holder.imageItem.setImageResource(this.getDrawable(String.valueOf(storeItem.getImage())));
+    }
+
+    private int getDrawable(String path){
+        int s =  R.drawable.nails;
+        if("hammer.png".equals(path)){
+            s = R.drawable.hammer;
+        }else if("wrench.png".equals(path)){
+            s = R.drawable.wrench;
+        }
+        return s;
     }
 
     @Override

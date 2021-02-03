@@ -2,30 +2,44 @@
 <LinearLayout
 xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
 android:layout_height="wrap_content"
-android:orientation="vertical"
+android:orientation="horizontal"
 android:padding="10dp">
-
-<TextView
-    android:id="@+id/main_name"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="Name"
-    android:textSize="18sp"/>
-
-
-<TextView
-    android:id="@+id/main_sku"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="SKU"/>
-
-<TextView
-    android:id="@+id/main_price"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="Price"/>
     <ImageView
         android:id="@+id/main_image"
-        android:layout_width="50dp"
-        android:layout_height="50dp"></ImageView>
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:contentDescription="@string/app_name"
+        android:padding="10dp"
+        android:layout_gravity="left"
+        android:scaleType="fitEnd"></ImageView>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/main_name"
+                android:layout_width="100dp"
+                android:layout_height="20dp"
+                android:text="Name"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/main_sku"
+                android:layout_width="100dp"
+                android:layout_height="20dp"
+                android:text="SKU"/>
+
+            <TextView
+                android:id="@+id/main_price"
+                android:layout_width="100dp"
+                android:layout_height="20dp"
+                android:text="Price"/>
+
+    </LinearLayout>
+
+
+
 </LinearLayout>

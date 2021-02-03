@@ -100,7 +100,7 @@ public class ToolstoreActivity extends AppCompatActivity {
         innerSpan.finish();
 
         ISpan innerSpan2 = transaction.startChild("task", "fetch tools from server");
-        SentryTraceHeader traceHeader= transaction.toSentryTrace();
+        SentryTraceHeader innerSpan2Header= innerSpan2.toSentryTrace();
 
         // Get a RequestQueue
         RequestQueue queue = RequestQueueSigleton.getInstance(this.getApplicationContext()).
@@ -111,6 +111,9 @@ public class ToolstoreActivity extends AppCompatActivity {
                         new Response.Listener<JSONArray>() {
                             @Override
                             public void onResponse(JSONArray jsonArray) {
+                                innerSpan2.finish(SpanStatus.OK);
+                                ISpan innerSpan3 = transaction.startChild("task", "process tools from server");
+
                                 try {
                                     for(int i = 0; i < jsonArray.length(); i++){
                                         JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -126,14 +129,17 @@ public class ToolstoreActivity extends AppCompatActivity {
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                     progressDialog.dismiss();
-                                    innerSpan2.setThrowable(e);
-                                    innerSpan2.finish(SpanStatus.INTERNAL_ERROR);
-                                    transaction.finish(SpanStatus.INTERNAL_ERROR);
+                                    innerSpan3.setThrowable(e);
+                                    innerSpan3.setStatus(SpanStatus.INTERNAL_ERROR);
+                                }finally {
+                                    adapter.notifyDataSetChanged();
+                                    progressDialog.dismiss();
+                                    if(innerSpan3.getStatus() !=  SpanStatus.INTERNAL_ERROR){
+                                        innerSpan3.finish(SpanStatus.OK);
+                                    }
+                                    transaction.finish(SpanStatus.OK);
                                 }
-                                adapter.notifyDataSetChanged();
-                                progressDialog.dismiss();
-                                innerSpan2.finish(SpanStatus.OK);
-                                transaction.finish(SpanStatus.OK);
+
                             }
                         }, new Response.ErrorListener() {
                     @Override
@@ -149,7 +155,7 @@ public class ToolstoreActivity extends AppCompatActivity {
                     @Override
                     public Map<String, String> getHeaders() throws AuthFailureError {
                         Map<String, String>  headers = new HashMap<>();
-                        headers.put(traceHeader.getName(),traceHeader.getValue());
+                        headers.put(innerSpan2Header.getName(),innerSpan2Header.getValue());
                         return headers;
                     }
                 };
@@ -157,7 +163,7 @@ public class ToolstoreActivity extends AppCompatActivity {
         jsonArrayRequest.setRetryPolicy(new RetryPolicy() {
             @Override
             public int getCurrentTimeout() {
-                return 13000;
+                return 15000;
             }
 
             @Override
