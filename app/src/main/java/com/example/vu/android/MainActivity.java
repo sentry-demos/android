@@ -97,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Native Message
         findViewById(R.id.native_message).setOnClickListener(view -> {
-            addAttachment();
             NativeSample.message();
         });
 
