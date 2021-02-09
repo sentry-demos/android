@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.text.format.Formatter;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.vu.android.toolstore.ToolstoreActivity;
+import com.example.vu.android.toolstore.ToolStoreActivity;
 
 import io.sentry.Breadcrumb;
 import io.sentry.Sentry;
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         // SENTRY Tag and Breadcrumb
         String activity = this.getClass().getSimpleName();
         Sentry.setTag("activity", activity);
+        Sentry.setTag("customerType", "enterprise");
 
         Breadcrumb breadcrumb = new Breadcrumb();
         breadcrumb.setMessage("Android activity was created");
@@ -62,16 +65,9 @@ public class MainActivity extends AppCompatActivity {
         // Unhandled - NegativeArraySizeException
         Button negative_index_button = findViewById(R.id.negative_index);
         negative_index_button.setOnClickListener(view -> {
-//            addAttachment(view);
-//            Sentry.addBreadcrumb("Button for NegativeArraySizeException clicked...");
-//            int[] a = new int[-5];
-
-            //navigate to 2nd activity
-            Intent intent = new Intent(this, ToolstoreActivity.class);
-//            EditText editText = (EditText) findViewById(R.id.editText);
-//            String message = editText.getText().toString();
-//            intent.putExtra(EXTRA_MESSAGE, message);
-            startActivity(intent);
+            addAttachment(view);
+            Sentry.addBreadcrumb("Button for NegativeArraySizeException clicked...");
+            int[] a = new int[-5];
         });
 
         // Handled - ArrayIndexOutOfBoundsException
@@ -110,7 +106,25 @@ public class MainActivity extends AppCompatActivity {
             addAttachment(view);
             NativeSample.message();
         });
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main_toplevel, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.action_open_toolstore:
+                Intent intent = new Intent(this, ToolStoreActivity.class);
+                startActivity(intent);
+                return(true);
+
+        }
+        return(super.onOptionsItemSelected(item));
     }
 
 
