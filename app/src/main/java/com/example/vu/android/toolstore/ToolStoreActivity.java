@@ -208,7 +208,7 @@ public class ToolStoreActivity extends AppCompatActivity {
         ISpan span = transaction.startChild("task", "process_cart_data");
         JSONObject object = this.buildJSONPostData(selectedStoreItems);
         try {
-            Thread.sleep(2000);
+            Thread.sleep(500);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
