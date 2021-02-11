@@ -19,6 +19,7 @@ import io.sentry.protocol.User;
 import io.sentry.Attachment;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.Calendar;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         Button handled_exception_button = findViewById(R.id.handled_exception);
         handled_exception_button.setOnClickListener(view -> {
             addAttachment();
+
             Sentry.addBreadcrumb("Button for ArrayIndexOutOfBoundsException clicked..");
                 try {
                     String[] strArr = new String[1];
@@ -102,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Native Message
         findViewById(R.id.native_message).setOnClickListener(view -> {
-            addAttachment();
+
             NativeSample.message();
         });
     }
