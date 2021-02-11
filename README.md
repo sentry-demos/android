@@ -21,7 +21,7 @@ Additional documentation:
 
 | dependency    | version
 | ------------- |:-------------:|
-| sentry-java | 4.0.0-beta.1 |
+| sentry-java | 4.1.0 |
 | sentry-android-gradle-plugin | 1.7.35 |
 | Android Studio | 4.0.1 |
 | Gradle | 6.3 |
@@ -56,11 +56,13 @@ which java
 
 4. Put your Sentry DSN key in `AndroidManifest.xml` and your 'project' name in the Makefile
 
-5. Put your AUTH Token and project name in sentry.properties
+5. For Performance Demo: Configure your GCP tool store domain in the `toolstore.domain` attribute in `AndroidManifest.xml`
 
-6. `make all`
+6. Put your AUTH Token and project name in sentry.properties
 
-7. Android Studio install Android NDK in Preferences > System & Behavior > System Settings > Android SDK > SDK Tools > and install the following:
+7. `make all`
+
+8. Android Studio install Android NDK in Preferences > System & Behavior > System Settings > Android SDK > SDK Tools > and install the following:
 ![AndroidTools](screenshots/android-tools.png)
 
 ![gif](screenshots/debug-information-files-settings.png)
@@ -74,6 +76,8 @@ which java
 
 ## What's Happening
 
+### Errors
+
 The MainActivity has 5 buttons that generate the following exception types:
 
 1. **Unhandled Exception** of type Arithmetic Exception
@@ -83,6 +87,20 @@ The MainActivity has 5 buttons that generate the following exception types:
 5. **Native Crash** of type SIGSEGV from native C++. The Sentry NDK sends this to Sentry.io for symbolication
 6. **Native Message** send custom event/message from native C++.
 
+### Performance
+
+The Android ToolStore demos the 2 classic toolstore transactions:
+1. **toolstore [android]** -
+    * Is the ToolStore activity load triggered by clicking on the tools icon in the top header
+    * The transaction creates spans for loading the activity UI elements, calling the `/tools` flask backend, and processing the response
+
+2. **checkout [android]** -
+    * Add some items to the cart by clicking `Add to Cart`
+    * Start the checkout transaction by clicking on the shopping cart icon
+    * The transaction contains 3 spans (including a call to the flask `/checkout` endpoint
+    * The transaction generates 2 errors - one on the Android side `Exception:Failed to init delivery workflow` and the `Not enough inventory for wrench` exception on the backend.
+
+![gif](screenshots/android_transactions.png)
 
 ## Android Native Crash: Missing Symbols for System Libraries
 
