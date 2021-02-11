@@ -1,9 +1,16 @@
 package com.example.vu.android;
 
+import android.app.Activity;
 import android.app.Application;
+import android.os.Bundle;
 
 import java.util.List;
 
+import io.sentry.EventProcessor;
+import io.sentry.ISpan;
+import io.sentry.ITransaction;
+import io.sentry.Sentry;
+import io.sentry.SentryEvent;
 import io.sentry.android.core.SentryAndroid;
 import io.sentry.SentryLevel;
 import io.sentry.protocol.SentryException;
@@ -14,7 +21,6 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        // SENTRY
         SentryAndroid.init(this, options -> {
 
             // This callback is used before the event is sent to Sentry.
@@ -22,7 +28,15 @@ public class MyApplication extends Application {
 
             // we now enable this in AndroidManifest.xml
             // options.setEnableSessionTracking(true);
+            // To set a uniform sample rate
+            //options.setTracesSampleRate(1.0);
+            // OR if you prefer, determine traces sample rate based on the sampling context
+//            options.setTracesSampler(
+//                    context -> {
+//                        // return a number between 0 and 1
+//                    });
 
+            options.setAttachThreads(true);
             options.setBeforeSend((event, hint) -> {
 
                 //Remove PII
@@ -42,6 +56,7 @@ public class MyApplication extends Application {
                     return event;
             });
         });
+
     }
 
 }

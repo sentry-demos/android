@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto" >
+
+<!--    <item-->
+<!--        android:id="@+id/action_checkout"-->
+<!--        android:icon="@drawable/outline_shopping_cart_white_24dp"-->
+<!--        android:title="tool store"-->
+<!--        app:showAsAction="always"/>-->
+
+    <item
+        android:id="@+id/action_cart"
+        android:icon="@drawable/outline_shopping_cart_white_24dp"
+        android:title="Cart"
+        app:actionLayout="@layout/custom_action_item_layout"
+        app:showAsAction="always"/>
+
+</menu>

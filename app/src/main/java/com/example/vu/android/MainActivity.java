@@ -1,12 +1,17 @@
 package com.example.vu.android;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.text.format.Formatter;
-import android.view.View;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.vu.android.toolstore.ToolStoreActivity;
+
 import io.sentry.Breadcrumb;
 import io.sentry.Sentry;
 import io.sentry.SentryLevel;
@@ -30,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         // SENTRY Tag and Breadcrumb
         String activity = this.getClass().getSimpleName();
         Sentry.setTag("activity", activity);
+        Sentry.setTag("customerType", "enterprise");
 
         Breadcrumb breadcrumb = new Breadcrumb();
         breadcrumb.setMessage("Android activity was created");
@@ -82,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
         // no OS pop-up but UI is frozen during the pause
         Button anr_button = findViewById(R.id.anr);
         anr_button.setOnClickListener(view -> {
+
             Sentry.addBreadcrumb("Button for ANR clicked...");
             try {
                 Thread.sleep(10000);
@@ -97,9 +104,28 @@ public class MainActivity extends AppCompatActivity {
 
         // Native Message
         findViewById(R.id.native_message).setOnClickListener(view -> {
+
             NativeSample.message();
         });
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main_toplevel, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.action_open_toolstore:
+                Intent intent = new Intent(this, ToolStoreActivity.class);
+                startActivity(intent);
+                return true;
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private Boolean addAttachment() {
