@@ -100,7 +100,7 @@ The Android ToolStore demos the 2 classic toolstore transactions:
     * The transaction contains 3 spans (including a call to the flask `/checkout` endpoint
     * The transaction generates 2 errors - one on the Android side `Exception:Failed to init delivery workflow` and the `Not enough inventory for wrench` exception on the backend.
 
-![gif](screenshots/android_transactions.png)
+![gif](screenshots/android_transactions.gif)
 
 
 ## Android Native Crash: Missing Symbols for System Libraries
