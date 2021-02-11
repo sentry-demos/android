@@ -6,7 +6,6 @@
     <uses-sdk tools:overrideLibrary="io.sentry.android" />
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
@@ -44,13 +43,17 @@
             android:value="true" />
         <meta-data
             android:name="io.sentry.auto-init"
-            android:value="false" /> <!-- This line not needed any more, because now we have a safe guard, waiting for the Operating System to raise an ANR in the processor, it waits 5seconds. Lowering this number just makes it to check the state of the processor more times. -->
+            android:value="false" />
+
+        <!-- This line not needed any more, because now we have a safe guard, waiting for the Operating System to raise an ANR in the processor, it waits 5seconds. Lowering this number just makes it to check the state of the processor more times. -->
         <!-- lowering this number below 5000ms overrides the 5000ms, we check the state of the processor faster. doesn't mean we're detecting more ANR's or not -->
         <!-- Default is 5seconds (is from the OperatingSystem, to define the state of Not Responding) and defined by the SDK -->
         <!-- we can check the state of the property ourselves, using this -->
             <!-- <meta-data android:name="io.sentry.anr.timeout-interval-mills" android:value="3000" /> -->
+
         <!-- Easy way to get a new release if you're testing, to separate from past releases with lots of crashes/sessions. overrides what's in app/build.gradle -->
         <!-- <meta-data android:name="io.sentry.release" android:value="io.sentry.sample@1.0.0+1" /> -->
+
         <!-- default interval for testing a session is 30seconds. Session starts when they open app. Session ends when user leaves app and it's idle for 30 seconds -->
         <meta-data
             android:name="io.sentry.session-tracking.timeout-interval-millis"
@@ -58,6 +61,10 @@
         <meta-data
             android:name="io.sentry.traces.sample-rate"
             android:value="1.0" />
+
+        <meta-data
+            android:name="toolstore.domain"
+            android:value="https://neilmanvar-flask-m3uuizd7iq-uc.a.run.app" />
     </application>
 
 </manifest>

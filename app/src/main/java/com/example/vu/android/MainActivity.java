@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.text.format.Formatter;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -52,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         // Unhandled - ArithmeticException
         Button div_by_zero_button = findViewById(R.id.div_zero);
         div_by_zero_button.setOnClickListener(view -> {
-            addAttachment(view);
+            addAttachment();
             Breadcrumb bc = new Breadcrumb();
             bc.setMessage("Button for ArithmeticException clicked...");
             bc.setLevel(SentryLevel.ERROR);
@@ -65,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         // Unhandled - NegativeArraySizeException
         Button negative_index_button = findViewById(R.id.negative_index);
         negative_index_button.setOnClickListener(view -> {
-            addAttachment(view);
+            addAttachment();
             Sentry.addBreadcrumb("Button for NegativeArraySizeException clicked...");
             int[] a = new int[-5];
         });
@@ -73,8 +72,7 @@ public class MainActivity extends AppCompatActivity {
         // Handled - ArrayIndexOutOfBoundsException
         Button handled_exception_button = findViewById(R.id.handled_exception);
         handled_exception_button.setOnClickListener(view -> {
-            addAttachment(view);
-
+            addAttachment();
             Sentry.addBreadcrumb("Button for ArrayIndexOutOfBoundsException clicked..");
                 try {
                     String[] strArr = new String[1];
@@ -88,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
         // no OS pop-up but UI is frozen during the pause
         Button anr_button = findViewById(R.id.anr);
         anr_button.setOnClickListener(view -> {
+
             Sentry.addBreadcrumb("Button for ANR clicked...");
             try {
                 Thread.sleep(10000);
@@ -103,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Native Message
         findViewById(R.id.native_message).setOnClickListener(view -> {
-            addAttachment(view);
+            addAttachment();
             NativeSample.message();
         });
     }
@@ -121,40 +120,32 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_open_toolstore:
                 Intent intent = new Intent(this, ToolStoreActivity.class);
                 startActivity(intent);
-                return(true);
+                return true;
 
         }
-        return(super.onOptionsItemSelected(item));
+        return super.onOptionsItemSelected(item);
     }
 
-
-    private Boolean addAttachment(View view) {
-        // Create a File and Add as attachment
+    private Boolean addAttachment() {
         File f = null;
         try {
-            Context c = view.getContext();
+            Context c = getApplicationContext();
             File cacheDirectory = c.getCacheDir();
             f = File.createTempFile("tmp", ".txt", cacheDirectory);
-
-            Sentry.setTag("filePath", f.getAbsolutePath());
-
-            // prints absolute path
             System.out.println("File path: "+f.getAbsolutePath());
-
-            // deletes file when the virtual machine terminate
             f.deleteOnExit();
-
             try (FileOutputStream fos = new FileOutputStream(f)) {
                 fos.write("test".getBytes(UTF_8));
             }
-
-            Attachment attachment = new Attachment(f.getAbsolutePath());
+            Attachment attachment1 = new Attachment(f.getAbsolutePath());
 
             Sentry.configureScope(
                     scope -> {
-                        scope.addAttachment(attachment);
+                        String json = "{ \"number\": 10 }";
+                        Attachment attachment2 = new Attachment(json.getBytes(), "log.json");
+                        scope.addAttachment(attachment1);
+                        scope.addAttachment(attachment2);
                     });
-
         } catch(Exception e) {
             Sentry.captureException(e);
             e.printStackTrace();

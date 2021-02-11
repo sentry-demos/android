@@ -2,6 +2,8 @@ package com.example.vu.android.toolstore;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,8 +46,8 @@ import io.sentry.SpanStatus;
 
 public class ToolStoreActivity extends AppCompatActivity {
 
-    public static String END_POINT_TOOLS = "https://neilmanvar-flask-m3uuizd7iq-uc.a.run.app/tools";
-    public static String END_POINT_CHECKOUT = "https://neilmanvar-flask-m3uuizd7iq-uc.a.run.app/checkout";
+    public String END_POINT_TOOLS = "/tools";
+    public String END_POINT_CHECKOUT = "/checkout";
 
     private RecyclerView mList;
     private LinearLayoutManager linearLayoutManager;
@@ -57,20 +59,39 @@ public class ToolStoreActivity extends AppCompatActivity {
     TextView textCartItemCount;
     int mCartItemCount = -1;
 
+    private String getToolStoleDomain(){
+        String domain = null;
+        try {
+            final ApplicationInfo appInfo = getApplicationContext().getPackageManager().getApplicationInfo(getApplicationContext().getPackageName(),
+                    PackageManager.GET_META_DATA);
+
+            if (appInfo.metaData != null) {
+                domain = (String) appInfo.metaData.get("toolstore.domain");
+            }
+        }
+        catch (Exception e) {
+            //Log.w("Couldn't find meta-data: " + name);
+            Sentry.captureException(e);
+        }
+        return domain;
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ITransaction transaction = Sentry.startTransaction("toolstore [android]");
-        transaction.setOperation("activity_load");
+        ITransaction activityLoadTransaction = Sentry.startTransaction("toolstore [android]");
+        activityLoadTransaction.setOperation("activity_load");
+        Sentry.configureScope(scope -> scope.setTransaction(activityLoadTransaction));
 
-        ISpan span = transaction.startChild("task", "Load layout elements");
 
+        ISpan loadElementsSpan = activityLoadTransaction.startChild("task", "Load layout elements");
 
         setContentView(R.layout.activity_toolstore);
-        this.loadListLayout(transaction);
-        this.fetchToolsFromServer(transaction);
-        span.finish();
+        this.loadListLayout();
+        this.fetchToolsFromServer(activityLoadTransaction);
+        loadElementsSpan.finish();
     }
 
 
@@ -114,7 +135,7 @@ public class ToolStoreActivity extends AppCompatActivity {
     }
 
 
-    private void loadListLayout(ITransaction transaction){
+    private void loadListLayout(){
         mList = findViewById(R.id.main_list);
         adapter = new StoreItemAdapter(this);
 
@@ -128,26 +149,29 @@ public class ToolStoreActivity extends AppCompatActivity {
         mList.setAdapter(adapter);
     }
 
-    public void fetchToolsFromServer(ITransaction transaction){
+    public void fetchToolsFromServer(ITransaction activityLoadTransaction){
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading...");
         progressDialog.show();
 
-        ISpan span = transaction.startChild("http", "fetch tools from server");
-        SentryTraceHeader spanHeader= span.toSentryTrace();
+        ISpan httpSpan = activityLoadTransaction.startChild("http.client", "fetch tools from server");
+        SentryTraceHeader httpSpanHeader= httpSpan.toSentryTrace();
+
+        String domain = this.getToolStoleDomain();
+        String getToolsURL = domain + this.END_POINT_TOOLS;
 
         // Get a RequestQueue
-        RequestQueue queue = RequestQueueSigleton.getInstance(this.getApplicationContext()).
+        RequestQueue queue = RequestQueueSingleton.getInstance(this.getApplicationContext()).
                 getRequestQueue();
 
         JsonArrayRequest jsonArrayRequest =
-                new JsonArrayRequest(Request.Method.GET, this.END_POINT_TOOLS, null,
+                new JsonArrayRequest(Request.Method.GET, getToolsURL, null,
                         new Response.Listener<JSONArray>() {
                             @Override
                             public void onResponse(JSONArray jsonArray) {
-                                span.finish(SpanStatus.OK);
+                                httpSpan.finish(SpanStatus.OK);
 
-                                ISpan span2 = transaction.startChild("task", "process tools from server");
+                                ISpan processResponseSpan = activityLoadTransaction.startChild("task", "process tools from server");
                                 JSONObject jsonObject = null;
                                 try {
                                     for(int i = 0; i < jsonArray.length(); i++){
@@ -163,100 +187,100 @@ public class ToolStoreActivity extends AppCompatActivity {
                                         toolStoreItems.add(storeitem);
                                     }
                                 } catch (JSONException e) {
-                                    span2.setThrowable(e);
-                                    span2.setStatus(SpanStatus.INTERNAL_ERROR);
+                                    processResponseSpan.setThrowable(e);
+                                    processResponseSpan.setStatus(SpanStatus.INTERNAL_ERROR);
                                 }
                                 finally {
                                     adapter.notifyDataSetChanged();
-                                    if(span2.getStatus() !=  SpanStatus.INTERNAL_ERROR){
-                                        span2.finish(SpanStatus.OK);
+                                    if(processResponseSpan.getStatus() !=  SpanStatus.INTERNAL_ERROR){
+                                        processResponseSpan.finish(SpanStatus.OK);
                                     }
-                                    transaction.finish(SpanStatus.OK);
+                                    activityLoadTransaction.finish(SpanStatus.OK);
                                     progressDialog.dismiss();
                                 }
                             }
                         }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        span.setThrowable(error);
-                        span.finish(SpanStatus.INTERNAL_ERROR);
-                        transaction.finish(SpanStatus.INTERNAL_ERROR);
+                        httpSpan.setThrowable(error);
+                        httpSpan.finish(SpanStatus.INTERNAL_ERROR);
+                        activityLoadTransaction.finish(SpanStatus.INTERNAL_ERROR);
                     }
                 }){
                     @Override
                     public Map<String, String> getHeaders() throws AuthFailureError {
                         Map<String, String>  headers = new HashMap<>();
-                        headers.put(spanHeader.getName(),spanHeader.getValue());
+                        headers.put(httpSpanHeader.getName(),httpSpanHeader.getValue());
                         return headers;
                     }
                 };
 
         jsonArrayRequest.setRetryPolicy(new ToolstoreRetryPolicy());
 
-        RequestQueueSigleton.getInstance(this.getApplicationContext()).addToRequestQueue(jsonArrayRequest);
+        RequestQueueSingleton.getInstance(this.getApplicationContext()).addToRequestQueue(jsonArrayRequest);
     }
 
 
     public void checkout(List<StoreItem> selectedStoreItems){
-        ITransaction transaction = Sentry.startTransaction("checkout [android]");
-        transaction.setOperation("http");
+        ITransaction checkoutTransaction = Sentry.startTransaction("checkout [android]");
+        checkoutTransaction.setOperation("http");
+        Sentry.configureScope(scope -> scope.setTransaction(checkoutTransaction));
+
 
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Checking Out...");
         progressDialog.show();
 
-        ISpan span = transaction.startChild("task", "process_cart_data");
+        ISpan processDataSpan = checkoutTransaction.startChild("task", "process_cart_data");
         JSONObject object = this.buildJSONPostData(selectedStoreItems);
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
-        span.finish();
+        processDataSpan.finish();
 
-        ISpan span2 = transaction.startChild("http", "call checkout");
-        SentryTraceHeader span2Headers = span2.toSentryTrace();
-        RequestQueue queue = RequestQueueSigleton.getInstance(this.getApplicationContext()).
+        ISpan httpSpan = checkoutTransaction.startChild("http.client", "call checkout");
+        SentryTraceHeader httpSpanHeaders = httpSpan.toSentryTrace();
+        RequestQueue queue = RequestQueueSingleton.getInstance(this.getApplicationContext()).
                 getRequestQueue();
 
+        String domain = this.getToolStoleDomain();
+        String checkoutURL = domain + this.END_POINT_CHECKOUT;
+
         JsonObjectRequest jsonObjectRequest =
-                new JsonObjectRequest(Request.Method.POST, this.END_POINT_CHECKOUT, object,
+                new JsonObjectRequest(Request.Method.POST, checkoutURL, object,
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject jsonObject) {
                                 progressDialog.dismiss();
-                                span2.finish(SpanStatus.OK);
+                                httpSpan.finish(SpanStatus.OK);
 
-                                ISpan span3 = transaction.startChild("task", "process response");
+                                ISpan processResponseSpan = checkoutTransaction.startChild("task", "process response");
                                 try {
                                     Thread.sleep(1000);
                                 } catch (InterruptedException e) {
                                     Thread.currentThread().interrupt();
                                 }
-                                span3.finish(SpanStatus.OK);
-                                transaction.finish(SpanStatus.OK);
+                                processResponseSpan.finish(SpanStatus.OK);
+                                checkoutTransaction.finish(SpanStatus.OK);
                             }
                         }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         progressDialog.dismiss();
+                        httpSpan.setThrowable(error);
+                        httpSpan.finish(SpanStatus.INTERNAL_ERROR);
 
-                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ToolStoreActivity.this);
-                        AlertDialog alertDialog = alertDialogBuilder.create();
-                        alertDialog.setCancelable(true);
-                        alertDialog.setTitle("Checkout Failed!");
-                        alertDialog.setMessage("Server Error");
-                        alertDialog.show();
+                        processDeliveryItem(checkoutTransaction);
 
-                        span2.setThrowable(error);
-                        span2.finish(SpanStatus.INTERNAL_ERROR);
-                        transaction.finish(SpanStatus.INTERNAL_ERROR);
+                        checkoutTransaction.finish(SpanStatus.INTERNAL_ERROR);
                     }
                 }){
                     @Override
                     public Map<String, String> getHeaders() throws AuthFailureError {
                         Map<String, String>  headers = new HashMap<>();
-                        headers.put(span2Headers.getName(),span2Headers.getValue());
+                        headers.put(httpSpanHeaders.getName(),httpSpanHeaders.getValue());
                         headers.put("email", "someone@gmail.com");
                         return headers;
                     }
@@ -264,7 +288,33 @@ public class ToolStoreActivity extends AppCompatActivity {
 
         jsonObjectRequest.setRetryPolicy(new ToolstoreRetryPolicy());
 
-        RequestQueueSigleton.getInstance(this.getApplicationContext()).addToRequestQueue(jsonObjectRequest);
+        RequestQueueSingleton.getInstance(this.getApplicationContext()).addToRequestQueue(jsonObjectRequest);
+    }
+
+    private void processDeliveryItem(ITransaction checkoutTransaction){
+        ISpan processDeliverySpan = checkoutTransaction.startChild("task", "process delivery");
+
+        try{
+            throw new Exception("Failed to init delivery workflow");
+        }catch(Exception e){
+            processDeliverySpan.setThrowable(e);
+            processDeliverySpan.setStatus(SpanStatus.INTERNAL_ERROR);
+
+            Sentry.captureException(e);
+        }
+
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ToolStoreActivity.this);
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.setCancelable(true);
+        alertDialog.setTitle("Checkout Failed!");
+        alertDialog.setMessage("Server Error");
+        alertDialog.show();
+
+        if(processDeliverySpan.getStatus() !=  SpanStatus.INTERNAL_ERROR){
+            processDeliverySpan.setStatus(SpanStatus.OK);
+        }
+        processDeliverySpan.finish();
     }
 
     private JSONObject buildJSONPostData(List<StoreItem> selectedStoreItems){

@@ -37,7 +37,6 @@ public class MyApplication extends Application {
 //                    });
 
             options.setAttachThreads(true);
-            options.setAttachStacktrace(true);
             options.setBeforeSend((event, hint) -> {
 
                 //Remove PII
