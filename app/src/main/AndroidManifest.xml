@@ -7,6 +7,7 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:name=".MyApplication"
@@ -16,6 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -62,9 +64,12 @@
             android:name="io.sentry.traces.sample-rate"
             android:value="1.0" />
 
+        <meta-data android:name="io.sentry.traces.activity.auto-finish.enable" android:value="false" />
+
         <meta-data
             android:name="toolstore.domain"
-            android:value="https://neilmanvar-flask-m3uuizd7iq-uc.a.run.app" />
+            android:value="https://ido-flask-m3uuizd7iq-uc.a.run.app" />
+
     </application>
 
 </manifest>

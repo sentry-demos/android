@@ -13,17 +13,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.vu.android.toolstore.ToolStoreActivity;
 
 import io.sentry.Breadcrumb;
+import io.sentry.ISpan;
 import io.sentry.Sentry;
 import io.sentry.SentryLevel;
 import io.sentry.protocol.User;
-import io.sentry.Attachment;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.Calendar;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends MyBaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +105,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume () {
+        super.onResume() ;
+
+        //We disabled tx auto finish for the 2nd activity
+        ISpan span = Sentry.getSpan();
+        if (span != null) {
+            span.finish();
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_toplevel, menu);
@@ -128,32 +134,6 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private Boolean addAttachment() {
-        File f = null;
-        try {
-            Context c = getApplicationContext();
-            File cacheDirectory = c.getCacheDir();
-            f = File.createTempFile("tmp", ".txt", cacheDirectory);
-            System.out.println("File path: "+f.getAbsolutePath());
-            f.deleteOnExit();
-            try (FileOutputStream fos = new FileOutputStream(f)) {
-                fos.write("test".getBytes(UTF_8));
-            }
-            Attachment attachment1 = new Attachment(f.getAbsolutePath());
-
-            Sentry.configureScope(
-                    scope -> {
-                        String json = "{ \"number\": 10 }";
-                        Attachment attachment2 = new Attachment(json.getBytes(), "log.json");
-                        scope.addAttachment(attachment1);
-                        scope.addAttachment(attachment2);
-                    });
-        } catch(Exception e) {
-            Sentry.captureException(e);
-            e.printStackTrace();
-        }
-        return true;
-    }
 
     private String getIPAddress(){
 
