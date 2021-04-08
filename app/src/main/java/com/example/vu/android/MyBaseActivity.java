@@ -43,7 +43,7 @@ public class MyBaseActivity extends AppCompatActivity implements FSOnReadyListen
         FS.setReadyListener(this);
     }
     protected void onResume () {
-        super .onResume() ;
+        super.onResume() ;
         mMyApp.setCurrentActivity( this ) ;
     }
     protected void onPause () {
@@ -55,7 +55,7 @@ public class MyBaseActivity extends AppCompatActivity implements FSOnReadyListen
         super.onDestroy() ;
     }
     private void clearReferences () {
-        Activity currActivity = mMyApp .getCurrentActivity() ;
+        Activity currActivity = mMyApp.getCurrentActivity() ;
         if ( this .equals(currActivity))
             mMyApp.setCurrentActivity( null ) ;
     }
