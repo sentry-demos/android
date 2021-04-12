@@ -1,47 +1,19 @@
 package com.example.vu.android.toolstore;
 
-import android.app.Activity;
 import android.content.Context;
-import android.net.Uri;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.RetryPolicy;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.vu.android.R;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.net.URI;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import io.sentry.ISpan;
-import io.sentry.ITransaction;
-import io.sentry.Sentry;
-import io.sentry.SentryTraceHeader;
-import io.sentry.SpanStatus;
-import io.sentry.UserFeedback;
-import io.sentry.protocol.SentryId;
 
 public class StoreItemAdapter extends RecyclerView.Adapter<StoreItemAdapter.ViewHolder> {
 
