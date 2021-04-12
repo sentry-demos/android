@@ -96,7 +96,7 @@ public class MyApplication extends Application {
         alertDialogBuilder.setView(layoutName);
 
         alertDialogBuilder.setTitle("Ooops, Checkout Failed!");
-        alertDialogBuilder.setPositiveButton("Sumbit", new DialogInterface.OnClickListener(){
+        alertDialogBuilder.setPositiveButton("Submit", new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface arg0, int arg1) {
                 Toast.makeText(mCurrentActivity,"Thank you!",Toast.LENGTH_LONG).show();
