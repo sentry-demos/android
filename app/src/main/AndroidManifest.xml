@@ -64,6 +64,7 @@
             android:name="io.sentry.traces.sample-rate"
             android:value="1.0" />
 
+
         <meta-data android:name="io.sentry.traces.activity.auto-finish.enable" android:value="false" />
 
         <meta-data
