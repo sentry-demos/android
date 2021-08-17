@@ -9,8 +9,9 @@ buildscript {
         maven { url "https://maven.fullstory.com" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.2'
+        classpath 'com.android.tools.build:gradle:4.0.1'
         classpath 'com.ydq.android.gradle.build.tool:nativeBundle:1.0.7'
+        classpath 'io.sentry:sentry-android-gradle-plugin:1.7.36'
         classpath 'com.fullstory:gradle-plugin-local:1.12.1'
     }
 }

@@ -36,7 +36,7 @@
 
         <meta-data
             android:name="io.sentry.dsn"
-            android:value="https://5236cef9787446c5a1ae6ffa679e7c7f@o87286.ingest.sentry.io/5245687" />
+            android:value="https://3d2ac63d6e1a4c6e9214443678f119a3@o87286.ingest.sentry.io/1801383" />
         <meta-data
             android:name="io.sentry.debug"
             android:value="true" />
@@ -63,7 +63,6 @@
         <meta-data
             android:name="io.sentry.traces.sample-rate"
             android:value="1.0" />
-
 
         <meta-data android:name="io.sentry.traces.activity.auto-finish.enable" android:value="false" />
 

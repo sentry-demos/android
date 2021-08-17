@@ -7,15 +7,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleObserver;
-import androidx.lifecycle.OnLifecycleEvent;
-import androidx.lifecycle.ProcessLifecycleOwner;
 
 import java.util.List;
 
@@ -28,7 +22,7 @@ import io.sentry.protocol.SentryId;
 import io.sentry.protocol.User;
 
 
-public class MyApplication extends Application implements LifecycleObserver {
+public class MyApplication extends Application {
 
     private MyBaseActivity mCurrentActivity = null;
 
@@ -43,8 +37,6 @@ public class MyApplication extends Application implements LifecycleObserver {
         Context  context = this.getApplicationContext();
         return context.getApplicationInfo().loadLabel(context.getPackageManager()).toString();
     }
-
-
 
     @Override
     public void onCreate() {
@@ -63,8 +55,6 @@ public class MyApplication extends Application implements LifecycleObserver {
             }
 
             options.setAttachThreads(true);
-            options.setEnableAutoActivityLifecycleTracing(true);
-            options.setEnableActivityLifecycleTracingAutoFinish(true);
             options.setBeforeSend((event, hint) -> {
 
                 //Remove PII
@@ -92,16 +82,6 @@ public class MyApplication extends Application implements LifecycleObserver {
             });
         });
 
-    }
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    private void onAppBackgrounded() {
-        Log.d("YourApplication", "YourApplication is in background");
-    }
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    private void onAppForegrounded() {
-        Log.d("YourApplication", "YourApplication is in foreground");
     }
 
     private void launchUserFeedback(SentryId sentryId){
