@@ -64,6 +64,7 @@ public class MyApplication extends Application implements LifecycleObserver {
 
             options.setAttachThreads(true);
             options.setEnableAutoActivityLifecycleTracing(true);
+            options.setEnableActivityLifecycleTracingAutoFinish(true);
             options.setBeforeSend((event, hint) -> {
 
                 //Remove PII

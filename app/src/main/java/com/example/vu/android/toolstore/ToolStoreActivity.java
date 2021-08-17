@@ -5,6 +5,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -53,6 +54,7 @@ public class ToolStoreActivity extends MyBaseActivity {
     protected StoreItemAdapter adapter;
     private Menu menu;
     protected List<StoreItem> toolStoreItems = new ArrayList<StoreItem>();
+    protected MainFragment fragment;
     ProgressDialog progressDialog = null;
 
     TextView textCartItemCount;
@@ -63,8 +65,10 @@ public class ToolStoreActivity extends MyBaseActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_toolstore);
-        this.loadListLayout();
-        this.fetchToolsFromServer();
+        //this.loadListLayout();
+        this.loadFragmentList();
+        //fetching tools from Fragment
+        //this.fetchToolsFromServer();
     }
 
     @Override
@@ -75,7 +79,7 @@ public class ToolStoreActivity extends MyBaseActivity {
         final MenuItem menuItem = menu.findItem(R.id.action_cart);
         View actionView = menuItem.getActionView();
         textCartItemCount = (TextView) actionView.findViewById(R.id.cart_badge);
-        setBadgeNumber();
+        fragment.setBadgeNumber();
 
         actionView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,7 +91,7 @@ public class ToolStoreActivity extends MyBaseActivity {
         return true;
     }
 
-    private String getToolStoreDomain(){
+    private String getToolStoreDomain() {
         String domain = null;
         try {
             final ApplicationInfo appInfo = getApplicationContext().getPackageManager().getApplicationInfo(getApplicationContext().getPackageName(),
@@ -96,15 +100,10 @@ public class ToolStoreActivity extends MyBaseActivity {
             if (appInfo.metaData != null) {
                 domain = (String) appInfo.metaData.get("toolstore.domain");
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             Sentry.captureException(e);
         }
         return domain;
-    }
-
-    protected void setBadgeNumber(){
-        textCartItemCount.setText(String.valueOf(++mCartItemCount));
     }
 
     @Override
@@ -118,9 +117,15 @@ public class ToolStoreActivity extends MyBaseActivity {
         return(super.onOptionsItemSelected(item));
     }
 
-    private void loadListLayout(){
-        mList = findViewById(R.id.main_list);
-        adapter = new StoreItemAdapter(this);
+    //add fragment here
+    private void loadFragmentList(){
+        //mList references RecyclerView from activity_toolstore.xml
+        //mList = findViewById(R.id.main_list);
+        fragment = MainFragment.newInstance();
+
+
+
+
 
         linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -129,73 +134,10 @@ public class ToolStoreActivity extends MyBaseActivity {
         mList.setHasFixedSize(true);
         mList.setLayoutManager(linearLayoutManager);
         mList.addItemDecoration(dividerItemDecoration);
-        mList.setAdapter(adapter);
+//        mList.setAdapter(adapter);
     }
 
-    public void fetchToolsFromServer() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Loading...");
-        progressDialog.show();
 
-        ISpan transaction = Sentry.getSpan();
-        ISpan httpSpan = transaction.startChild("http.client", "fetch tools from server");
-
-        String domain = this.getToolStoreDomain();
-        String getToolsURL = domain + this.END_POINT_TOOLS;
-
-        SentryTraceHeader sentryTraceHeader = httpSpan.toSentryTrace();
-
-        OkHttpClient client = new OkHttpClient.Builder()
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .writeTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(30, TimeUnit.SECONDS)
-                .build();
-
-        Request request = new Request.Builder()
-                .url(getToolsURL)
-                .header(sentryTraceHeader.getName(), sentryTraceHeader.getValue())
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
-
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                progressDialog.dismiss();
-                if(response.isSuccessful()){
-                    String responseStr = response.body().string();
-                    ToolStoreActivity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            progressDialog.dismiss();
-                            httpSpan.finish(SpanStatus.OK);
-
-                            if (responseStr != null && !responseStr.equals("")) {
-                                ToolStoreActivity.this.runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        ISpan taskSpan = transaction.startChild("task", "Process server response.");
-
-                                        processGetToolsResponse(responseStr);
-
-                                        taskSpan.finish(SpanStatus.OK);
-                                    }
-                                });
-                            }
-                            transaction.finish(SpanStatus.OK);
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                progressDialog.dismiss();
-                httpSpan.setThrowable(e);
-                httpSpan.finish(SpanStatus.INTERNAL_ERROR);
-                transaction.finish(SpanStatus.INTERNAL_ERROR);
-            }
-        });
-    }
 
 
     public void checkout(List<StoreItem> selectedStoreItems){
@@ -300,7 +242,7 @@ public class ToolStoreActivity extends MyBaseActivity {
                 jsonObject.put("price", s.getPrice());
                 jsonObject.put("image", s.getImage());
                 jsonObject.put("type", s.getType());
-                jsonObject.put("id", s.getId());
+                jsonObject.put("id", s.getItemId());
 
                 jsonArray.put(jsonObject);
             }
@@ -317,37 +259,6 @@ public class ToolStoreActivity extends MyBaseActivity {
         return response;
     }
 
-    private void processGetToolsResponse(String body) {
-
-        JSONObject jsonObject = null;
-        try {
-            JSONArray jsonArray = new JSONArray(body);
-
-            for(int i = 0; i < jsonArray.length(); i++){
-                jsonObject = jsonArray.getJSONObject(i);
-                StoreItem storeitem = new StoreItem();
-                storeitem.setName(jsonObject.getString("name"));
-                storeitem.setSku(jsonObject.getString("sku"));
-                storeitem.setPrice(jsonObject.getInt("price"));
-                storeitem.setImage(jsonObject.getString("image"));
-                storeitem.setType(jsonObject.getString("type"));
-                storeitem.setId(jsonObject.getInt("id"));
-
-                toolStoreItems.add(storeitem);
-            }
-        } catch (JSONException e) {
-            ISpan span = Sentry.getSpan();
-            if (span != null) {
-                span.setThrowable(e);
-                span.setStatus(SpanStatus.INTERNAL_ERROR);
-                span.finish();
-                Sentry.captureException(e);
-            }
-        }
-        finally {
-            adapter.notifyDataSetChanged();
-        }
-    }
 
 
     class ItemDeliveryProcessException extends RuntimeException{
