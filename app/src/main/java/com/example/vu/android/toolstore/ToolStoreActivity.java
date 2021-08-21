@@ -48,9 +48,9 @@ public class ToolStoreActivity extends MyBaseActivity {
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
-    private RecyclerView mList;
-    private LinearLayoutManager linearLayoutManager;
-    private DividerItemDecoration dividerItemDecoration;
+//    private RecyclerView mList;
+//    private LinearLayoutManager linearLayoutManager;
+//    private DividerItemDecoration dividerItemDecoration;
     protected StoreItemAdapter adapter;
     private Menu menu;
     protected List<StoreItem> toolStoreItems = new ArrayList<StoreItem>();
@@ -91,31 +91,16 @@ public class ToolStoreActivity extends MyBaseActivity {
         return true;
     }
 
-    private String getToolStoreDomain() {
-        String domain = null;
-        try {
-            final ApplicationInfo appInfo = getApplicationContext().getPackageManager().getApplicationInfo(getApplicationContext().getPackageName(),
-                    PackageManager.GET_META_DATA);
-
-            if (appInfo.metaData != null) {
-                domain = (String) appInfo.metaData.get("toolstore.domain");
-            }
-        } catch (Exception e) {
-            Sentry.captureException(e);
-        }
-        return domain;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
-            case R.id.action_cart:
-                this.checkout(this.adapter.getSelectedStoreItems());
-                return(true);
-
-        }
-        return(super.onOptionsItemSelected(item));
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch(item.getItemId()) {
+//            case R.id.action_cart:
+//                this.checkout(this.adapter.getSelectedStoreItems());
+//                return(true);
+//
+//        }
+//        return(super.onOptionsItemSelected(item));
+//    }
 
     //add fragment here
     private void loadFragmentList(){
@@ -127,146 +112,26 @@ public class ToolStoreActivity extends MyBaseActivity {
 
 
 
-        linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        dividerItemDecoration = new DividerItemDecoration(mList.getContext(), linearLayoutManager.getOrientation());
-
-        mList.setHasFixedSize(true);
-        mList.setLayoutManager(linearLayoutManager);
-        mList.addItemDecoration(dividerItemDecoration);
+//        linearLayoutManager = new LinearLayoutManager(this);
+//        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+//        dividerItemDecoration = new DividerItemDecoration(mList.getContext(), linearLayoutManager.getOrientation());
+//
+//        mList.setHasFixedSize(true);
+//        mList.setLayoutManager(linearLayoutManager);
+//        mList.addItemDecoration(dividerItemDecoration);
 //        mList.setAdapter(adapter);
     }
 
 
 
 
-    public void checkout(List<StoreItem> selectedStoreItems){
-        ITransaction checkoutTransaction = Sentry.startTransaction("checkout [android]", "http.client");
-        checkoutTransaction.setOperation("http");
-        Sentry.configureScope(scope -> scope.setTransaction(checkoutTransaction));
-
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Checking Out...");
-        progressDialog.show();
-
-        ISpan processDataSpan = checkoutTransaction.startChild("task", "process_cart_data");
-        JSONObject object = this.buildJSONPostData(selectedStoreItems);
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-        processDataSpan.finish();
-
-        ISpan httpSpan = checkoutTransaction.startChild("http.client", "call checkout");
-        SentryTraceHeader httpSpanHeaders = httpSpan.toSentryTrace();
-
-        String domain = this.getToolStoreDomain();
-        String checkoutURL = domain + this.END_POINT_CHECKOUT;
-
-        OkHttpClient client = new OkHttpClient.Builder()
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .writeTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(30, TimeUnit.SECONDS)
-                .build();
-
-        RequestBody body = RequestBody.create(object.toString(), JSON);
-
-        Request request = new Request.Builder()
-                .url(checkoutURL)
-                .header(httpSpanHeaders.getName(), httpSpanHeaders.getValue())
-                .header("email", "someone@gmail.com")
-                .post(body)
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
-
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                progressDialog.dismiss();
-                if(!response.isSuccessful()){
-                    ToolStoreActivity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            progressDialog.dismiss();
-                            httpSpan.finish(SpanStatus.INTERNAL_ERROR);
-
-                            processDeliveryItem(checkoutTransaction);
-
-                            checkoutTransaction.finish(SpanStatus.INTERNAL_ERROR);
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                progressDialog.dismiss();
-                httpSpan.setThrowable(e);
-                httpSpan.finish(SpanStatus.INTERNAL_ERROR);
-                httpSpan.finish();
-                Sentry.captureException(e);
-
-                processDeliveryItem(checkoutTransaction);
-                checkoutTransaction.finish(SpanStatus.INTERNAL_ERROR);
-            }
-        });
-    }
-
-    private void processDeliveryItem(ITransaction checkoutTransaction){
-        ISpan processDeliverySpan = checkoutTransaction.startChild("task", "process delivery");
-
-        try{
-            throw new ItemDeliveryProcessException("Failed to init delivery workflow");
-        }catch(Exception e){
-            addAttachment();
-            processDeliverySpan.setThrowable(e);
-            processDeliverySpan.setStatus(SpanStatus.INTERNAL_ERROR);
-            Sentry.captureException(e);
-        }
-
-        if(processDeliverySpan.getStatus() !=  SpanStatus.INTERNAL_ERROR){
-            processDeliverySpan.setStatus(SpanStatus.OK);
-        }
-        processDeliverySpan.finish();
-    }
-
-    private JSONObject buildJSONPostData(List<StoreItem> selectedStoreItems){
-        JSONObject jsonObject, response = new JSONObject();
-        JSONArray jsonArray  = new JSONArray();
-        try {
-            for(StoreItem s:selectedStoreItems){
-                jsonObject = new JSONObject();
-                jsonObject.put("name", s.getName());
-                jsonObject.put("sku", s.getSku());
-                jsonObject.put("price", s.getPrice());
-                jsonObject.put("image", s.getImage());
-                jsonObject.put("type", s.getType());
-                jsonObject.put("id", s.getItemId());
-
-                jsonArray.put(jsonObject);
-            }
-            response.put("cart",jsonArray);
-        } catch (JSONException e) {
-            ISpan span = Sentry.getSpan();
-            if(span != null){
-                span.setThrowable(e);
-                span.finish(SpanStatus.INTERNAL_ERROR);
-                span.finish();
-            }
-            Sentry.captureException(e);
-        }
-        return response;
-    }
 
 
 
-    class ItemDeliveryProcessException extends RuntimeException{
 
-        public ItemDeliveryProcessException(String message){
-            super(message);
-        }
-    }
+
+
+
 
 
 }

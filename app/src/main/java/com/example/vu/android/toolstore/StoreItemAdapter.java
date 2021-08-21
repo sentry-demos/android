@@ -8,7 +8,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vu.android.R;
@@ -16,15 +15,17 @@ import com.example.vu.android.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StoreItemAdapter extends RecyclerView.Adapter<StoreItemAdapter.ViewHolder>{
+public class StoreItemAdapter extends RecyclerView.Adapter<StoreItemAdapter.ViewHolder> {
 
     private Context context;
     private List<StoreItem> list;
     private List<StoreItem> selectedStoreItems;
+    private ItemClickListener clickListener;
+    private int BadgeNumber = 0;
 
-    public StoreItemAdapter(ItemClickListener clickListener) {
-        this.context = toolStoreActivity.getApplicationContext();
-        this.list = toolStoreActivity.toolStoreItems;
+    public StoreItemAdapter(List<StoreItem> list, ItemClickListener clickListener) {
+        this.list = list;
+        this.clickListener  = clickListener;
         selectedStoreItems = new ArrayList<StoreItem>();
     }
 
@@ -34,7 +35,7 @@ public class StoreItemAdapter extends RecyclerView.Adapter<StoreItemAdapter.View
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.single_item, parent, false);
+        View v = LayoutInflater.from(context).inflate(R.layout.single_item, parent, false);
         return new ViewHolder(v);
     }
 
@@ -44,7 +45,7 @@ public class StoreItemAdapter extends RecyclerView.Adapter<StoreItemAdapter.View
 
         holder.textName.setText( storeItem.getName());
         holder.textSKU.setText("SKU: " + String.valueOf(storeItem.getSku()));
-        holder.textPrice.setText("Price: " + String.valueOf("$" + storeItem.getPrice()));
+        holder.textPrice.setText("Price: " + String.valueOf(storeItem.getPrice()) + "$");
         holder.imageItem.setImageResource(this.getDrawable(String.valueOf(storeItem.getImage())));
 
         holder.addToCartBtn.setOnClickListener(new View.OnClickListener() {
@@ -52,10 +53,13 @@ public class StoreItemAdapter extends RecyclerView.Adapter<StoreItemAdapter.View
             public void onClick(View v ) {
                 StoreItem selectedItem = list.get(holder.getAdapterPosition());
                 selectedStoreItems.add(selectedItem);
-
-                //MainFragment.setBadgeNumber();
+                //toolStoreActivity.setBadgeNumber();
             }
         });
+    }
+
+    public int getBadgeNumber() {
+        return BadgeNumber;
     }
 
     private int getDrawable(String path){
@@ -68,8 +72,14 @@ public class StoreItemAdapter extends RecyclerView.Adapter<StoreItemAdapter.View
         return s;
     }
 
+    @Override
     public int getItemCount() {
         return list.size();
+    }
+
+    public interface ItemClickListener {
+
+        public void onItemClick(StoreItem storeItem);
     }
 
 
@@ -88,11 +98,6 @@ public class StoreItemAdapter extends RecyclerView.Adapter<StoreItemAdapter.View
             imageItem = itemView.findViewById(R.id.main_image);
             addToCartBtn = itemView.findViewById(R.id.add_to_cart_btn);
         }
-    }
-
-    public interface ItemClickListener {
-
-        public void onItemClick(StoreItem storeItem);
     }
 
 }
