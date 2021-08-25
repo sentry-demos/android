@@ -35,7 +35,7 @@ public class StoreItemAdapter extends RecyclerView.Adapter<StoreItemAdapter.View
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.single_item, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.single_item, parent, false);
         return new ViewHolder(v);
     }
 
@@ -53,9 +53,14 @@ public class StoreItemAdapter extends RecyclerView.Adapter<StoreItemAdapter.View
             public void onClick(View v ) {
                 StoreItem selectedItem = list.get(holder.getAdapterPosition());
                 selectedStoreItems.add(selectedItem);
+                clickListener.onItemClick(selectedItem);
                 //toolStoreActivity.setBadgeNumber();
             }
         });
+    }
+
+    public void setBadgeNumber(int BadgeNumber) {
+        BadgeNumber = BadgeNumber;
     }
 
     public int getBadgeNumber() {

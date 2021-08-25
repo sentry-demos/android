@@ -2,6 +2,7 @@ package com.example.vu.android.toolstore;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.app.ProgressDialog;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -73,21 +75,26 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
     private DividerItemDecoration dividerItemDecoration;
     private List<StoreItem> selectedStoreItems;
     protected StoreItemAdapter adapter;
+    private Activity mActivity;
     ProgressDialog progressDialog = null;
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     //private ArrayList<DataModel> list = new ArrayList<>();
     public String END_POINT_TOOLS = "/tools";
     public String END_POINT_CHECKOUT = "/checkout";
 
-    TextView textCartItemCount;
-    int mCartItemCount = -1;
+
+    int mCartItemCount = 0;
     public MainFragment() {
         // Required empty public constructor
-        this.fetchToolsFromServer();
+    }
 
-
-
-
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Activity a;
+        if (context instanceof Activity){
+            a=(Activity) context;
+        }
     }
 
     /**
@@ -108,39 +115,36 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         }
     }
 
-
-
-    public void setBadgeNumber(){
-        textCartItemCount.setText(String.valueOf(++mCartItemCount));
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view=  inflater.inflate(R.layout.fragment_main, container, false);
         initRecyclerView(view);
-        fetchToolsFromServer();
         return view;
     }
 
     private void initRecyclerView(View view) {
-        mList = view.findViewById(R.id.main_list);
-        StoreItemAdapter adapter = new StoreItemAdapter(list, this);
+        this.fetchToolsFromServer();
+        adapter = new StoreItemAdapter(toolStoreItems, this);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
 
-        dividerItemDecoration = new DividerItemDecoration(mList.getContext(), layoutManager.getOrientation());
+        dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), layoutManager.getOrientation());
 
-        mList.setHasFixedSize(true);
-        mList.setLayoutManager(layoutManager);
-        mList.addItemDecoration(dividerItemDecoration);
-        mList.setAdapter(adapter);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.addItemDecoration(dividerItemDecoration);
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+    }
+
+    public void setBadgeNumber(){
+        //int num = adapter.getBadgeNumber();
+        ((ToolStoreActivity) getActivity()).textCartItemCount.setText(String.valueOf(++mCartItemCount));
+        //adapter.setBadgeNumber(num);
     }
 
     //Might have to add this eventually
@@ -161,9 +165,10 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
 
     public void fetchToolsFromServer() {
         //I think this will work?
-        progressDialog = new ProgressDialog(getActivity().getApplicationContext());
-        progressDialog.setMessage("Loading...");
-        progressDialog.show();
+        Context activity = getActivity();
+//        progressDialog = new ProgressDialog(getContext());
+//        progressDialog.setMessage("Loading...");
+//        progressDialog.show();
 
         ISpan transaction = Sentry.getSpan();
         ISpan httpSpan = transaction.startChild("http.client", "fetch tools from server");
@@ -188,14 +193,14 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                progressDialog.dismiss();
+                //progressDialog.dismiss();
                 if(response.isSuccessful()){
                     String responseStr = response.body().string();
                     //I think this will work, getActivity( = ToolStoreActivity.this
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            progressDialog.dismiss();
+                            //progressDialog.dismiss();
                             httpSpan.finish(SpanStatus.OK);
 
                             if (responseStr != null && !responseStr.equals("")) {
@@ -218,7 +223,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                progressDialog.dismiss();
+                //progressDialog.dismiss();
                 httpSpan.setThrowable(e);
                 httpSpan.finish(SpanStatus.INTERNAL_ERROR);
                 transaction.finish(SpanStatus.INTERNAL_ERROR);
@@ -270,6 +275,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
     private String getToolStoreDomain() {
         String domain = null;
         try {
+            Context activity = getContext();
             final ApplicationInfo appInfo = getActivity().getApplicationContext().getPackageManager().getApplicationInfo(getActivity().getApplicationContext().getPackageName(),
                     PackageManager.GET_META_DATA);
 
@@ -282,14 +288,15 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         return domain;
     }
 
-    public void checkout(List<StoreItem> selectedStoreItems){
+    public void checkout(){
+        selectedStoreItems = this.adapter.getSelectedStoreItems();
         ITransaction checkoutTransaction = Sentry.startTransaction("checkout [android]", "http.client");
         checkoutTransaction.setOperation("http");
         Sentry.configureScope(scope -> scope.setTransaction(checkoutTransaction));
 
-        final ProgressDialog progressDialog = new ProgressDialog(getActivity().getApplicationContext());
-        progressDialog.setMessage("Checking Out...");
-        progressDialog.show();
+//        final ProgressDialog progressDialog = new ProgressDialog(getActivity().getApplicationContext());
+//        progressDialog.setMessage("Checking Out...");
+//        progressDialog.show();
 
         ISpan processDataSpan = checkoutTransaction.startChild("task", "process_cart_data");
         JSONObject object = this.buildJSONPostData(selectedStoreItems);
@@ -325,13 +332,13 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                progressDialog.dismiss();
+//                progressDialog.dismiss();
                 if(!response.isSuccessful()){
                     //I think this will work?
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            progressDialog.dismiss();
+                            //progressDialog.dismiss();
                             httpSpan.finish(SpanStatus.INTERNAL_ERROR);
 
                             processDeliveryItem(checkoutTransaction);
@@ -344,7 +351,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                progressDialog.dismiss();
+                //progressDialog.dismiss();
                 httpSpan.setThrowable(e);
                 httpSpan.finish(SpanStatus.INTERNAL_ERROR);
                 httpSpan.finish();
@@ -384,15 +391,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         return response;
     }
 
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
-            case R.id.action_cart:
-                this.checkout(this.adapter.getSelectedStoreItems());
-                return(true);
 
-        }
-        return(super.onOptionsItemSelected(item));
-    }
 
     private void processDeliveryItem(ITransaction checkoutTransaction){
         ISpan processDeliverySpan = checkoutTransaction.startChild("task", "process delivery");

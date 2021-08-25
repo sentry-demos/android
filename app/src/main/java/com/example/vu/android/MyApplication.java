@@ -41,7 +41,6 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
 
         SentryAndroid.init(this, options -> {
 
@@ -71,7 +70,7 @@ public class MyApplication extends Application {
                     this.launchUserFeedback(event.getEventId());
                 }
 
-                event.setExtra("fullStoryURL", this.mCurrentActivity.getFullStorySessionURL());
+                //event.setExtra("fullStoryURL", this.mCurrentActivity.getFullStorySessionURL());
 
                 //Drop event
                 if (SentryLevel.DEBUG.equals(event.getLevel()))

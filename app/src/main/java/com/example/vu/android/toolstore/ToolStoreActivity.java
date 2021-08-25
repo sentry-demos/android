@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,16 +46,17 @@ public class ToolStoreActivity extends MyBaseActivity {
 
     public String END_POINT_TOOLS = "/tools";
     public String END_POINT_CHECKOUT = "/checkout";
+    static boolean active = false;
+    MainFragment fragment = null;
+
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
-//    private RecyclerView mList;
+    //    private RecyclerView mList;
 //    private LinearLayoutManager linearLayoutManager;
 //    private DividerItemDecoration dividerItemDecoration;
-    protected StoreItemAdapter adapter;
     private Menu menu;
     protected List<StoreItem> toolStoreItems = new ArrayList<StoreItem>();
-    protected MainFragment fragment;
     ProgressDialog progressDialog = null;
 
     TextView textCartItemCount;
@@ -66,9 +68,8 @@ public class ToolStoreActivity extends MyBaseActivity {
 
         setContentView(R.layout.activity_toolstore);
         //this.loadListLayout();
+
         this.loadFragmentList();
-        //fetching tools from Fragment
-        //this.fetchToolsFromServer();
     }
 
     @Override
@@ -79,7 +80,7 @@ public class ToolStoreActivity extends MyBaseActivity {
         final MenuItem menuItem = menu.findItem(R.id.action_cart);
         View actionView = menuItem.getActionView();
         textCartItemCount = (TextView) actionView.findViewById(R.id.cart_badge);
-        fragment.setBadgeNumber();
+        //fragment.setBadgeNumber();
 
         actionView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,25 +92,14 @@ public class ToolStoreActivity extends MyBaseActivity {
         return true;
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch(item.getItemId()) {
-//            case R.id.action_cart:
-//                this.checkout(this.adapter.getSelectedStoreItems());
-//                return(true);
-//
-//        }
-//        return(super.onOptionsItemSelected(item));
-//    }
-
-    //add fragment here
-    private void loadFragmentList(){
+    //add fragment he
+    private void loadFragmentList() {
         //mList references RecyclerView from activity_toolstore.xml
         //mList = findViewById(R.id.main_list);
         fragment = MainFragment.newInstance();
-
-
-
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.main_list, fragment, "main_fragment");
+        transaction.commit();
 
 
 //        linearLayoutManager = new LinearLayoutManager(this);
@@ -122,16 +112,34 @@ public class ToolStoreActivity extends MyBaseActivity {
 //        mList.setAdapter(adapter);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.action_cart:
+                fragment.checkout();
+                return(true);
 
+        }
+        return(super.onOptionsItemSelected(item));
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        active = true;
+    }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        active = false;
+    }
 
+    public void setTextCartItemCount(TextView textCartItemCount) {
+        this.textCartItemCount = textCartItemCount;
+    }
 
-
-
-
-
-
-
-
+    public TextView getTextCartItemCount() {
+        return textCartItemCount;
+    }
 }
