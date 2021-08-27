@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+import io.sentry.android.fragment.FragmentLifecycleIntegration;
 
 import java.util.List;
 
@@ -53,6 +54,14 @@ public class MyApplication extends Application {
                 e.printStackTrace();
             }
 
+            options.addIntegration(
+                    new FragmentLifecycleIntegration(
+                            MyApplication.this,
+                            true,
+                            true
+                    )
+            );
+
             options.setAttachThreads(true);
             options.setBeforeSend((event, hint) -> {
 
@@ -70,7 +79,7 @@ public class MyApplication extends Application {
                     this.launchUserFeedback(event.getEventId());
                 }
 
-                event.setExtra("fullStoryURL", this.mCurrentActivity.getFullStorySessionURL());
+                //event.setExtra("fullStoryURL", this.mCurrentActivity.getFullStorySessionURL());
 
                 //Drop event
                 if (SentryLevel.DEBUG.equals(event.getLevel()))

@@ -1,6 +1,8 @@
 package com.example.vu.android.toolstore;
 
-public class StoreItem {
+import androidx.fragment.app.Fragment;
+
+public class StoreItem extends Fragment {
 
     String sku, name, image,type;
     int id, price;
@@ -33,7 +35,7 @@ public class StoreItem {
         this.type = type;
     }
 
-    public void setId(int id) {
+    public void setItemId(int id) {
         this.id = id;
     }
 
@@ -57,7 +59,7 @@ public class StoreItem {
         return type;
     }
 
-    public int getId() {
+    public int getItemId() {
         return id;
     }
 

@@ -1,6 +1,5 @@
 package com.example.vu.android.toolstore;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,15 +16,13 @@ import java.util.List;
 
 public class StoreItemAdapter extends RecyclerView.Adapter<StoreItemAdapter.ViewHolder> {
 
-    private Context context;
     private List<StoreItem> list;
     private List<StoreItem> selectedStoreItems;
-    private ToolStoreActivity toolStoreActivity;
+    private ItemClickListener clickListener;
 
-    public StoreItemAdapter(ToolStoreActivity toolStoreActivity) {
-        this.toolStoreActivity = toolStoreActivity;
-        this.context = toolStoreActivity.getApplicationContext();
-        this.list = toolStoreActivity.toolStoreItems;
+    public StoreItemAdapter(List<StoreItem> list, ItemClickListener clickListener) {
+        this.list = list;
+        this.clickListener  = clickListener;
         selectedStoreItems = new ArrayList<StoreItem>();
     }
 
@@ -35,7 +32,7 @@ public class StoreItemAdapter extends RecyclerView.Adapter<StoreItemAdapter.View
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.single_item, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.single_item, parent, false);
         return new ViewHolder(v);
     }
 
@@ -53,8 +50,7 @@ public class StoreItemAdapter extends RecyclerView.Adapter<StoreItemAdapter.View
             public void onClick(View v ) {
                 StoreItem selectedItem = list.get(holder.getAdapterPosition());
                 selectedStoreItems.add(selectedItem);
-
-                toolStoreActivity.setBadgeNumber();
+                clickListener.onItemClick(selectedItem);
             }
         });
     }
@@ -72,6 +68,11 @@ public class StoreItemAdapter extends RecyclerView.Adapter<StoreItemAdapter.View
     @Override
     public int getItemCount() {
         return list.size();
+    }
+
+    public interface ItemClickListener {
+
+        public void onItemClick(StoreItem storeItem);
     }
 
 
