@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+import io.sentry.android.fragment.FragmentLifecycleIntegration;
 
 import java.util.List;
 
@@ -52,6 +53,14 @@ public class MyApplication extends Application {
             } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
             }
+
+            options.addIntegration(
+                    new FragmentLifecycleIntegration(
+                            MyApplication.this,
+                            true, // enabled by default
+                            true  // disabled by default
+                    )
+            );
 
             options.setAttachThreads(true);
             options.setBeforeSend((event, hint) -> {

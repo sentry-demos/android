@@ -86,7 +86,7 @@ public class MainActivity extends MyBaseActivity {
 
             Sentry.addBreadcrumb("Button for ANR clicked...");
             try {
-                Thread.sleep(10000);
+                Thread.sleep(20000);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }

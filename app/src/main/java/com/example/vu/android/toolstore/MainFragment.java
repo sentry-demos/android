@@ -166,9 +166,9 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
     public void fetchToolsFromServer() {
         //I think this will work?
         Context activity = getActivity();
-//        progressDialog = new ProgressDialog(getContext());
-//        progressDialog.setMessage("Loading...");
-//        progressDialog.show();
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
 
         ISpan transaction = Sentry.getSpan();
         ISpan httpSpan = transaction.startChild("http.client", "fetch tools from server");
@@ -193,14 +193,14 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                //progressDialog.dismiss();
+                progressDialog.dismiss();
                 if(response.isSuccessful()){
                     String responseStr = response.body().string();
                     //I think this will work, getActivity( = ToolStoreActivity.this
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            //progressDialog.dismiss();
+                            progressDialog.dismiss();
                             httpSpan.finish(SpanStatus.OK);
 
                             if (responseStr != null && !responseStr.equals("")) {
@@ -223,7 +223,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                //progressDialog.dismiss();
+                progressDialog.dismiss();
                 httpSpan.setThrowable(e);
                 httpSpan.finish(SpanStatus.INTERNAL_ERROR);
                 transaction.finish(SpanStatus.INTERNAL_ERROR);
@@ -233,8 +233,6 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
 
     @Override
     public void onItemClick(StoreItem storeItem) {
-        //StoreItem selectedItem = list.get(holder.getAdapterPosition());
-        //selectedStoreItems.add(selectedItem);
         setBadgeNumber();
         //TODO: might not need this
         adapter.notifyDataSetChanged();
@@ -294,9 +292,9 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         checkoutTransaction.setOperation("http");
         Sentry.configureScope(scope -> scope.setTransaction(checkoutTransaction));
 
-//        final ProgressDialog progressDialog = new ProgressDialog(getActivity().getApplicationContext());
-//        progressDialog.setMessage("Checking Out...");
-//        progressDialog.show();
+        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Checking Out...");
+        progressDialog.show();
 
         ISpan processDataSpan = checkoutTransaction.startChild("task", "process_cart_data");
         JSONObject object = this.buildJSONPostData(selectedStoreItems);
@@ -332,13 +330,13 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-//                progressDialog.dismiss();
+                progressDialog.dismiss();
                 if(!response.isSuccessful()){
                     //I think this will work?
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            //progressDialog.dismiss();
+                            progressDialog.dismiss();
                             httpSpan.finish(SpanStatus.INTERNAL_ERROR);
 
                             processDeliveryItem(checkoutTransaction);
@@ -351,7 +349,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                //progressDialog.dismiss();
+                progressDialog.dismiss();
                 httpSpan.setThrowable(e);
                 httpSpan.finish(SpanStatus.INTERNAL_ERROR);
                 httpSpan.finish();
