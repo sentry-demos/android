@@ -1,5 +1,5 @@
 SENTRY_ORG=testorg-az
-SENTRY_PROJECT=androidadamtest
+SENTRY_PROJECT=paranoid-android
 RELEASE=`sentry-cli releases propose-version`
 
 all: gradle_build setup_release
