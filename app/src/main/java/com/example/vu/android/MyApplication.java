@@ -57,8 +57,8 @@ public class MyApplication extends Application {
             options.addIntegration(
                     new FragmentLifecycleIntegration(
                             MyApplication.this,
-                            true, // enabled by default
-                            true  // disabled by default
+                            true,
+                            true
                     )
             );
 
