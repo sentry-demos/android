@@ -41,7 +41,7 @@ public class MainActivity extends MyBaseActivity {
 
         // Set the user in the current context.
         User user = new User();
-        user.setIpAddress(this.getIPAddress());
+        // user.setIpAddress(this.getIPAddress());
         Sentry.setUser(user);
 
         // Unhandled - ArithmeticException
@@ -135,11 +135,11 @@ public class MainActivity extends MyBaseActivity {
     }
 
 
-    private String getIPAddress(){
+//     private String getIPAddress(){
 
-        WifiManager wm = (WifiManager) this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        return Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
-    }
+//         WifiManager wm = (WifiManager) this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+//         return Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
+//     }
 
 }
 
