@@ -1,6 +1,5 @@
 package com.example.vu.android.toolstore;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +16,9 @@ import java.util.List;
 
 public class StoreItemAdapter extends RecyclerView.Adapter<StoreItemAdapter.ViewHolder> {
 
-    private Context context;
     private List<StoreItem> list;
     private List<StoreItem> selectedStoreItems;
     private ItemClickListener clickListener;
-    private int BadgeNumber = 0;
 
     public StoreItemAdapter(List<StoreItem> list, ItemClickListener clickListener) {
         this.list = list;
@@ -54,17 +51,8 @@ public class StoreItemAdapter extends RecyclerView.Adapter<StoreItemAdapter.View
                 StoreItem selectedItem = list.get(holder.getAdapterPosition());
                 selectedStoreItems.add(selectedItem);
                 clickListener.onItemClick(selectedItem);
-                //toolStoreActivity.setBadgeNumber();
             }
         });
-    }
-
-    public void setBadgeNumber(int BadgeNumber) {
-        BadgeNumber = BadgeNumber;
-    }
-
-    public int getBadgeNumber() {
-        return BadgeNumber;
     }
 
     private int getDrawable(String path){

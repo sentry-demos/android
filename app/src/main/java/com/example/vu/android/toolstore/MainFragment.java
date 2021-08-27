@@ -9,17 +9,12 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.app.ProgressDialog;
 
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -51,16 +46,8 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-import android.os.Bundle;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
 import com.example.vu.android.R;
 
-import java.util.ArrayList;
 
 
 /**
@@ -70,20 +57,15 @@ import java.util.ArrayList;
  */
 public class MainFragment extends Fragment implements StoreItemAdapter.ItemClickListener {
     protected List<StoreItem> toolStoreItems = new ArrayList<StoreItem>();
-    private List<StoreItem> list;
-    private RecyclerView mList;
     private DividerItemDecoration dividerItemDecoration;
     private List<StoreItem> selectedStoreItems;
     protected StoreItemAdapter adapter;
-    private Activity mActivity;
     ProgressDialog progressDialog = null;
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-    //private ArrayList<DataModel> list = new ArrayList<>();
     public String END_POINT_TOOLS = "/tools";
     public String END_POINT_CHECKOUT = "/checkout";
-
-
     int mCartItemCount = 0;
+
     public MainFragment() {
         // Required empty public constructor
     }
@@ -130,42 +112,18 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-
-
         dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), layoutManager.getOrientation());
-
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(dividerItemDecoration);
-
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
     }
 
     public void setBadgeNumber(){
-        //int num = adapter.getBadgeNumber();
         ((ToolStoreActivity) getActivity()).textCartItemCount.setText(String.valueOf(++mCartItemCount));
-        //adapter.setBadgeNumber(num);
     }
 
-    //Might have to add this eventually
-//    private void loadListLayout(){
-//        mList = findViewById(R.id.main_list);
-//        adapter = new StoreItemAdapter(this);
-//
-//        linearLayoutManager = new LinearLayoutManager(this);
-//        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-//        dividerItemDecoration = new DividerItemDecoration(mList.getContext(), linearLayoutManager.getOrientation());
-//
-//        mList.setHasFixedSize(true);
-//        mList.setLayoutManager(linearLayoutManager);
-//        mList.addItemDecoration(dividerItemDecoration);
-//        mList.setAdapter(adapter);
-//    }
-
-
     public void fetchToolsFromServer() {
-        //I think this will work?
-        Context activity = getActivity();
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage("Loading...");
         progressDialog.show();
@@ -196,7 +154,6 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
                 progressDialog.dismiss();
                 if(response.isSuccessful()){
                     String responseStr = response.body().string();
-                    //I think this will work, getActivity( = ToolStoreActivity.this
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -273,7 +230,6 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
     private String getToolStoreDomain() {
         String domain = null;
         try {
-            Context activity = getContext();
             final ApplicationInfo appInfo = getActivity().getApplicationContext().getPackageManager().getApplicationInfo(getActivity().getApplicationContext().getPackageName(),
                     PackageManager.GET_META_DATA);
 
@@ -332,7 +288,6 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 progressDialog.dismiss();
                 if(!response.isSuccessful()){
-                    //I think this will work?
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -388,8 +343,6 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         }
         return response;
     }
-
-
 
     private void processDeliveryItem(ITransaction checkoutTransaction){
         ISpan processDeliverySpan = checkoutTransaction.startChild("task", "process delivery");
