@@ -21,10 +21,10 @@ Additional documentation:
 
 | dependency    | version
 | ------------- |:-------------:|
-| sentry-java | 4.1.0 |
-| sentry-android-gradle-plugin | 1.7.35 |
+| sentry-java | 5.1.2 |
+| sentry-android-gradle-plugin | 2.1.4 |
 | Android Studio | 4.0.1 |
-| Gradle | 6.3 |
+| Gradle | 6.5 |
 | AVD | Nexus 5x API 29 x86, Pixel 2 API 29 |
 | sentry-cli | 1.55.1 |
 | macOS | Catalina 10.15.7 |
