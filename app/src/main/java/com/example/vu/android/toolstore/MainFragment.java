@@ -38,6 +38,7 @@ import io.sentry.ITransaction;
 import io.sentry.Sentry;
 import io.sentry.SentryTraceHeader;
 import io.sentry.SpanStatus;
+import io.sentry.android.okhttp.SentryOkHttpInterceptor;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -137,6 +138,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         SentryTraceHeader sentryTraceHeader = httpSpan.toSentryTrace();
 
         OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(SentryOkHttpInterceptor())
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .writeTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
@@ -268,6 +270,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         String checkoutURL = domain + this.END_POINT_CHECKOUT;
 
         OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(SentryOkHttpInterceptor())
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .writeTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
