@@ -130,15 +130,12 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         progressDialog.show();
 
         ISpan transaction = Sentry.getSpan();
-        ISpan httpSpan = transaction.startChild("http.client", "fetch tools from server");
 
         String domain = this.getToolStoreDomain();
         String getToolsURL = domain + this.END_POINT_TOOLS;
 
-        SentryTraceHeader sentryTraceHeader = httpSpan.toSentryTrace();
-
         OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(SentryOkHttpInterceptor())
+                .addInterceptor(new SentryOkHttpInterceptor())
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .writeTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
@@ -146,7 +143,6 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
 
         Request request = new Request.Builder()
                 .url(getToolsURL)
-                .header(sentryTraceHeader.getName(), sentryTraceHeader.getValue())
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
@@ -160,7 +156,6 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
                         @Override
                         public void run() {
                             progressDialog.dismiss();
-                            httpSpan.finish(SpanStatus.OK);
 
                             if (responseStr != null && !responseStr.equals("")) {
                                 getActivity().runOnUiThread(new Runnable() {
@@ -183,8 +178,6 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 progressDialog.dismiss();
-                httpSpan.setThrowable(e);
-                httpSpan.finish(SpanStatus.INTERNAL_ERROR);
                 transaction.finish(SpanStatus.INTERNAL_ERROR);
             }
         });
@@ -263,14 +256,11 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         }
         processDataSpan.finish();
 
-        ISpan httpSpan = checkoutTransaction.startChild("http.client", "call checkout");
-        SentryTraceHeader httpSpanHeaders = httpSpan.toSentryTrace();
-
         String domain = this.getToolStoreDomain();
         String checkoutURL = domain + this.END_POINT_CHECKOUT;
 
         OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(SentryOkHttpInterceptor())
+                .addInterceptor(new SentryOkHttpInterceptor())
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .writeTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
@@ -280,7 +270,6 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
 
         Request request = new Request.Builder()
                 .url(checkoutURL)
-                .header(httpSpanHeaders.getName(), httpSpanHeaders.getValue())
                 .header("email", "someone@gmail.com")
                 .post(body)
                 .build();
@@ -295,7 +284,6 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
                         @Override
                         public void run() {
                             progressDialog.dismiss();
-                            httpSpan.finish(SpanStatus.INTERNAL_ERROR);
 
                             processDeliveryItem(checkoutTransaction);
 
@@ -308,9 +296,6 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 progressDialog.dismiss();
-                httpSpan.setThrowable(e);
-                httpSpan.finish(SpanStatus.INTERNAL_ERROR);
-                httpSpan.finish();
                 Sentry.captureException(e);
 
                 processDeliveryItem(checkoutTransaction);
