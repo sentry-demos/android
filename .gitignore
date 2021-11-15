@@ -16,3 +16,4 @@ app/.settings/
 app/.classpath
 app/src/main/AndroidManifest.xml
 sentry.properties
+Makefile
