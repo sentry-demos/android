@@ -68,7 +68,7 @@
 
         <meta-data
             android:name="toolstore.domain"
-            android:value="https://ido-flask-m3uuizd7iq-uc.a.run.app" />
+            android:value="https://admin-flask-m3uuizd7iq-uc.a.run.app" />
 
     </application>
 
