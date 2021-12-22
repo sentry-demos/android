@@ -130,17 +130,37 @@ right when pop-up comes , event should be sent to Sentry. click 'close-up'.
 See AndroidManifest.xml for different settings we tweak for demo's (e.g. default Session time, default ANR time
 
 ## How To Make a New Release
-Standard - Incrementing these numbers in src/build.gradle. Change only versionCode, or both. can match like 14, 1.4
+
+:warning: Only follow these steps when on the `master` branch, with no untracked git changes. This is necessary because we rely on these releases for our automated test data ("TDA") and don't want unintended local modifications (i.e. to DSNs or project names) to accidentally make it into our automated data. :warning:
+
+### Part 1: Generate Release artifacts
+
+1. **Increment both `versionName` and `versionCode` by 1 in `build.gradle`.** I.e. in the below example, we updated versionCode from `12` to `13` and versionName from `1.2.0` to `1.3.0`.
 ```
 defaultConfig {
     applicationId "com.example.vu.android"
     minSdkVersion 21
     targetSdkVersion 29
     versionCode 13
-    versionName "1.3"
+    versionName "1.3.0"
 }
 ```
-This would make for a release of `1.3.0 (13) com.example.vu.androidh@1.3+13`.
+
+(This would make for a release of `1.3.0 (13) com.example.vu.androidh@1.3+13`.)
+
+2. **Run `./generate_release_artifacts.sh`, which generates debug-build and release-build `.apk` files.**
+3. **Checkout a new git branch (if your release version is 1.3.0, you can call the branch 1.3.0). Commit the changes to `build.gradle`, `app-release.apk`, and `app-debug.apk`.**
+4. **Push up the changes in a pull request.**
+5. **Get an approval and merge the changes.**
+
+### Part 2: Create the Github release
+
+1. After completing the steps in Part 1, and once your release branch is merged in, checkout the `master` branch and pull down the latest changes. Ensure your branch is clean (no untracked git changes).
+2. Run `./github_release.sh`, and select `y` when prompted.
+3. That's it. You'll see that a new release was created in https://github.com/sentry-demos/android/releases.
+
+### Other Notes on releases
+
 The version code is unique. This is already part of build system in Android. The app won't compile without it.
 
 Optional - Setting the release in AndroidManifest.xml will override what's set in src/build.gradle. Possible uses cases would be:
