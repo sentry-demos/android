@@ -1,4 +1,4 @@
-PACKAGE_NAME=com.example.vu.android
+PACKAGE_NAME=com.example.vu.android # minor todo: we could grab this from build.gradle instead of hardcoding it
 PACKAGE_VERSION=$(adb shell dumpsys package $PACKAGE_NAME | grep versionName | awk -F "=" '/1/ {print $2}')
 REPO=sentry-demos/android
 
