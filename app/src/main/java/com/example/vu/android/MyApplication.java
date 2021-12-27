@@ -22,8 +22,6 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        Specto.init(this);
-
         SentryAndroid.init(this, options -> {
 
             // This callback is used before the event is sent to Sentry.
@@ -59,6 +57,8 @@ public class MyApplication extends Application {
                     return event;
             });
         });
+
+        Specto.init(this);
 
     }
 
