@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.vu.android.toolstore.ToolStoreActivity;
 
+import dev.specto.android.core.Specto;
 import io.sentry.Breadcrumb;
 import io.sentry.Sentry;
 import io.sentry.SentryLevel;
@@ -107,6 +108,8 @@ public class MainActivity extends AppCompatActivity {
 
             NativeSample.message();
         });
+
+        Specto.markAppStartupComplete();
     }
 
     @Override

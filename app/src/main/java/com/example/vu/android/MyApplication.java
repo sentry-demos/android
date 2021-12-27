@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import java.util.List;
 
+import dev.specto.android.core.Specto;
 import io.sentry.EventProcessor;
 import io.sentry.ISpan;
 import io.sentry.ITransaction;
@@ -20,6 +21,8 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        Specto.init(this);
 
         SentryAndroid.init(this, options -> {
 
