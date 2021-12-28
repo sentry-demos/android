@@ -24,9 +24,52 @@
             android:layout_gravity="center_horizontal">
 
             <TextView
+                android:id="@+id/okhttp_calls"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="OkHttp Sample"
+                android:textColor="#4A3E56"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/rubik_regular" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="OkHttp response text"
+                android:textColor="#4A3E56"
+                android:textSize="14sp"
+                android:textStyle="normal"
+                android:fontFamily="@font/rubik_regular" />
+
+            <Button
+                android:id="@+id/sample_get"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/mybutton"
+                android:text="Sample HTTP GET with Transaction"
+                android:textColor="#FFFFFF"
+                android:fontFamily="@font/rubik_medium"
+                android:textAllCaps="false"/>
+            <Button
+                android:id="@+id/sample_get2"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/mybutton"
+                android:text="Sample HTTP GET no Transaction"
+                android:textColor="#FFFFFF"
+                android:fontFamily="@font/rubik_medium"
+                android:textAllCaps="false"/>
+
+            <TextView
                 android:id="@+id/unhandled_java_errors"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:text="Unhandled Error + Attachment"
                 android:textColor="#4A3E56"
                 android:textSize="20sp"
@@ -39,7 +82,7 @@
                 android:layout_height="45dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/mybutton"
-                android:text="ArithmeticException"
+                android:text="Arithmetic Exception"
                 android:textColor="#FFFFFF"
                 android:fontFamily="@font/rubik_medium"
                 android:textAllCaps="false"/>

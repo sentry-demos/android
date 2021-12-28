@@ -2,21 +2,31 @@ package com.example.vu.android;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.wifi.WifiManager;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.format.Formatter;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
-import androidx.appcompat.app.AppCompatActivity;
+import android.widget.TextView;
 
 import com.example.vu.android.toolstore.ToolStoreActivity;
 
+import java.net.URL;
+import java.util.concurrent.TimeUnit;
+
 import io.sentry.Breadcrumb;
 import io.sentry.ISpan;
+import io.sentry.ITransaction;
 import io.sentry.Sentry;
 import io.sentry.SentryLevel;
+import io.sentry.SpanStatus;
+import io.sentry.android.okhttp.SentryOkHttpInterceptor;
 import io.sentry.protocol.User;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class MainActivity extends MyBaseActivity {
 
@@ -33,7 +43,7 @@ public class MainActivity extends MyBaseActivity {
         Sentry.setTag("customerType", "enterprise");
 
         Breadcrumb breadcrumb = new Breadcrumb();
-        breadcrumb.setMessage("Android activity was created");
+        breadcrumb.setMessage("Android activity was created... ");
         breadcrumb.setLevel(SentryLevel.INFO);
         breadcrumb.setData("Activity Name", activity);
         Sentry.addBreadcrumb( breadcrumb );
@@ -43,6 +53,137 @@ public class MainActivity extends MyBaseActivity {
         User user = new User();
         // user.setIpAddress(this.getIPAddress());
         Sentry.setUser(user);
+
+        String urlGET = "";
+        String urlGETPath = "/unhandled";
+        Context context = this;
+        ApplicationInfo appInfo = null;
+        try {
+            appInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+            urlGET = (String) appInfo.metaData.get("appmon.domain") + urlGETPath;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        String finalUrlGET = urlGET;
+
+        Button sampleHttpGet = findViewById(R.id.sample_get);
+        sampleHttpGet.setOnClickListener(view -> {
+
+            ITransaction transaction = Sentry.startTransaction("sampleHttpGet()", "task", true);
+            
+            //OkHttp request from https://gist.github.com/just-kip/1376527af60c74b07bef7bd7f136ff56
+
+            Breadcrumb bc = new Breadcrumb();
+            bc.setMessage("Button for Sample HTTP GET clicked... ");
+            //bc.setLevel(SentryLevel.ERROR);
+            bc.setData("url", finalUrlGET);
+            Sentry.addBreadcrumb(bc);
+
+            final TextView textView = (TextView) findViewById(R.id.textView);
+
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .addInterceptor(new SentryOkHttpInterceptor())
+                    .connectTimeout(10, TimeUnit.SECONDS)
+                    .writeTimeout(10, TimeUnit.SECONDS)
+                    .readTimeout(30, TimeUnit.SECONDS)
+                    .build();
+
+            final Request request = new Request.Builder()
+                    .url(finalUrlGET)
+                    .build();
+
+            AsyncTask<Void, Void, String> asyncTask = new AsyncTask<Void, Void, String>() {
+                @Override
+                protected String doInBackground(Void... params) {
+                    try {
+                        Response response = client.newCall(request).execute();
+                        if (!response.isSuccessful()) {
+                            return null;
+                        }
+                        return response.body().string();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+                }
+
+                @Override
+                protected void onPostExecute(String s) {
+                    super.onPostExecute(s);
+                    if (s != null) {
+                        if (s.length() > 49) textView.setText(s.substring(0, 50) + "...");
+                        else textView.setText(s);
+                    } else {
+                        textView.setText("Request failed");
+                    }
+                }
+            };
+
+            try {
+                asyncTask.execute();
+            } catch (Exception e) {
+                transaction.setThrowable(e);
+                transaction.setStatus(SpanStatus.INTERNAL_ERROR);
+                throw e;
+            } finally {
+                transaction.finish();
+            }
+        });
+
+        Button sampleHttpGet2 = findViewById(R.id.sample_get2);
+        sampleHttpGet2.setOnClickListener(view -> {
+            Breadcrumb bc = new Breadcrumb();
+            bc.setMessage("Button for Sample HTTP GET clicked... ");
+            //bc.setLevel(SentryLevel.ERROR);
+            bc.setData("url", finalUrlGET);
+            Sentry.addBreadcrumb(bc);
+
+            final TextView textView = (TextView) findViewById(R.id.textView);
+
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .addInterceptor(new SentryOkHttpInterceptor())
+                    .connectTimeout(10, TimeUnit.SECONDS)
+                    .writeTimeout(10, TimeUnit.SECONDS)
+                    .readTimeout(30, TimeUnit.SECONDS)
+                    .build();
+
+            final Request request = new Request.Builder()
+                    .url(finalUrlGET)
+                    .build();
+
+            AsyncTask<Void, Void, String> asyncTask = new AsyncTask<Void, Void, String>() {
+                @Override
+                protected String doInBackground(Void... params) {
+                    try {
+                        Response response = client.newCall(request).execute();
+                        if (!response.isSuccessful()) {
+                            return null;
+                        }
+                        return response.body().string();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+                }
+
+                @Override
+                protected void onPostExecute(String s) {
+                    super.onPostExecute(s);
+                    if (s != null) {
+                        if (s.length() > 49) textView.setText(s.substring(0, 50) + "...");
+                        else textView.setText(s);
+                    } else {
+                        textView.setText("Request failed");
+                    }
+                }
+            };
+
+            try {
+                asyncTask.execute();
+            } catch (Exception e) {
+                throw e;
+            }
+        });
 
         // Unhandled - ArithmeticException
         Button div_by_zero_button = findViewById(R.id.div_zero);
