@@ -98,6 +98,7 @@ public class MainActivity extends MyBaseActivity {
                     try {
                         Response response = client.newCall(request).execute();
                         if (!response.isSuccessful()) {
+                            Sentry.captureException(new Exception("Response unsuccessful"));
                             return null;
                         }
                         return response.body().string();
@@ -157,6 +158,7 @@ public class MainActivity extends MyBaseActivity {
                     try {
                         Response response = client.newCall(request).execute();
                         if (!response.isSuccessful()) {
+                            Sentry.captureException(new Exception("Response unsuccessful"));
                             return null;
                         }
                         return response.body().string();
