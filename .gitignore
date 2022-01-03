@@ -6,7 +6,7 @@
 /build
 /captures
 keystore.jks
-*.apk
+app/*.apk
 app/build/*
 app/.cxx
 .project
