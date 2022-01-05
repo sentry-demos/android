@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +64,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
     protected StoreItemAdapter adapter;
     ProgressDialog progressDialog = null;
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-    public String END_POINT_TOOLS = "/tools";
+    public String END_POINT_PRODUCTS = "/products";
     public String END_POINT_CHECKOUT = "/checkout";
     int mCartItemCount = 0;
 
@@ -131,8 +132,8 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
 
         ISpan transaction = Sentry.getSpan();
 
-        String domain = this.getToolStoreDomain();
-        String getToolsURL = domain + this.END_POINT_TOOLS;
+        String domain = this.getEmpowerPlantDomain();
+        String getToolsURL = domain + this.END_POINT_PRODUCTS;
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(new SentryOkHttpInterceptor())
@@ -197,13 +198,20 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
             JSONArray jsonArray = new JSONArray(body);
 
             for(int i = 0; i < jsonArray.length(); i++){
+                /*
+                * TODO:
+                *  1. Update StoreItem model to match (getter/setter etc)
+                *  2. Update logic below to parse response
+                *  3. Validate UI
+                *  Doesn't seem that property type is required for UI
+                * */
                 jsonObject = jsonArray.getJSONObject(i);
                 StoreItem storeitem = new StoreItem();
-                storeitem.setName(jsonObject.getString("name"));
-                storeitem.setSku(jsonObject.getString("sku"));
+                storeitem.setName(jsonObject.getString("title"));
+                storeitem.setSku(jsonObject.getString("id"));
                 storeitem.setPrice(jsonObject.getInt("price"));
-                storeitem.setImage(jsonObject.getString("image"));
-                storeitem.setType(jsonObject.getString("type"));
+                storeitem.setImage(jsonObject.getString("imgcropped"));
+//                storeitem.setType(jsonObject.getString("type"));
                 storeitem.setItemId(jsonObject.getInt("id"));
 
                 toolStoreItems.add(storeitem);
@@ -222,14 +230,14 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         }
     }
 
-    private String getToolStoreDomain() {
+    private String getEmpowerPlantDomain() {
         String domain = null;
         try {
             final ApplicationInfo appInfo = getActivity().getApplicationContext().getPackageManager().getApplicationInfo(getActivity().getApplicationContext().getPackageName(),
                     PackageManager.GET_META_DATA);
 
             if (appInfo.metaData != null) {
-                domain = (String) appInfo.metaData.get("toolstore.domain");
+                domain = (String) appInfo.metaData.get("empowerplant.domain");
             }
         } catch (Exception e) {
             Sentry.captureException(e);
@@ -256,7 +264,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         }
         processDataSpan.finish();
 
-        String domain = this.getToolStoreDomain();
+        String domain = this.getEmpowerPlantDomain();
         String checkoutURL = domain + this.END_POINT_CHECKOUT;
 
         OkHttpClient client = new OkHttpClient.Builder()

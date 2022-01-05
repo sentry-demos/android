@@ -1,5 +1,6 @@
 package com.example.vu.android.toolstore;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,11 +57,18 @@ public class StoreItemAdapter extends RecyclerView.Adapter<StoreItemAdapter.View
     }
 
     private int getDrawable(String path){
-        int s =  R.drawable.nails;
-        if("hammer.png".equals(path)){
-            s = R.drawable.hammer;
-        }else if("wrench.png".equals(path)){
-            s = R.drawable.wrench;
+        Log.d("PATH***",path);
+        int s;
+        if("https://storage.googleapis.com/application-monitoring/plant-spider-cropped.jpg".equals(path)){
+            s = R.drawable.plantspider;
+        }
+        else if("https://storage.googleapis.com/application-monitoring/plant-to-text-cropped.jpg".equals(path)){
+            s = R.drawable.moodplanter;
+        }
+        else if("https://storage.googleapis.com/application-monitoring/nodes-cropped.jpg".equals(path)){
+            s = R.drawable.nodescropped;
+        }else{
+            s =  R.drawable.planttotext;
         }
         return s;
     }

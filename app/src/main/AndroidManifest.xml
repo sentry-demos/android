@@ -67,8 +67,8 @@
         <meta-data android:name="io.sentry.traces.activity.auto-finish.enable" android:value="false" />
 
         <meta-data
-            android:name="toolstore.domain"
-            android:value="https://admin-flask-m3uuizd7iq-uc.a.run.app" />
+            android:name="empowerplant.domain"
+            android:value="https://application-monitoring-flask-dot-sales-engineering-sf.appspot.com" />
 
     </application>
 
