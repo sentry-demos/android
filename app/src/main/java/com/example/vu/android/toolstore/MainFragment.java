@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -60,7 +61,7 @@ import com.example.vu.android.R;
 public class MainFragment extends Fragment implements StoreItemAdapter.ItemClickListener {
     protected List<StoreItem> toolStoreItems = new ArrayList<StoreItem>();
     private DividerItemDecoration dividerItemDecoration;
-    private List<StoreItem> selectedStoreItems;
+    private HashMap<String,StoreItem> selectedStoreItems;
     protected StoreItemAdapter adapter;
     ProgressDialog progressDialog = null;
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
@@ -198,21 +199,15 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
             JSONArray jsonArray = new JSONArray(body);
 
             for(int i = 0; i < jsonArray.length(); i++){
-                /*
-                * TODO:
-                *  1. Update StoreItem model to match (getter/setter etc)
-                *  2. Update logic below to parse response
-                *  3. Validate UI
-                *  Doesn't seem that property type is required for UI
-                * */
+
                 jsonObject = jsonArray.getJSONObject(i);
                 StoreItem storeitem = new StoreItem();
                 storeitem.setName(jsonObject.getString("title"));
                 storeitem.setSku(jsonObject.getString("id"));
                 storeitem.setPrice(jsonObject.getInt("price"));
                 storeitem.setImage(jsonObject.getString("imgcropped"));
-//                storeitem.setType(jsonObject.getString("type"));
                 storeitem.setItemId(jsonObject.getInt("id"));
+                storeitem.setQuantity(1);
 
                 toolStoreItems.add(storeitem);
             }
@@ -311,23 +306,31 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
             }
         });
     }
-
-    private JSONObject buildJSONPostData(List<StoreItem> selectedStoreItems){
-        JSONObject jsonObject, response = new JSONObject();
+    private JSONObject buildJSONPostData(HashMap<String,StoreItem> selectedStoreItems){
+        JSONObject jsonObject,response = new JSONObject();
+        JSONObject cart = new JSONObject();
         JSONArray jsonArray  = new JSONArray();
+        JSONObject quantities = new JSONObject();
+
+
         try {
-            for(StoreItem s:selectedStoreItems){
+            for(StoreItem s:selectedStoreItems.values()){
                 jsonObject = new JSONObject();
+
                 jsonObject.put("name", s.getName());
-                jsonObject.put("sku", s.getSku());
                 jsonObject.put("price", s.getPrice());
                 jsonObject.put("image", s.getImage());
-                jsonObject.put("type", s.getType());
                 jsonObject.put("id", s.getItemId());
 
                 jsonArray.put(jsonObject);
+                quantities.put(String.valueOf(s.getItemId()),s.getQuantity());
+
             }
-            response.put("cart",jsonArray);
+            cart.put("items",jsonArray);
+            response.put("cart",cart);
+            cart.put("quantities",quantities);
+            response.put("form",new JSONObject());// This line currently mocks non existent form data
+
         } catch (JSONException e) {
             ISpan span = Sentry.getSpan();
             if(span != null){

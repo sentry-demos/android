@@ -12,23 +12,40 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vu.android.R;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class StoreItemAdapter extends RecyclerView.Adapter<StoreItemAdapter.ViewHolder> {
 
     private List<StoreItem> list;
-    private List<StoreItem> selectedStoreItems;
     private ItemClickListener clickListener;
+    private HashMap<String,StoreItem> quantities;
+
+    private void updateQuantities(StoreItem selectedItem){
+
+        String itemKey = String.valueOf(selectedItem.getItemId());
+        if(quantities.containsKey(itemKey)){
+            int currentCount = quantities.get(itemKey).getQuantity();
+            selectedItem.setQuantity(currentCount + 1);
+
+        }else{
+            quantities.put(itemKey,selectedItem);
+        }
+    }
+
 
     public StoreItemAdapter(List<StoreItem> list, ItemClickListener clickListener) {
         this.list = list;
         this.clickListener  = clickListener;
-        selectedStoreItems = new ArrayList<StoreItem>();
+        quantities = new HashMap<String,StoreItem>();
+
     }
 
-    public List<StoreItem> getSelectedStoreItems() {
-        return selectedStoreItems;
+    public HashMap<String, StoreItem> getSelectedStoreItems() {
+        return quantities;
     }
 
     @Override
@@ -50,7 +67,7 @@ public class StoreItemAdapter extends RecyclerView.Adapter<StoreItemAdapter.View
             @Override
             public void onClick(View v ) {
                 StoreItem selectedItem = list.get(holder.getAdapterPosition());
-                selectedStoreItems.add(selectedItem);
+                updateQuantities(selectedItem);
                 clickListener.onItemClick(selectedItem);
             }
         });
