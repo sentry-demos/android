@@ -1,4 +1,4 @@
-package com.example.vu.android.toolstore;
+package com.example.vu.android.empowerplant;
 
 
 import android.os.Bundle;
@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.example.vu.android.MyBaseActivity;
 import com.example.vu.android.R;
 
-public class ToolStoreActivity extends MyBaseActivity {
+public class EmpowerPlantActivity extends MyBaseActivity {
 
     static boolean active = false;
     MainFragment fragment = null;
@@ -25,7 +25,7 @@ public class ToolStoreActivity extends MyBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_toolstore);
+        setContentView(R.layout.activity_empowerplant);
 
         this.loadFragmentList();
     }
@@ -33,7 +33,7 @@ public class ToolStoreActivity extends MyBaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.toolstore_toplevel, menu);
+        getMenuInflater().inflate(R.menu.empowerplant_toplevel, menu);
 
         final MenuItem menuItem = menu.findItem(R.id.action_cart);
         View actionView = menuItem.getActionView();

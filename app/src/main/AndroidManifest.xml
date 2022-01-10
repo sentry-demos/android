@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".toolstore.ToolStoreActivity"
+            android:name=".empowerplant.EmpowerPlantActivity"
             android:label="@string/title_activity_toolstore"
             android:parentActivityName=".MainActivity">
             <meta-data

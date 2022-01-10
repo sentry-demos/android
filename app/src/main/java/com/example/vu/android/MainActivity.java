@@ -1,16 +1,12 @@
 package com.example.vu.android;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.text.format.Formatter;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
-import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.vu.android.toolstore.ToolStoreActivity;
+import com.example.vu.android.empowerplant.EmpowerPlantActivity;
 
 import io.sentry.Breadcrumb;
 import io.sentry.ISpan;
@@ -126,7 +122,7 @@ public class MainActivity extends MyBaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case R.id.action_open_toolstore:
-                Intent intent = new Intent(this, ToolStoreActivity.class);
+                Intent intent = new Intent(this, EmpowerPlantActivity.class);
                 startActivity(intent);
                 return true;
 

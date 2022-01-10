@@ -1,4 +1,4 @@
-package com.example.vu.android.toolstore;
+package com.example.vu.android.empowerplant;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,9 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vu.android.R;
 
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -60,7 +57,7 @@ public class StoreItemAdapter extends RecyclerView.Adapter<StoreItemAdapter.View
 
         holder.textName.setText( storeItem.getName());
         holder.textSKU.setText("SKU: " + String.valueOf(storeItem.getSku()));
-        holder.textPrice.setText("Price: " + String.valueOf(storeItem.getPrice()) + "$");
+        holder.textPrice.setText("Price: " + "$"+ String.valueOf(storeItem.getPrice()));
         holder.imageItem.setImageResource(this.getDrawable(String.valueOf(storeItem.getImage())));
 
         holder.addToCartBtn.setOnClickListener(new View.OnClickListener() {
@@ -74,7 +71,7 @@ public class StoreItemAdapter extends RecyclerView.Adapter<StoreItemAdapter.View
     }
 
     private int getDrawable(String path){
-        Log.d("PATH***",path);
+
         int s;
         if("https://storage.googleapis.com/application-monitoring/plant-spider-cropped.jpg".equals(path)){
             s = R.drawable.plantspider;

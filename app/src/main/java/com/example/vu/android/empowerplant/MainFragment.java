@@ -1,4 +1,4 @@
-package com.example.vu.android.toolstore;
+package com.example.vu.android.empowerplant;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -38,7 +38,6 @@ import io.sentry.Attachment;
 import io.sentry.ISpan;
 import io.sentry.ITransaction;
 import io.sentry.Sentry;
-import io.sentry.SentryTraceHeader;
 import io.sentry.SpanStatus;
 import io.sentry.android.okhttp.SentryOkHttpInterceptor;
 import okhttp3.Call;
@@ -59,7 +58,7 @@ import com.example.vu.android.R;
  * create an instance of this fragment.
  */
 public class MainFragment extends Fragment implements StoreItemAdapter.ItemClickListener {
-    protected List<StoreItem> toolStoreItems = new ArrayList<StoreItem>();
+    protected List<StoreItem> empowerStoreItems = new ArrayList<StoreItem>();
     private DividerItemDecoration dividerItemDecoration;
     private HashMap<String,StoreItem> selectedStoreItems;
     protected StoreItemAdapter adapter;
@@ -111,7 +110,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
 
     private void initRecyclerView(View view) {
         this.fetchToolsFromServer();
-        adapter = new StoreItemAdapter(toolStoreItems, this);
+        adapter = new StoreItemAdapter(empowerStoreItems, this);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -123,7 +122,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
     }
 
     public void setBadgeNumber(){
-        ((ToolStoreActivity) getActivity()).textCartItemCount.setText(String.valueOf(++mCartItemCount));
+        ((EmpowerPlantActivity) getActivity()).textCartItemCount.setText(String.valueOf(++mCartItemCount));
     }
 
     public void fetchToolsFromServer() {
@@ -209,7 +208,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
                 storeitem.setItemId(jsonObject.getInt("id"));
                 storeitem.setQuantity(1);
 
-                toolStoreItems.add(storeitem);
+                empowerStoreItems.add(storeitem);
             }
         } catch (JSONException e) {
             ISpan span = Sentry.getSpan();
@@ -307,11 +306,10 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         });
     }
     private JSONObject buildJSONPostData(HashMap<String,StoreItem> selectedStoreItems){
-        JSONObject jsonObject,response = new JSONObject();
+        JSONObject jsonObject,postBody = new JSONObject();
         JSONObject cart = new JSONObject();
         JSONArray jsonArray  = new JSONArray();
         JSONObject quantities = new JSONObject();
-
 
         try {
             for(StoreItem s:selectedStoreItems.values()){
@@ -327,9 +325,9 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
 
             }
             cart.put("items",jsonArray);
-            response.put("cart",cart);
             cart.put("quantities",quantities);
-            response.put("form",new JSONObject());// This line currently mocks non existent form data
+            postBody.put("cart",cart);
+            postBody.put("form",new JSONObject());// This line currently mocks non existent form data
 
         } catch (JSONException e) {
             ISpan span = Sentry.getSpan();
@@ -340,7 +338,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
             }
             Sentry.captureException(e);
         }
-        return response;
+        return postBody;
     }
 
     private void processDeliveryItem(ITransaction checkoutTransaction){
