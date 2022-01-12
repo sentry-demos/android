@@ -1,22 +1,24 @@
-package com.example.vu.android.toolstore;
+package com.example.vu.android.empowerplant;
 
 import androidx.fragment.app.Fragment;
 
 public class StoreItem extends Fragment {
 
+
     String sku, name, image,type;
-    int id, price;
+    int id, price, quantity;
 
     public StoreItem() {
     }
 
-    public StoreItem(String sku, String name, String image, String type, int id, int price) {
+    public StoreItem(String sku, String name, String image, String type, int id, int price, int quantity) {
         this.sku = sku;
         this.name = name;
         this.image = image;
         this.type = type;
         this.id = id;
         this.price = price;
+        this.quantity = quantity;
     }
 
     public void setSku(String sku) {
@@ -43,6 +45,11 @@ public class StoreItem extends Fragment {
         this.price = price;
     }
 
+    public void setQuantity(int quantity){ this.quantity = quantity;}
+
+    public int getQuantity() {
+        return quantity;
+    }
     public String getSku() {
         return sku;
     }

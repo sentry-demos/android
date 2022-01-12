@@ -1,5 +1,6 @@
-package com.example.vu.android.toolstore;
+package com.example.vu.android.empowerplant;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,23 +12,37 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vu.android.R;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class StoreItemAdapter extends RecyclerView.Adapter<StoreItemAdapter.ViewHolder> {
 
     private List<StoreItem> list;
-    private List<StoreItem> selectedStoreItems;
     private ItemClickListener clickListener;
+    private HashMap<String,StoreItem> quantities;
+
+    private void updateQuantities(StoreItem selectedItem){
+
+        String itemKey = String.valueOf(selectedItem.getItemId());
+        if(quantities.containsKey(itemKey)){
+            int currentCount = quantities.get(itemKey).getQuantity();
+            selectedItem.setQuantity(currentCount + 1);
+
+        }else{
+            quantities.put(itemKey,selectedItem);
+        }
+    }
+
 
     public StoreItemAdapter(List<StoreItem> list, ItemClickListener clickListener) {
         this.list = list;
         this.clickListener  = clickListener;
-        selectedStoreItems = new ArrayList<StoreItem>();
+        quantities = new HashMap<String,StoreItem>();
+
     }
 
-    public List<StoreItem> getSelectedStoreItems() {
-        return selectedStoreItems;
+    public HashMap<String, StoreItem> getSelectedStoreItems() {
+        return quantities;
     }
 
     @Override
@@ -42,25 +57,32 @@ public class StoreItemAdapter extends RecyclerView.Adapter<StoreItemAdapter.View
 
         holder.textName.setText( storeItem.getName());
         holder.textSKU.setText("SKU: " + String.valueOf(storeItem.getSku()));
-        holder.textPrice.setText("Price: " + String.valueOf(storeItem.getPrice()) + "$");
+        holder.textPrice.setText("Price: " + "$"+ String.valueOf(storeItem.getPrice()));
         holder.imageItem.setImageResource(this.getDrawable(String.valueOf(storeItem.getImage())));
 
         holder.addToCartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v ) {
                 StoreItem selectedItem = list.get(holder.getAdapterPosition());
-                selectedStoreItems.add(selectedItem);
+                updateQuantities(selectedItem);
                 clickListener.onItemClick(selectedItem);
             }
         });
     }
 
     private int getDrawable(String path){
-        int s =  R.drawable.nails;
-        if("hammer.png".equals(path)){
-            s = R.drawable.hammer;
-        }else if("wrench.png".equals(path)){
-            s = R.drawable.wrench;
+
+        int s;
+        if("https://storage.googleapis.com/application-monitoring/plant-spider-cropped.jpg".equals(path)){
+            s = R.drawable.plantspider;
+        }
+        else if("https://storage.googleapis.com/application-monitoring/plant-to-text-cropped.jpg".equals(path)){
+            s = R.drawable.moodplanter;
+        }
+        else if("https://storage.googleapis.com/application-monitoring/nodes-cropped.jpg".equals(path)){
+            s = R.drawable.nodescropped;
+        }else{
+            s =  R.drawable.planttotext;
         }
         return s;
     }
