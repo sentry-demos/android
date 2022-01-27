@@ -135,7 +135,7 @@ See AndroidManifest.xml for different settings we tweak for demo's (e.g. default
 
 ### Part 1: Generate Release artifacts
 
-1. **Increment both `versionName` and `versionCode` by 1 in `build.gradle`.** I.e. in the below example, we updated versionCode from `12` to `13` and versionName from `1.2.0` to `1.3.0`.
+1. **Increment both `versionName` and `versionCode` by 1 in `build.gradle`.** I.e. in the below example, we updated versionCode from `12` to `13` and versionName from `1.2.0` to `1.3.0`. Then run the app once so the executable gets this updated value.
 ```
 defaultConfig {
     applicationId "com.example.vu.android"
