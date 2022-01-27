@@ -173,7 +173,12 @@ Optional - Setting the release in AndroidManifest.xml will override what's set i
 ```
 
 ## How To Upgrade SDK
-1. increment sdk number in src/build.gradle like `implementation 'io.sentry:sentry-android:2.1.4'`
+1. increment sdk numbers in src/build.gradle like:
+```
+    implementation 'io.sentry:sentry-android:5.6.0'
+    implementation 'io.sentry:sentry-android-okhttp:5.6.0'
+    implementation 'io.sentry:sentry-android-fragment:5.6.0'
+``` 
 2. Consider making a new Release
 3. click 'Sync Now' for sync'ing your gradle files in AndroidStudio
 4. `make all` will do a new `./gradlew build`
