@@ -121,7 +121,7 @@ public class MainActivity extends MyBaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
-            case R.id.action_open_toolstore:
+            case R.id.action_open_empowerplant:
                 Intent intent = new Intent(this, EmpowerPlantActivity.class);
                 startActivity(intent);
                 return true;

@@ -27,7 +27,7 @@
         </activity>
         <activity
             android:name=".empowerplant.EmpowerPlantActivity"
-            android:label="@string/title_activity_toolstore"
+            android:label="@string/title_activity_empowerplant"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

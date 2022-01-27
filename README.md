@@ -135,7 +135,7 @@ See AndroidManifest.xml for different settings we tweak for demo's (e.g. default
 
 ### Part 1: Generate Release artifacts
 
-1. **Increment both `versionName` and `versionCode` by 1 in `build.gradle`.** I.e. in the below example, we updated versionCode from `12` to `13` and versionName from `1.2.0` to `1.3.0`.
+1. **Increment both `versionName` and `versionCode` by 1 in `build.gradle`.** I.e. in the below example, we updated versionCode from `12` to `13` and versionName from `1.2.0` to `1.3.0`. Then run the app once so the executable gets this updated value.
 ```
 defaultConfig {
     applicationId "com.example.vu.android"
@@ -173,7 +173,12 @@ Optional - Setting the release in AndroidManifest.xml will override what's set i
 ```
 
 ## How To Upgrade SDK
-1. increment sdk number in src/build.gradle like `implementation 'io.sentry:sentry-android:2.1.4'`
+1. increment sdk numbers in src/build.gradle like:
+```
+    implementation 'io.sentry:sentry-android:5.6.0'
+    implementation 'io.sentry:sentry-android-okhttp:5.6.0'
+    implementation 'io.sentry:sentry-android-fragment:5.6.0'
+``` 
 2. Consider making a new Release
 3. click 'Sync Now' for sync'ing your gradle files in AndroidStudio
 4. `make all` will do a new `./gradlew build`
