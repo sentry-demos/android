@@ -55,6 +55,7 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig = signingConfigs.debug // to be able to run release mode
+            buildConfigField("String", "SE", "william")
         }
     }
 

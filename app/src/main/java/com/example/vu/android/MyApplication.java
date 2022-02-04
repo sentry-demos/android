@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -21,6 +22,8 @@ import io.sentry.SentryLevel;
 import io.sentry.protocol.SentryException;
 import io.sentry.protocol.SentryId;
 import io.sentry.protocol.User;
+
+import static android.content.ContentValues.TAG;
 
 
 public class MyApplication extends Application {
@@ -42,6 +45,8 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        Log.i(TAG, BuildConfig.SE);
 
         SentryAndroid.init(this, options -> {
 
