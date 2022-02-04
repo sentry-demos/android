@@ -47,7 +47,6 @@ public class MyApplication extends Application {
         super.onCreate();
 
         Log.i(TAG, BuildConfig.SE);
-//        Log.i(TAG, getString(R.string.SE));
 
         SentryAndroid.init(this, options -> {
 
