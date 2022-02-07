@@ -34,12 +34,6 @@ public class MainActivity extends MyBaseActivity {
         breadcrumb.setData("Activity Name", activity);
         Sentry.addBreadcrumb( breadcrumb );
 
-
-        // Set the user in the current context.
-        User user = new User();
-        // user.setIpAddress(this.getIPAddress());
-        Sentry.setUser(user);
-
         // Unhandled - ArithmeticException
         Button div_by_zero_button = findViewById(R.id.div_zero);
         div_by_zero_button.setOnClickListener(view -> {

@@ -7,11 +7,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import io.sentry.android.fragment.FragmentLifecycleIntegration;
 
+import java.util.Arrays;
 import java.util.List;
 
 import io.sentry.Sentry;
@@ -21,6 +23,8 @@ import io.sentry.SentryLevel;
 import io.sentry.protocol.SentryException;
 import io.sentry.protocol.SentryId;
 import io.sentry.protocol.User;
+
+import static android.content.ContentValues.TAG;
 
 
 public class MyApplication extends Application {
@@ -42,6 +46,9 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        Log.i(TAG, BuildConfig.SE);
+        String SE = BuildConfig.SE;
 
         SentryAndroid.init(this, options -> {
 
@@ -74,12 +81,19 @@ public class MyApplication extends Application {
                         user.setIpAddress(null);
                     }
                 }
+
                 SentryException currentException = event.getExceptions().get(0);
                 if(currentException != null && currentException.getType().endsWith("ItemDeliveryProcessException")){
                     this.launchUserFeedback(event.getEventId());
                 }
 
                 //event.setExtra("fullStoryURL", this.mCurrentActivity.getFullStorySessionURL());
+
+                if (SE == "tda") {
+                    event.setFingerprints(Arrays.asList("{{ default }}", SE, BuildConfig.VERSION_NAME));
+                } else if (SE != null || SE.length() != 0) {
+                    event.setFingerprints(Arrays.asList("{{ default }}", SE));
+                }
 
                 //Drop event
                 if (SentryLevel.DEBUG.equals(event.getLevel()))
@@ -90,6 +104,21 @@ public class MyApplication extends Application {
             });
         });
 
+        Sentry.setTag("se", SE);
+
+        // Set User info on Sentry event using a random email
+        String AlphaNumericString = "abcdefghijklmnopqrstuvxyz0123456789";
+        Integer n = 4;
+        StringBuilder sb = new StringBuilder(n);
+        for (int i = 0; i < n; i++) {
+            int index = (int)(AlphaNumericString.length() * Math.random());
+            sb.append(AlphaNumericString.charAt(index));
+        }
+        String email = sb.toString() + "@gmail.com";
+
+        User user = new User();
+        user.setEmail(email);
+        Sentry.setUser(user);
     }
 
     private void launchUserFeedback(SentryId sentryId){
