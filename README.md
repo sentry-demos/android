@@ -160,6 +160,7 @@ defaultConfig {
 1. After completing the steps in Part 1, and once your release branch is merged in, checkout the `master` branch and pull down the latest changes. Ensure your branch is clean (no untracked git changes).
 2. Run `./github_release.sh`, and select `y` when prompted.
 3. That's it. You'll see that a new release was created in https://github.com/sentry-demos/android/releases.
+4. You may need to restart your demo automation tools so they'll still hitting the latest APK release.
 
 ### Other Notes on releases
 
