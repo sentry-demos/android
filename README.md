@@ -69,6 +69,8 @@ which java
 
 9. Maintain a separate branch which has your auth token.
 
+10. Optional - Add se:<yourname> tag to buildConfigField in build.gradle.
+
 ## Run
 
 1. `make all` if you haven't yet, or have made significant changes to your code. otherwise run the app.

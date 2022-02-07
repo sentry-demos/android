@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 import io.sentry.android.fragment.FragmentLifecycleIntegration;
 
+import java.util.Arrays;
 import java.util.List;
 
 import io.sentry.Sentry;
@@ -47,6 +48,7 @@ public class MyApplication extends Application {
         super.onCreate();
 
         Log.i(TAG, BuildConfig.SE);
+        String SE = BuildConfig.SE;
 
         SentryAndroid.init(this, options -> {
 
@@ -86,6 +88,12 @@ public class MyApplication extends Application {
 
                 //event.setExtra("fullStoryURL", this.mCurrentActivity.getFullStorySessionURL());
 
+                if (SE == "tda") {
+                    event.setFingerprints(Arrays.asList("{{ default }}", SE, BuildConfig.VERSION_NAME));
+                } else if (SE != null || SE.length() != 0) {
+                    event.setFingerprints(Arrays.asList("{{ default }}", SE));
+                }
+
                 //Drop event
                 if (SentryLevel.DEBUG.equals(event.getLevel()))
                     return null;
@@ -95,6 +103,26 @@ public class MyApplication extends Application {
             });
         });
 
+        Sentry.setTag("se", SE);
+
+        // Set User info on Sentry event using a random email
+        String AlphaNumericString = "abcdefghijklmnopqrstuvxyz0123456789";
+        Integer n = 4;
+        StringBuilder sb = new StringBuilder(n);
+        for (int i = 0; i < n; i++) {
+            int index = (int)(AlphaNumericString.length() * Math.random());
+            sb.append(AlphaNumericString.charAt(index));
+        }
+        String email = sb.toString() + "@yahoo.com";
+        System.out.println(email);
+
+        Sentry.configureScope(scope -> {
+            scope.setUser(null);
+        });
+
+        User user = new User();
+        user.setEmail(email);
+        Sentry.setUser(user);
     }
 
     private void launchUserFeedback(SentryId sentryId){
