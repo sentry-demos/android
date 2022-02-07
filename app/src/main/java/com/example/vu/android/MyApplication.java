@@ -81,6 +81,7 @@ public class MyApplication extends Application {
                         user.setIpAddress(null);
                     }
                 }
+
                 SentryException currentException = event.getExceptions().get(0);
                 if(currentException != null && currentException.getType().endsWith("ItemDeliveryProcessException")){
                     this.launchUserFeedback(event.getEventId());
@@ -113,12 +114,7 @@ public class MyApplication extends Application {
             int index = (int)(AlphaNumericString.length() * Math.random());
             sb.append(AlphaNumericString.charAt(index));
         }
-        String email = sb.toString() + "@yahoo.com";
-        System.out.println(email);
-
-        Sentry.configureScope(scope -> {
-            scope.setUser(null);
-        });
+        String email = sb.toString() + "@gmail.com";
 
         User user = new User();
         user.setEmail(email);
