@@ -229,3 +229,71 @@ For instance, if you're ever filtering, sampling or Rate Limiting events/crashes
 
 ![Native Crash](android-native-crash-take-1.gif)
 
+
+
+Previously we were on Android Gradle Plugion Version 4.0.1
+Previously we were on Gradle Version 6.5
+
+tried
+7.0.4
+7.4
+
+7.0
+7.0
+
+https://docs.sentry.io/platforms/android/configuration/integrations/room-and-sqlite/
+https://docs.sentry.io/platforms/android/configuration/integrations/file-io/
+
+https://docs.sentry.io/platforms/android/gradle/
+https://github.com/getsentry/sentry-android-gradle-plugin
+JDK 11 required
+https://developer.android.com/studio/releases/gradle-plugin#7-0-0
+
+
+https://www.oracle.com/java/technologies/javase/jdk11-archive-downloads.html
+```
+ ~   /usr/libexec/java_home -v 8
+Unable to find any JVMs matching version "8".
+/Library/Java/JavaVirtualMachines/jdk1.8.0_261.jdk/Contents/Home
+ ~   /usr/libexec/java_home -v 8
+Unable to find any JVMs matching version "8".
+/Library/Java/JavaVirtualMachines/jdk-11.0.13.jdk/Contents/Home
+ ~   /usr/libexec/java_home -v 11
+/Library/Java/JavaVirtualMachines/jdk-11.0.13.jdk/Contents/Home
+ ~
+```
+and
+```
+ /Library/Java/JavaVirtualMachines   which java
+/usr/bin/java
+ /Library/Java/JavaVirtualMachines   java -version
+java version "1.8.0_261"
+Java(TM) SE Runtime Environment (build 1.8.0_261-b12)
+Java HotSpot(TM) 64-Bit Server VM (build 25.261-b12, mixed mode)
+ /Library/Java/JavaVirtualMachines   java -version
+java version "11.0.13" 2021-10-19 LTS
+Java(TM) SE Runtime Environment 18.9 (build 11.0.13+10-LTS-370)
+Java HotSpot(TM) 64-Bit Server VM 18.9 (build 11.0.13+10-LTS-370, mixed mode)
+ /Library/Java/JavaVirtualMachines
+```
+
+
+current:
+/Applications/Android Studio.app/Contents/jre/jdk/Contents/Home
+
+trying:
+/Library/Java/JavaVirtualMachines/jdk-11.0.13.jdk/Contents/Home
+
+
+also...
+https://stackoverflow.com/questions/68321708/could-not-run-phased-build-action-using-connection-to-gradle-distribution
+https://stackoverflow.com/questions/32887623/errorcould-not-run-build-action-using-gradle-installation-gradle-2-4-android
+upgrading gradle...wrapper
+https://gradle.org/install/
+
+. Android Studio Arctic Fox bundles JDK 11 and configures Gradle to use it by default, which means that most Android Studio users do not need to make any configuration changes to their projects.
+
+I have SDK Tools +v30
+
+https://developer.android.com/studio/releases/gradle-plugin#7-0-0
+https://developer.android.com/studio/releases/build-tools

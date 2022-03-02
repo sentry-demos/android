@@ -21,6 +21,8 @@
 ##  Gradle start up script for UN*X
 ##
 ##############################################################################
+#export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-11.0.13.jdk/Contents/Home
+#export JAVA_HOME=/usr/bin/JAVA
 
 # Attempt to set APP_HOME
 # Resolve links: $0 may be a link
