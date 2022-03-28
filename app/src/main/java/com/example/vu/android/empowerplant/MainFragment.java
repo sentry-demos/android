@@ -152,7 +152,6 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
-                    Log.d("Processing", "run: Items have been processed");
                     String responseStr = response.body().string();
 
                     progressDialog.dismiss();//why called a second time
@@ -406,10 +405,6 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
 
         AppDatabase.getInstance(getActivity().getApplicationContext())
                 .StoreItemDAO().insertAll(empowerStoreItems);
-
-        Log.d("INSERTED", "run: Items have been inserted");
-        //end larger transaction since auto-finish off
-
     }
 
 }
