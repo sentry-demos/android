@@ -170,7 +170,6 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
                         dbSpan.finish();
                     }
 
-                    transaction.finish(SpanStatus.OK);//finish fragment Main txn
                     Sentry.getCurrentHub().getSpan().finish();//finish Empower txn manually
 
                 }

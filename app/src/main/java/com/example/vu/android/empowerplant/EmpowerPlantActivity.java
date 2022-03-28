@@ -26,7 +26,7 @@ public class EmpowerPlantActivity extends MyBaseActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_empowerplant);
-
+        addAttachment();
         this.loadFragmentList();
     }
 
