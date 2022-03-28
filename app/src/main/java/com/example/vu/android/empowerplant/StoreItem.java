@@ -1,13 +1,34 @@
 package com.example.vu.android.empowerplant;
 
 import androidx.fragment.app.Fragment;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+import androidx.room.Query;
 
-public class StoreItem extends Fragment {
+import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 
-    String sku, name, image,type;
-    int id, price, quantity;
-
+@Entity
+public class StoreItem  {//why does this extend Fragment?
+    @NotNull
+    @PrimaryKey
+    String sku;
+    @ColumnInfo(name = "first_name")
+    String name;
+    @ColumnInfo(name = "image")
+    String image;
+    @ColumnInfo(name = "type")
+    String type;
+    @ColumnInfo(name = "id")
+    int id;
+    @ColumnInfo(name = "price")
+    int price;
+    @ColumnInfo(name = "quantity")
+    int quantity;
+    @Ignore
     public StoreItem() {
     }
 
@@ -74,3 +95,5 @@ public class StoreItem extends Fragment {
         return price;
     }
 }
+
+
