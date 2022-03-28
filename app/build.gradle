@@ -5,19 +5,19 @@ buildscript {
 }
 
 plugins {
-    id "io.sentry.android.gradle" version "2.1.4"
+    id "io.sentry.android.gradle" version "3.0.0"
 }
 
 apply plugin: 'com.android.application'
 apply plugin: 'com.ydq.android.gradle.native-aar.import'
 apply plugin: 'io.sentry.android.gradle'
-apply plugin: 'fullstory'
+//apply plugin: 'fullstory'
 
-fullstory {
-    org 'QNEN8'
-    enabledVariants 'all'
-    logLevel 'off'
-}
+//fullstory {
+//    org 'QNEN8'
+//    enabledVariants 'all'
+//    logLevel 'off'
+//}
 
 android {
     compileSdkVersion 29
@@ -55,6 +55,9 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig = signingConfigs.debug // to be able to run release mode
+            buildConfigField("String", "SE", "\"tda\"")
+        }
+        debug {
             buildConfigField("String", "SE", "\"tda\"")
         }
     }
