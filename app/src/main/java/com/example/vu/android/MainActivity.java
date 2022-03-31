@@ -98,11 +98,7 @@ public class MainActivity extends MyBaseActivity {
     protected void onResume () {
         super.onResume() ;
 
-        //We disabled tx auto finish for the 2nd activity
-        ISpan span = Sentry.getSpan();
-        if (span != null) {
-            span.finish();
-        }
+
     }
 
     @Override
