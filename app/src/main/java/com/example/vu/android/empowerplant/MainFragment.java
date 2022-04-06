@@ -353,7 +353,6 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         try {
             throw new MainFragment.ItemDeliveryProcessException("Failed to init delivery workflow");
         } catch (Exception e) {
-            addAttachment();
             processDeliverySpan.setThrowable(e);
             processDeliverySpan.setStatus(SpanStatus.INTERNAL_ERROR);
             Sentry.captureException(e);
