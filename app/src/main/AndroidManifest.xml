@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -46,6 +46,7 @@
         <meta-data
             android:name="io.sentry.auto-init"
             android:value="false" />
+        <meta-data android:name="io.sentry.traces.activity.auto-finish.enable" android:value="false" />
 
         <!-- This line not needed any more, because now we have a safe guard, waiting for the Operating System to raise an ANR in the processor, it waits 5seconds. Lowering this number just makes it to check the state of the processor more times. -->
         <!-- lowering this number below 5000ms overrides the 5000ms, we check the state of the processor faster. doesn't mean we're detecting more ANR's or not -->

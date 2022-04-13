@@ -51,7 +51,6 @@ import okhttp3.Response;
 import com.example.vu.android.R;
 
 
-
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link MainFragment#newInstance} factory method to
@@ -60,7 +59,7 @@ import com.example.vu.android.R;
 public class MainFragment extends Fragment implements StoreItemAdapter.ItemClickListener {
     protected List<StoreItem> empowerStoreItems = new ArrayList<StoreItem>();
     private DividerItemDecoration dividerItemDecoration;
-    private HashMap<String,StoreItem> selectedStoreItems;
+    private HashMap<String, StoreItem> selectedStoreItems;
     protected StoreItemAdapter adapter;
     ProgressDialog progressDialog = null;
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
@@ -76,14 +75,15 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
     public void onAttach(Context context) {
         super.onAttach(context);
         Activity a;
-        if (context instanceof Activity){
-            a=(Activity) context;
+        if (context instanceof Activity) {
+            a = (Activity) context;
         }
     }
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
+     *
      * @return A new instance of fragment MainFragment.
      */
     // TODO: Rename and change types and number of parameters
@@ -103,7 +103,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view=  inflater.inflate(R.layout.fragment_main, container, false);
+        View view = inflater.inflate(R.layout.fragment_main, container, false);
         initRecyclerView(view);
         return view;
     }
@@ -121,7 +121,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         recyclerView.setAdapter(adapter);
     }
 
-    public void setBadgeNumber(){
+    public void setBadgeNumber() {
         ((EmpowerPlantActivity) getActivity()).textCartItemCount.setText(String.valueOf(++mCartItemCount));
     }
 
@@ -151,29 +151,29 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 progressDialog.dismiss();
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     String responseStr = response.body().string();
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            progressDialog.dismiss();
 
-                            if (responseStr != null && !responseStr.equals("")) {
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        ISpan taskSpan = transaction.startChild("task", "Process server response.");
+                    progressDialog.dismiss();//why called a second time
 
-                                        processGetToolsResponse(responseStr);
+                    if (responseStr != null && !responseStr.equals("")) {
 
-                                        taskSpan.finish(SpanStatus.OK);
-                                    }
-                                });
-                            }
-                            transaction.finish(SpanStatus.OK);
-                        }
-                    });
+                        ISpan taskSpan = transaction.startChild("task", "Process server response.");
+
+                        processGetToolsResponse(responseStr);
+
+                        taskSpan.finish(SpanStatus.OK);
+
+                        ISpan dbSpan = transaction.startChild("db.insertAll", "Persist Store Items");
+                        insertMultipleStoreItems();
+                        dbSpan.finish();
+                    }
+
+                    Sentry.getCurrentHub().getSpan().finish();//finish Empower txn manually
+
                 }
+
+
             }
 
             @Override
@@ -197,7 +197,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         try {
             JSONArray jsonArray = new JSONArray(body);
 
-            for(int i = 0; i < jsonArray.length(); i++){
+            for (int i = 0; i < jsonArray.length(); i++) {
 
                 jsonObject = jsonArray.getJSONObject(i);
                 StoreItem storeitem = new StoreItem();
@@ -218,9 +218,14 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
                 span.finish();
                 Sentry.captureException(e);
             }
-        }
-        finally {
-            adapter.notifyDataSetChanged();
+        } finally {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    adapter.notifyDataSetChanged();
+                }
+            });
+
         }
     }
 
@@ -239,7 +244,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         return domain;
     }
 
-    public void checkout(){
+    public void checkout() {
         selectedStoreItems = this.adapter.getSelectedStoreItems();
         ITransaction checkoutTransaction = Sentry.startTransaction("checkout [android]", "http.client");
         checkoutTransaction.setOperation("http");
@@ -281,7 +286,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 progressDialog.dismiss();
-                if(!response.isSuccessful()){
+                if (!response.isSuccessful()) {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -305,14 +310,15 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
             }
         });
     }
-    private JSONObject buildJSONPostData(HashMap<String,StoreItem> selectedStoreItems){
-        JSONObject jsonObject,postBody = new JSONObject();
+
+    private JSONObject buildJSONPostData(HashMap<String, StoreItem> selectedStoreItems) {
+        JSONObject jsonObject, postBody = new JSONObject();
         JSONObject cart = new JSONObject();
-        JSONArray jsonArray  = new JSONArray();
+        JSONArray jsonArray = new JSONArray();
         JSONObject quantities = new JSONObject();
 
         try {
-            for(StoreItem s:selectedStoreItems.values()){
+            for (StoreItem s : selectedStoreItems.values()) {
                 jsonObject = new JSONObject();
 
                 jsonObject.put("name", s.getName());
@@ -321,17 +327,17 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
                 jsonObject.put("id", s.getItemId());
 
                 jsonArray.put(jsonObject);
-                quantities.put(String.valueOf(s.getItemId()),s.getQuantity());
+                quantities.put(String.valueOf(s.getItemId()), s.getQuantity());
 
             }
-            cart.put("items",jsonArray);
-            cart.put("quantities",quantities);
-            postBody.put("cart",cart);
-            postBody.put("form",new JSONObject());// This line currently mocks non existent form data
+            cart.put("items", jsonArray);
+            cart.put("quantities", quantities);
+            postBody.put("cart", cart);
+            postBody.put("form", new JSONObject());// This line currently mocks non existent form data
 
         } catch (JSONException e) {
             ISpan span = Sentry.getSpan();
-            if(span != null){
+            if (span != null) {
                 span.setThrowable(e);
                 span.finish(SpanStatus.INTERNAL_ERROR);
                 span.finish();
@@ -341,27 +347,26 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         return postBody;
     }
 
-    private void processDeliveryItem(ITransaction checkoutTransaction){
+    private void processDeliveryItem(ITransaction checkoutTransaction) {
         ISpan processDeliverySpan = checkoutTransaction.startChild("task", "process delivery");
 
-        try{
+        try {
             throw new MainFragment.ItemDeliveryProcessException("Failed to init delivery workflow");
-        }catch(Exception e){
-            addAttachment();
+        } catch (Exception e) {
             processDeliverySpan.setThrowable(e);
             processDeliverySpan.setStatus(SpanStatus.INTERNAL_ERROR);
             Sentry.captureException(e);
         }
 
-        if(processDeliverySpan.getStatus() !=  SpanStatus.INTERNAL_ERROR){
+        if (processDeliverySpan.getStatus() != SpanStatus.INTERNAL_ERROR) {
             processDeliverySpan.setStatus(SpanStatus.OK);
         }
         processDeliverySpan.finish();
     }
 
-    class ItemDeliveryProcessException extends RuntimeException{
+    class ItemDeliveryProcessException extends RuntimeException {
 
-        public ItemDeliveryProcessException(String message){
+        public ItemDeliveryProcessException(String message) {
             super(message);
         }
     }
@@ -372,29 +377,33 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
             Context c = getActivity().getApplicationContext();
             File cacheDirectory = c.getCacheDir();
             f = File.createTempFile("tmp", ".txt", cacheDirectory);
-            System.out.println("File path: "+f.getAbsolutePath());
+            System.out.println("File path: " + f.getAbsolutePath());
             f.deleteOnExit();
             try (FileOutputStream fos = new FileOutputStream(f)) {
                 fos.write("test".getBytes(UTF_8));
             }
             String dateStr = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
 
-            Attachment attachment1 = new Attachment(f.getAbsolutePath(), "tmp_"+dateStr+".txt", "text/plain");
+            Attachment attachment1 = new Attachment(f.getAbsolutePath(), "tmp_" + dateStr + ".txt", "text/plain");
 
             Sentry.configureScope(
                     scope -> {
                         String json = "{ \"number\": 10 }";
-                        Attachment attachment2 = new Attachment(json.getBytes(), "log_"+dateStr+".json", "text/plain");
+                        Attachment attachment2 = new Attachment(json.getBytes(), "log_" + dateStr + ".json", "text/plain");
                         scope.addAttachment(attachment1);
                         scope.addAttachment(attachment2);
                     });
-        } catch(Exception e) {
+        } catch (Exception e) {
             Sentry.captureException(e);
             e.printStackTrace();
         }
         return true;
     }
 
+    public void insertMultipleStoreItems() {
 
+        AppDatabase.getInstance(getActivity().getApplicationContext())
+                .StoreItemDAO().insertAll(empowerStoreItems);
+    }
 
 }
