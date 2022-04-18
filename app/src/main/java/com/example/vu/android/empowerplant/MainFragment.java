@@ -126,7 +126,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
     }
 
     public void fetchToolsFromServer() {
-        progressDialog = new ProgressDialog(getContext());
+        progressDialog = new ProgressDialog(getContext());//ProgressDialog has been deprecated in API 26 https://developer.android.com/reference/android/app/ProgressDialog
         progressDialog.setMessage("Loading...");
         progressDialog.show();
 
