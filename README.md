@@ -22,14 +22,14 @@ Additional documentation:
 | dependency    | version
 | ------------- |:-------------:|
 | sentry-java | 5.1.2 |
-| sentry-android-gradle-plugin | 2.1.4 |
-| Android Studio | 4.0.1 |
-| Gradle | 6.5 |
+| sentry-android-gradle-plugin | 3.0.0 |
+| Android Studio Arctic Fox | 2020.3.1 |
+| Gradle | 7.0.2 |
 | AVD | Nexus 5x API 29 x86, Pixel 2 API 29 |
 | sentry-cli | 1.55.1 |
 | macOS | Catalina 10.15.7 |
-| java | 1.8.0_261 |
-| jdk | 1.8 |
+| java | 16.0.2  |
+| jdk | 11.0.13 |
 
 Do not use JDK 14
 ```
