@@ -232,4 +232,4 @@ For instance, if you're ever filtering, sampling or Rate Limiting events/crashes
 ## Troubleshooting
 If you're getting errors about "You need Java 11, not 1.8" and when you run `java --version` it says you're already on Java 11, then you may need to go into Android Studio Settings > Preferences > Build, Execution, Deployment > Gradle > Select jdk-11.
  
-If youre app builds, compiles and starts to run but the AVD screen never appears and the Logcat is stuck on "E/GnssHAL_GnssInterface: gnssSvStatusCb: b: input svInfo.flags is", then you may need to disable Location and GPS services from your AVD. If you can't edit these settings on an existing AVD (as they're from the Hardware Profile), then create a new AVD. 
+If youre app builds, compiles and starts to run but the AVD screen never appears and the Logcat is stuck on "E/GnssHAL_GnssInterface: gnssSvStatusCb: b: input svInfo.flags is", then you may need to disable Location and GPS services from your AVD. If you can't edit these settings on an existing AVD (as they're from the Hardware Profile), then create a new AVD and as you're doing that, go into the Hardware Profile settings and uncheck the box for GPS.
