@@ -1,17 +1,16 @@
 package com.example.vu.android.empowerplant;
 
 
+import android.content.Intent;
 import android.os.Bundle;
-
-
-import androidx.fragment.app.FragmentTransaction;
-
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.fragment.app.FragmentTransaction;
+
+import com.example.vu.android.MainActivity;
 import com.example.vu.android.MyBaseActivity;
 import com.example.vu.android.R;
 
@@ -62,7 +61,10 @@ public class EmpowerPlantActivity extends MyBaseActivity {
             case R.id.action_cart:
                 fragment.checkout();
                 return(true);
-
+            case R.id.action_open_listapp:
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                return true;
         }
         return(super.onOptionsItemSelected(item));
     }

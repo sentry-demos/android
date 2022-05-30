@@ -6,12 +6,25 @@
 <!--        android:icon="@drawable/outline_shopping_cart_white_24dp"-->
 <!--        android:title="tool store"-->
 <!--        app:showAsAction="always"/>-->
-
     <item
         android:id="@+id/action_cart"
         android:icon="@drawable/outline_shopping_cart_white_24dp"
         android:title="Cart"
         app:actionLayout="@layout/custom_action_item_layout"
         app:showAsAction="always"/>
+    <item
+        android:id="@+id/action_more"
+        android:icon="@drawable/ic_baseline_more_vert_24"
+        android:title="More"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/action_open_listapp"
+                android:icon="@drawable/outline_handyman_white_24dp"
+                android:title="List App"
+                app:showAsAction="always"/>
+        </menu>
+    </item>
+
 
 </menu>

@@ -18,25 +18,28 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
 
-        <activity android:name=".MainActivity" android:exported="true">
+        <activity android:name=".MainActivity" android:parentActivityName=".empowerplant.EmpowerPlantActivity"
+            android:label="List App">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".empowerplant.EmpowerPlantActivity" />
+        </activity>
+        <activity
+            android:exported="true"
+            android:name=".empowerplant.EmpowerPlantActivity"
+            android:label="@string/title_activity_empowerplant"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".empowerplant.EmpowerPlantActivity"
-            android:label="@string/title_activity_empowerplant"
-            android:parentActivityName=".MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+
         </activity>
 
         <meta-data
             android:name="io.sentry.dsn"
-            android:value="https://3d2ac63d6e1a4c6e9214443678f119a3@o87286.ingest.sentry.io/1801383" />
+            android:value="https://2aeaaaadaecd4aee96c012acae1613de@o87286.ingest.sentry.io/6269845" />
         <meta-data
             android:name="io.sentry.debug"
             android:value="true" />
