@@ -1,18 +1,12 @@
 package com.example.vu.android;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Button;
 
-import com.example.vu.android.empowerplant.EmpowerPlantActivity;
-
 import io.sentry.Breadcrumb;
-import io.sentry.ISpan;
 import io.sentry.Sentry;
 import io.sentry.SentryLevel;
-import io.sentry.protocol.User;
 
 public class MainActivity extends MyBaseActivity {
 
@@ -108,17 +102,17 @@ public class MainActivity extends MyBaseActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
-            case R.id.action_open_empowerplant:
-                Intent intent = new Intent(this, EmpowerPlantActivity.class);
-                startActivity(intent);
-                return true;
-
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch(item.getItemId()) {
+//            case R.id.action_open_empowerplant:
+//                Intent intent = new Intent(this, EmpowerPlantActivity.class);
+//                startActivity(intent);
+//                return true;
+//
+//        }
+//        return super.onOptionsItemSelected(item);
+//    } // uncommenting will restore navigation from listapp to empowerplant store items
 
 
 //     private String getIPAddress(){
