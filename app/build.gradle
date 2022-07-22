@@ -104,4 +104,5 @@ sentry {
     autoUpload = true
     uploadNativeSymbols = false
     includeNativeSources = false
+    autoUploadProguardMapping = false
 }
