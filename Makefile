@@ -7,6 +7,9 @@ all: gradle_build setup_release associate_commits
 gradle_build:
 	./gradlew build
 
+clean:
+	./gradlew clean build
+
 setup_release: create_release associate_commits
 
 create_release:
@@ -14,6 +17,3 @@ create_release:
 
 associate_commits:
 	sentry-cli releases -o $(SENTRY_ORG) -p $(SENTRY_PROJECT) set-commits --auto $(RELEASE)
-
-clean:
-	./gradlew clean build
