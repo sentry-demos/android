@@ -1,5 +1,5 @@
 SENTRY_ORG=testorg-az
-SENTRY_PROJECT=android
+SENTRY_PROJECT=android-ben-demo
 RELEASE=`sentry-cli releases propose-version`
 
 all: gradle_build create_release associate_commits

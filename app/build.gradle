@@ -21,7 +21,7 @@ apply plugin: 'io.sentry.android.gradle'
 //}
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 33
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -29,11 +29,11 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.example.vu.android"
+        applicationId "com.example.ben.android"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 33
         versionCode 21
-        versionName "2.1.0"
+        versionName "0.0.1"
 
         externalNativeBuild {
             cmake {
