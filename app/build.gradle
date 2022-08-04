@@ -29,11 +29,11 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.example.ben.android"
+        applicationId "com.example.vu.android"
         minSdkVersion 21
         targetSdkVersion 33
         versionCode 21
-        versionName "0.0.1"
+        versionName "2.1.0"
 
         externalNativeBuild {
             cmake {
