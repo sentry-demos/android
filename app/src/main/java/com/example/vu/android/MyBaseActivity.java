@@ -3,6 +3,7 @@ package com.example.vu.android;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,7 +14,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 import io.sentry.Attachment;
 import io.sentry.Sentry;
@@ -62,10 +68,53 @@ public class MyBaseActivity extends AppCompatActivity  {
 
     protected Boolean addAttachment() {
         File f = null;
+        boolean slowProfiling = BuildConfig.SLOW_PROFILING;
+        int maxTries = 1000000;
         try {
             Context c = getApplicationContext();
             File cacheDirectory = c.getCacheDir();
-            f = File.createTempFile("tmp", ".txt", cacheDirectory);
+
+            if (slowProfiling) {
+                String fileName = "tmp" + UUID.randomUUID();
+                boolean cacheFileExists = false;
+
+                boolean outOfBounds = false;
+                List<Integer> indexes = new ArrayList<>();
+                int count = 0;
+                Random rand = new Random();
+                File[] cacheFiles = cacheDirectory.listFiles();
+
+                // Loop through cache dir and check tmp file does not exist already
+                while (!outOfBounds && cacheFiles != null) {
+                    int index = rand.nextInt();
+                    int iteration = 0;
+                    while (indexes.contains(index) || index > cacheFiles.length || index < 0) {
+                        index = rand.nextInt();
+                        iteration++;
+                        if (iteration > maxTries) {
+                            index = rand.nextInt(cacheFiles.length);
+                        }
+                    }
+
+                    if (cacheFiles[index].getName().equals(fileName)) {
+                        cacheFileExists = true;
+                    }
+
+                    if (count == cacheFiles.length - 1) {
+                        outOfBounds = true;
+                    }
+
+                    indexes.add(index);
+                    count = count + 1;
+                }
+
+                if (!cacheFileExists) {
+                    f = new File(cacheDirectory + fileName);
+                }
+            } else {
+                f = File.createTempFile("tmp", ".txt", cacheDirectory);
+            }
+
             System.out.println("File path: "+f.getAbsolutePath());
             f.deleteOnExit();
             try (FileOutputStream fos = new FileOutputStream(f)) {

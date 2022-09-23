@@ -8,6 +8,9 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE"/>
 
     <application
         android:name=".MyApplication"
@@ -16,6 +19,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:requestLegacyExternalStorage="true"
         android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
 
         <activity android:name=".MainActivity" android:parentActivityName=".empowerplant.EmpowerPlantActivity"
@@ -39,13 +43,16 @@
 
         <meta-data
             android:name="io.sentry.dsn"
-            android:value="https://3d2ac63d6e1a4c6e9214443678f119a3@o87286.ingest.sentry.io/1801383" />
+            android:value="https://5ea5f29dda2a45379a980ef84b55dedd@o87286.ingest.sentry.io/6749210" />
         <meta-data
             android:name="io.sentry.debug"
             android:value="true" />
         <meta-data
             android:name="io.sentry.ndk.scope-sync.enable"
             android:value="true" />
+
+        <meta-data android:name="io.sentry.traces.user-interaction.enable" android:value="true" />
+
         <meta-data
             android:name="io.sentry.auto-init"
             android:value="false" />
@@ -55,7 +62,7 @@
         <!-- lowering this number below 5000ms overrides the 5000ms, we check the state of the processor faster. doesn't mean we're detecting more ANR's or not -->
         <!-- Default is 5seconds (is from the OperatingSystem, to define the state of Not Responding) and defined by the SDK -->
         <!-- we can check the state of the property ourselves, using this -->
-            <!-- <meta-data android:name="io.sentry.anr.timeout-interval-mills" android:value="3000" /> -->
+        <!-- <meta-data android:name="io.sentry.anr.timeout-interval-mills" android:value="3000" /> -->
 
         <!-- Easy way to get a new release if you're testing, to separate from past releases with lots of crashes/sessions. overrides what's in app/build.gradle -->
         <!-- <meta-data android:name="io.sentry.release" android:value="io.sentry.sample@1.0.0+1" /> -->
@@ -67,6 +74,19 @@
         <meta-data
             android:name="io.sentry.traces.sample-rate"
             android:value="1.0" />
+        <meta-data
+            android:name="io.sentry.traces.profiling.enable"
+            android:value="true" />
+
+
+        <meta-data
+            android:name="io.sentry.traces.profiling.sample-rate"
+            android:value="1.0" />
+
+        <meta-data
+            android:name="io.sentry.traces.user-interaction.enable"
+            android:value="true" />
+
 
         <meta-data
             android:name="empowerplant.domain"
