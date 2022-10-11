@@ -130,12 +130,12 @@ public class MyBaseActivity extends AppCompatActivity  {
             cacheFiles = cacheDirectory.listFiles();
         }
 
-        // Loop through cache dir and check tmp file does not exist already
+        // Loop through cache dir and check that tmp file does not exist already
         while (!outOfBounds && cacheFiles != null) {
             int index = rand.nextInt();
             int iteration = 0;
 
-            // Play a guess game and try to find the index for an existing file in the cache dir
+            // Play a guessing game and try to find the index for an existing file in the cache dir
             while (indexes.contains(index) || index > cacheFiles.length || index < 0) {
                 index = rand.nextInt();
                 iteration++;
