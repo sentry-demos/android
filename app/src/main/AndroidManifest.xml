@@ -55,7 +55,7 @@
         <!-- lowering this number below 5000ms overrides the 5000ms, we check the state of the processor faster. doesn't mean we're detecting more ANR's or not -->
         <!-- Default is 5seconds (is from the OperatingSystem, to define the state of Not Responding) and defined by the SDK -->
         <!-- we can check the state of the property ourselves, using this -->
-            <!-- <meta-data android:name="io.sentry.anr.timeout-interval-mills" android:value="3000" /> -->
+        <!-- <meta-data android:name="io.sentry.anr.timeout-interval-mills" android:value="3000" /> -->
 
         <!-- Easy way to get a new release if you're testing, to separate from past releases with lots of crashes/sessions. overrides what's in app/build.gradle -->
         <!-- <meta-data android:name="io.sentry.release" android:value="io.sentry.sample@1.0.0+1" /> -->
@@ -67,7 +67,12 @@
         <meta-data
             android:name="io.sentry.traces.sample-rate"
             android:value="1.0" />
-
+        <meta-data
+            android:name="io.sentry.traces.profiling.enable"
+            android:value="true" />
+        <meta-data
+            android:name="io.sentry.traces.profiling.sample-rate"
+            android:value="1.0" />
         <meta-data
             android:name="empowerplant.domain"
             android:value="https://application-monitoring-flask-dot-sales-engineering-sf.appspot.com" />
