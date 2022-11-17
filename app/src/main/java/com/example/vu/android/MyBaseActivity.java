@@ -65,7 +65,7 @@ public class MyBaseActivity extends AppCompatActivity  {
             mMyApp.setCurrentActivity( null ) ;
     }
 
-    protected Boolean addAttachment() {
+    protected Boolean addAttachment(Boolean secure) {
         File f = null;
         String fileName = "tmp" + UUID.randomUUID();
         boolean slowProfiling = BuildConfig.SLOW_PROFILING;
@@ -74,8 +74,8 @@ public class MyBaseActivity extends AppCompatActivity  {
             Context c = getApplicationContext();
             File cacheDirectory = c.getCacheDir();
 
-            if (slowProfiling) {
-                f = generateSlowProfile(cacheDirectory, fileName);
+            if (slowProfiling && secure) {
+                f = createTempFileSecure(cacheDirectory, fileName);
             } else {
                 f = File.createTempFile(fileName, ".txt", cacheDirectory);
             }
@@ -114,7 +114,7 @@ public class MyBaseActivity extends AppCompatActivity  {
         }
     }
 
-    protected File generateSlowProfile(File cacheDirectory, String fileName){
+    protected File createTempFileSecure(File cacheDirectory, String fileName){
         int maxTries = 1000000;
         boolean cacheFileExists = false;
         boolean outOfBounds = false;
