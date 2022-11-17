@@ -31,7 +31,7 @@ public class MainActivity extends MyBaseActivity {
         // Unhandled - ArithmeticException
         Button div_by_zero_button = findViewById(R.id.div_zero);
         div_by_zero_button.setOnClickListener(view -> {
-            addAttachment();
+            addAttachment(false);
             Breadcrumb bc = new Breadcrumb();
             bc.setMessage("Button for ArithmeticException clicked...");
             bc.setLevel(SentryLevel.ERROR);
@@ -44,7 +44,7 @@ public class MainActivity extends MyBaseActivity {
         // Unhandled - NegativeArraySizeException
         Button negative_index_button = findViewById(R.id.negative_index);
         negative_index_button.setOnClickListener(view -> {
-            addAttachment();
+            addAttachment(false);
             Sentry.addBreadcrumb("Button for NegativeArraySizeException clicked...");
             int[] a = new int[-5];
         });
@@ -52,7 +52,7 @@ public class MainActivity extends MyBaseActivity {
         // Handled - ArrayIndexOutOfBoundsException
         Button handled_exception_button = findViewById(R.id.handled_exception);
         handled_exception_button.setOnClickListener(view -> {
-            addAttachment();
+            addAttachment(false);
 
             Sentry.addBreadcrumb("Button for ArrayIndexOutOfBoundsException clicked..");
                 try {
