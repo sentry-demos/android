@@ -32,10 +32,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import io.sentry.Attachment;
-import io.sentry.IHub;
 import io.sentry.ISpan;
 import io.sentry.ITransaction;
 import io.sentry.Sentry;
@@ -44,13 +42,10 @@ import io.sentry.SpanStatus;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
-import okhttp3.OkHttp;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-
-import io.sentry.android.okhttp.SentryOkHttpInterceptor;
 
 import com.example.vu.android.R;
 
@@ -148,9 +143,6 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
                 //progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     String responseStr = response.body().string();
-
-                    progressDialog.dismiss();//why called a second time
-
                 }
             }
 
