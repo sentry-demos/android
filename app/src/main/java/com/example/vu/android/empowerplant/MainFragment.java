@@ -35,20 +35,25 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.sentry.Attachment;
+import io.sentry.IHub;
 import io.sentry.ISpan;
 import io.sentry.ITransaction;
 import io.sentry.Sentry;
 import io.sentry.SpanStatus;
-import io.sentry.android.okhttp.SentryOkHttpInterceptor;
+
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
+import okhttp3.OkHttp;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import io.sentry.android.okhttp.SentryOkHttpInterceptor;
+
 import com.example.vu.android.R;
+
 
 
 /**
@@ -110,6 +115,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
 
     private void initRecyclerView(View view) {
         this.fetchToolsFromServer();
+        this.fetchDetails();
         adapter = new StoreItemAdapter(empowerStoreItems, this);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -125,6 +131,36 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         ((EmpowerPlantActivity) getActivity()).textCartItemCount.setText(String.valueOf(++mCartItemCount));
     }
 
+    public void fetchDetails() {
+        String domain = this.getEmpowerPlantDomain();
+        String getToolsURL = domain + "/details";
+
+        Request request = new Request.Builder()
+                .url(getToolsURL)
+                .build();
+
+        OkHttpClient client = new RequestClient().getClient();
+
+        client.newCall(request).enqueue(new Callback() {
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                //progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    String responseStr = response.body().string();
+
+                    progressDialog.dismiss();//why called a second time
+
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                //progressDialog.dismiss();
+            }
+        });
+    }
+
     public void fetchToolsFromServer() {
         progressDialog = new ProgressDialog(getContext());//ProgressDialog has been deprecated in API 26 https://developer.android.com/reference/android/app/ProgressDialog
         progressDialog.setMessage("Loading...");
@@ -135,16 +171,11 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         String domain = this.getEmpowerPlantDomain();
         String getToolsURL = domain + this.END_POINT_PRODUCTS;
 
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(new SentryOkHttpInterceptor())
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .writeTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(30, TimeUnit.SECONDS)
-                .build();
-
         Request request = new Request.Builder()
                 .url(getToolsURL)
                 .build();
+
+        OkHttpClient client = new RequestClient().getClient();
 
         client.newCall(request).enqueue(new Callback() {
 
@@ -266,13 +297,6 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         String domain = this.getEmpowerPlantDomain();
         String checkoutURL = domain + this.END_POINT_CHECKOUT;
 
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(new SentryOkHttpInterceptor())
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .writeTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(30, TimeUnit.SECONDS)
-                .build();
-
         RequestBody body = RequestBody.create(object.toString(), JSON);
 
         Request request = new Request.Builder()
@@ -280,6 +304,8 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
                 .header("email", "someone@gmail.com")
                 .post(body)
                 .build();
+
+        OkHttpClient client = new RequestClient().getClient();
 
         client.newCall(request).enqueue(new Callback() {
 
