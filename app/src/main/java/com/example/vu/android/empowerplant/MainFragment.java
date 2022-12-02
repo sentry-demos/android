@@ -110,7 +110,6 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
 
     private void initRecyclerView(View view) {
         this.fetchToolsFromServer();
-        this.fetchDetails();
         adapter = new StoreItemAdapter(empowerStoreItems, this);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -124,33 +123,6 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
 
     public void setBadgeNumber() {
         ((EmpowerPlantActivity) getActivity()).textCartItemCount.setText(String.valueOf(++mCartItemCount));
-    }
-
-    public void fetchDetails() {
-        String domain = this.getEmpowerPlantDomain();
-        String getToolsURL = domain + "/details";
-
-        Request request = new Request.Builder()
-                .url(getToolsURL)
-                .build();
-
-        OkHttpClient client = new RequestClient().getClient();
-
-        client.newCall(request).enqueue(new Callback() {
-
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                //progressDialog.dismiss();
-                if (response.isSuccessful()) {
-                    String responseStr = response.body().string();
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                //progressDialog.dismiss();
-            }
-        });
     }
 
     public void fetchToolsFromServer() {

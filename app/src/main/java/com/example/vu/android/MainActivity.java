@@ -86,6 +86,10 @@ public class MainActivity extends MyBaseActivity {
 
             NativeSample.message();
         });
+
+        findViewById(R.id.error_404).setOnClickListener(view -> {
+            HTTPClient.makeRequest(getApplicationContext());
+        });
     }
 
     @Override
