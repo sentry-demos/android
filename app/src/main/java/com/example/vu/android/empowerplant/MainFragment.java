@@ -32,14 +32,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import io.sentry.Attachment;
 import io.sentry.ISpan;
 import io.sentry.ITransaction;
 import io.sentry.Sentry;
 import io.sentry.SpanStatus;
-import io.sentry.android.okhttp.SentryOkHttpInterceptor;
+
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -49,6 +48,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import com.example.vu.android.R;
+
 
 
 /**
@@ -135,16 +135,11 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         String domain = this.getEmpowerPlantDomain();
         String getToolsURL = domain + this.END_POINT_PRODUCTS;
 
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(new SentryOkHttpInterceptor())
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .writeTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(30, TimeUnit.SECONDS)
-                .build();
-
         Request request = new Request.Builder()
                 .url(getToolsURL)
                 .build();
+
+        OkHttpClient client = new RequestClient().getClient();
 
         client.newCall(request).enqueue(new Callback() {
 
@@ -266,13 +261,6 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         String domain = this.getEmpowerPlantDomain();
         String checkoutURL = domain + this.END_POINT_CHECKOUT;
 
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(new SentryOkHttpInterceptor())
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .writeTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(30, TimeUnit.SECONDS)
-                .build();
-
         RequestBody body = RequestBody.create(object.toString(), JSON);
 
         Request request = new Request.Builder()
@@ -280,6 +268,8 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
                 .header("email", "someone@gmail.com")
                 .post(body)
                 .build();
+
+        OkHttpClient client = new RequestClient().getClient();
 
         client.newCall(request).enqueue(new Callback() {
 

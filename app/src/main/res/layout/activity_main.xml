@@ -36,24 +36,24 @@
             <Button
                 android:id="@+id/div_zero"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_height="35dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/mybutton"
-                android:text="ArithmeticException"
-                android:textColor="#FFFFFF"
                 android:fontFamily="@font/rubik_medium"
-                android:textAllCaps="false"/>
+                android:text="ArithmeticException"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF" />
 
             <Button
                 android:id="@+id/negative_index"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_height="35dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/mybutton"
-                android:text="RTE and Strip PII"
-                android:textColor="#FFFFFF"
                 android:fontFamily="@font/rubik_medium"
-                android:textAllCaps="false" />
+                android:text="RTE and Strip PII"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF" />
 
             <TextView
                 android:id="@+id/handled_java_errors"
@@ -69,13 +69,13 @@
             <Button
                 android:id="@+id/handled_exception"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_height="35dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/mybutton"
-                android:text="ArrayIndexOutOfBoundsException"
-                android:textColor="#FFFFFF"
                 android:fontFamily="@font/rubik_medium"
-                android:textAllCaps="false" />
+                android:text="ArrayIndexOutOfBoundsException"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF" />
 
             <TextView
                 android:id="@+id/application_not_responding"
@@ -91,13 +91,13 @@
             <Button
                 android:id="@+id/anr"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_height="35dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/mybutton"
-                android:text="Application Not Responding"
-                android:textColor="#FFFFFF"
                 android:fontFamily="@font/rubik_medium"
-                android:textAllCaps="false" />
+                android:text="Application Not Responding"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF" />
 
             <TextView
                 android:id="@+id/ndk_cpp"
@@ -113,24 +113,46 @@
             <Button
                 android:id="@+id/native_crash"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_height="35dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/mybutton"
-                android:text="Native Crash - SIGSEGV"
-                android:textColor="#FFFFFF"
                 android:fontFamily="@font/rubik_medium"
-                android:textAllCaps="false" />
+                android:text="Native Crash - SIGSEGV"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF" />
 
             <Button
                 android:id="@+id/native_message"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_height="35dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/mybutton"
-                android:text="Native Message"
-                android:textColor="#FFFFFF"
                 android:fontFamily="@font/rubik_medium"
-                android:textAllCaps="false" />
+                android:text="Native Message"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/http_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/rubik_regular"
+                android:text="HTTP Errors"
+                android:textColor="#4A3E56"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/error_404"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/mybutton"
+                android:fontFamily="@font/rubik_medium"
+                android:text="404 Status Code Error"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF" />
 
         </LinearLayout>
 
