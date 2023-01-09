@@ -39,7 +39,7 @@
 
         <meta-data
             android:name="io.sentry.dsn"
-            android:value="https://3d2ac63d6e1a4c6e9214443678f119a3@o87286.ingest.sentry.io/1801383" />
+            android:value="https://d005b92d79cb48dbaf6f2493f96d16fa@o87286.ingest.sentry.io/4504458861936640" />
         <meta-data
             android:name="io.sentry.debug"
             android:value="true" />
@@ -76,6 +76,9 @@
         <meta-data
             android:name="empowerplant.domain"
             android:value="https://application-monitoring-flask-dot-sales-engineering-sf.appspot.com" />
+        <meta-data
+            android:name="io.sentry.attach-screenshot"
+            android:value="true" />
 
     </application>
 
