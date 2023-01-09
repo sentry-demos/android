@@ -76,6 +76,9 @@
         <meta-data
             android:name="empowerplant.domain"
             android:value="https://application-monitoring-flask-dot-sales-engineering-sf.appspot.com" />
+        <meta-data
+            android:name="io.sentry.attach-screenshot"
+            android:value="true" />
 
     </application>
 
