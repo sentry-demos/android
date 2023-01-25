@@ -150,9 +150,9 @@
                 android:layout_marginTop="8dp"
                 android:background="@drawable/mybutton"
                 android:fontFamily="@font/rubik_medium"
-                android:text="404 Status Code Error"
+                android:text="404 HTTP Error"
                 android:textAllCaps="false"
-                android:textColor="#FFFFFF" />
+                android:textColor="#FFFF" />
 
         </LinearLayout>
 
