@@ -41,9 +41,9 @@ which java
 
 1. `git clone git@github.com:sentry-demos/android.git`
 
-2. It will take a few minutes for Gradle to configure itself and download dependencies. <img width="406" alt="Screenshot 2023-02-06 at 4 33 15 PM" src="https://user-images.githubusercontent.com/490201/217118488-8b3e0264-d421-4c08-b534-10af9432b7bd.png">
+2. Open project using Android Studio. It will take a few minutes for Gradle to configure itself and download dependencies. <img width="406" alt="Screenshot 2023-02-06 at 4 33 15 PM" src="https://user-images.githubusercontent.com/490201/217118488-8b3e0264-d421-4c08-b534-10af9432b7bd.png">
 
-3. Open project using Android Studio and set your Build Variant to 'release' instead of debug. Or else debug symbols won't get uploaded.
+3. Set your Build Variant to 'release' instead of debug. Or else debug symbols won't get uploaded.
  Build Variants tab (left side of Android Studio) > Select 'release' under Active Build Variant Column > if that's missing then go to Build > Edit Build Types.
 
 4. Sync the project with the Gradle files
