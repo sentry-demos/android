@@ -58,7 +58,7 @@ which java
 
 5. Put your Sentry DSN key in `AndroidManifest.xml` and your 'project' name in the Makefile
 
-6. For Performance Demo: Configure your GCP tool store domain in the `toolstore.domain` attribute in `AndroidManifest.xml`
+6. For Performance Demo: Configure your *backend endpoint* in the `empowerplant.domain` attribute in `AndroidManifest.xml` (`application-monitoring-python` by default)
 
 7. Put your AUTH Token and project name in sentry.properties
 
