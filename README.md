@@ -41,10 +41,12 @@ which java
 
 1. `git clone git@github.com:sentry-demos/android.git`
 
-2. Open project using Android Studio and set your Build Variant to 'release' instead of debug. Or else debug symbols won't get uploaded.
+2. It will take a few minutes for Gradle to configure itself and download dependencies. <img width="406" alt="Screenshot 2023-02-06 at 4 33 15 PM" src="https://user-images.githubusercontent.com/490201/217118488-8b3e0264-d421-4c08-b534-10af9432b7bd.png">
+
+3. Open project using Android Studio and set your Build Variant to 'release' instead of debug. Or else debug symbols won't get uploaded.
  Build Variants tab (left side of Android Studio) > Select 'release' under Active Build Variant Column > if that's missing then go to Build > Edit Build Types.
 
-3. Sync the project with the Gradle files
+4. Sync the project with the Gradle files
 
     ```
     Tools -> Android -> Sync Project with Gradle Files
@@ -54,22 +56,23 @@ which java
     File -> Sync Project with Gradle Files
     ```
 
-4. Put your Sentry DSN key in `AndroidManifest.xml` and your 'project' name in the Makefile
+5. Put your Sentry DSN key in `AndroidManifest.xml` and your 'project' name in the Makefile
 
-5. For Performance Demo: Configure your GCP tool store domain in the `toolstore.domain` attribute in `AndroidManifest.xml`
+6. For Performance Demo: Configure your GCP tool store domain in the `toolstore.domain` attribute in `AndroidManifest.xml`
 
-6. Put your AUTH Token and project name in sentry.properties
+7. Put your AUTH Token and project name in sentry.properties
 
-7. `make all`
+8. `make all`
 
-8. Android Studio install Android NDK in Preferences > System & Behavior > System Settings > Android SDK > SDK Tools > and install the following:
+9. Android Studio install Android NDK in Preferences > System & Behavior > System Settings > Android SDK > SDK Tools > and install the following:
 ![AndroidTools](screenshots/android-tools.png)
 
 ![gif](screenshots/debug-information-files-settings.png)
 
-9. Maintain a separate branch which has your auth token.
+10. Maintain a separate branch which has your auth token.
 
-10. Optional - Add se:<yourname> tag to buildConfigField in build.gradle.
+11. Optional - Add se:<yourname> tag to buildConfigField in build.gradle.
+
 
 ## Run
 
