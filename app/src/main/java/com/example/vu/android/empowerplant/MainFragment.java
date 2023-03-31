@@ -302,6 +302,31 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
     }
 
     private JSONObject buildJSONPostData(HashMap<String, StoreItem> selectedStoreItems) {
+        JSONObject obj = null;
+        JSONArray array = null;
+        List<String> list = null;
+        try {
+            obj = new JSONObject("{interests : [{interestKey:Dogs}, {interestKey:Cats}]}");
+            list = new ArrayList<String>();
+            array = obj.getJSONArray("interests");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        if (array != null) {
+            for (int i = 0; i < array.length(); i++) {
+                try {
+                    list.add(array.getJSONObject(i).getString("interestKey"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        ISpan transaction = Sentry.getSpan();
+        ISpan jsonSpan = null;
+        if (transaction != null) {
+            jsonSpan = transaction.startChild("json_decode", "build post data");
+        }
         JSONObject jsonObject, postBody = new JSONObject();
         JSONObject cart = new JSONObject();
         JSONArray jsonArray = new JSONArray();
@@ -333,6 +358,9 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
                 span.finish();
             }
             Sentry.captureException(e);
+        }
+        if (jsonSpan != null) {
+            jsonSpan.finish(SpanStatus.OK);
         }
         return postBody;
     }

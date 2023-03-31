@@ -3,6 +3,8 @@ package com.example.vu.android;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,17 +13,24 @@ import androidx.appcompat.app.AppCompatActivity;
 //import com.fullstory.FSOnReadyListener;
 //import com.fullstory.FSSessionData;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
 import io.sentry.Attachment;
+import io.sentry.ISpan;
 import io.sentry.Sentry;
+import io.sentry.SpanStatus;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -70,6 +79,7 @@ public class MyBaseActivity extends AppCompatActivity  {
         String fileName = "tmp" + UUID.randomUUID();
         boolean slowProfiling = BuildConfig.SLOW_PROFILING;
 
+
         try {
             Context c = getApplicationContext();
             File cacheDirectory = c.getCacheDir();
@@ -82,8 +92,13 @@ public class MyBaseActivity extends AppCompatActivity  {
 
             System.out.println("File path: "+f.getAbsolutePath());
             f.deleteOnExit();
+            List<String> list = new ArrayList<String>();
+
+            for (int i = 0; i < 1000000; i++) {
+                list.add("index:" + i);
+            }
             try (FileOutputStream fos = new FileOutputStream(f)) {
-                fos.write("test".getBytes(UTF_8));
+                fos.write(list.toString().getBytes(UTF_8));
             }
             String dateStr = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
 
@@ -100,6 +115,7 @@ public class MyBaseActivity extends AppCompatActivity  {
             Sentry.captureException(e);
             e.printStackTrace();
         }
+
         return true;
     }
 
@@ -123,6 +139,12 @@ public class MyBaseActivity extends AppCompatActivity  {
         Random rand = new Random();
         File[] cacheFiles = cacheDirectory.listFiles();
         File f = null;
+
+        /*if (cacheFiles != null){
+            for (File file : cacheFiles) {
+                file.delete();
+            }
+        }*/
 
         // If this is the first time the app is running or the cache has been cleared, the cacheFile length will be 1
         if (cacheFiles == null || cacheFiles.length <= 1) {
