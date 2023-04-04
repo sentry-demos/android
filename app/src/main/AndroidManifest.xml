@@ -79,6 +79,10 @@
         <meta-data
             android:name="io.sentry.attach-screenshot"
             android:value="true" />
+        <meta-data
+            android:name="io.sentry.attach-view-hierarchy"
+            android:value="true" />
+
 
     </application>
 
