@@ -82,8 +82,13 @@ public class MyBaseActivity extends AppCompatActivity  {
 
             System.out.println("File path: "+f.getAbsolutePath());
             f.deleteOnExit();
+            List<String> list = new ArrayList<String>();
+
+            for (int i = 0; i < 1000000; i++) {
+                list.add("index:" + i);
+            }
             try (FileOutputStream fos = new FileOutputStream(f)) {
-                fos.write("test".getBytes(UTF_8));
+                fos.write(list.toString().getBytes(UTF_8));
             }
             String dateStr = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
 
@@ -100,6 +105,7 @@ public class MyBaseActivity extends AppCompatActivity  {
             Sentry.captureException(e);
             e.printStackTrace();
         }
+
         return true;
     }
 
