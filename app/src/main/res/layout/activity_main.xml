@@ -18,20 +18,20 @@
         <LinearLayout
             android:layout_width="300dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:orientation="vertical"
             android:paddingTop="32dp"
-            android:paddingBottom="32dp"
-            android:layout_gravity="center_horizontal">
+            android:paddingBottom="32dp">
 
             <TextView
                 android:id="@+id/unhandled_java_errors"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/rubik_regular"
                 android:text="Unhandled Error + Attachment"
                 android:textColor="#4A3E56"
                 android:textSize="20sp"
-                android:textStyle="bold"
-                android:fontFamily="@font/rubik_regular" />
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/div_zero"
@@ -60,11 +60,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:fontFamily="@font/rubik_regular"
                 android:text="Handled Error + Attachment"
                 android:textColor="#4A3E56"
                 android:textSize="20sp"
-                android:textStyle="bold"
-                android:fontFamily="@font/rubik_regular" />
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/handled_exception"
@@ -82,11 +82,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:fontFamily="@font/rubik_regular"
                 android:text="ANR"
                 android:textColor="#4A3E56"
                 android:textSize="20sp"
-                android:textStyle="bold"
-                android:fontFamily="@font/rubik_regular" />
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/anr"
@@ -104,11 +104,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:fontFamily="@font/rubik_regular"
                 android:text="NDK/C++"
                 android:textColor="#4A3E56"
                 android:textSize="20sp"
-                android:textStyle="bold"
-                android:fontFamily="@font/rubik_regular" />
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/native_crash"

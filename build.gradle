@@ -3,22 +3,17 @@
 buildscript {
     
     repositories {
+        mavenLocal()
         google()
-        jcenter()
         mavenCentral()
+        jcenter()
         maven { url "https://maven.fullstory.com" }
     }
+
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.0'
+        classpath 'com.android.tools.build:gradle:7.3.1'
         classpath 'com.ydq.android.gradle.build.tool:nativeBundle:1.0.7'
         classpath 'com.fullstory:gradle-plugin-local:1.12.1'
-    }
-}
-
-allprojects {
-    repositories {
-        google()
-        jcenter()
     }
 }
 

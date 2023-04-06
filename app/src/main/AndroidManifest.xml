@@ -7,34 +7,35 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".MyApplication"
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
+        android:theme="@style/Theme.Material3.Light">
 
-        <activity android:name=".MainActivity" android:parentActivityName=".empowerplant.EmpowerPlantActivity"
-            android:label="List App">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".empowerplant.EmpowerPlantActivity" />
-        </activity>
         <activity
+            android:name=".empowerplant.ui.EmpowerPlantActivity"
             android:exported="true"
-            android:name=".empowerplant.EmpowerPlantActivity"
-            android:label="@string/title_activity_empowerplant"
-            >
+            android:label="@string/title_activity_empowerplant">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
+        </activity>
+
+        <activity
+            android:name=".featurelist.FeatureListActivity"
+            android:label="List App"
+            android:parentActivityName=".empowerplant.ui.EmpowerPlantActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".empowerplant.ui.EmpowerPlantActivity" />
         </activity>
 
         <meta-data
@@ -49,7 +50,9 @@
         <meta-data
             android:name="io.sentry.auto-init"
             android:value="false" />
-        <meta-data android:name="io.sentry.traces.activity.auto-finish.enable" android:value="false" />
+        <meta-data
+            android:name="io.sentry.traces.activity.auto-finish.enable"
+            android:value="false" />
 
         <!-- This line not needed any more, because now we have a safe guard, waiting for the Operating System to raise an ANR in the processor, it waits 5seconds. Lowering this number just makes it to check the state of the processor more times. -->
         <!-- lowering this number below 5000ms overrides the 5000ms, we check the state of the processor faster. doesn't mean we're detecting more ANR's or not -->
@@ -81,6 +84,9 @@
             android:value="true" />
         <meta-data
             android:name="io.sentry.attach-view-hierarchy"
+            android:value="true" />
+        <meta-data
+            android:name="io.sentry.traces.user-interaction.enable"
             android:value="true" />
 
 

@@ -19,17 +19,16 @@ Additional documentation:
 
 ## Versions
 
-| dependency    | version
-| ------------- |:-------------:|
-| sentry-java | 5.1.2 |
-| sentry-android-gradle-plugin | 3.0.0 |
-| Android Studio Arctic Fox | 2020.3.1 |
-| Gradle | 7.0.2 |
-| AVD | Nexus 5x API 29 x86, Pixel 2 API 29 |
-| sentry-cli | 1.55.1 |
-| macOS | Catalina 10.15.7 |
-| java | 16.0.2  |
-| jdk | 11.0.13 |
+| dependency                   |               version               |
+|------------------------------|:-----------------------------------:|
+| sentry-java                  |               6.17.0                |
+| sentry-android-gradle-plugin |                3.5.0                |
+| Android Studio Arctic Fox    |              2020.3.1               |
+| Gradle                       |                7.6.0                |
+| AVD                          | Nexus 5x API 29 x86, Pixel 2 API 29 |
+| sentry-cli                   |               1.55.1                |
+| macOS                        |          Catalina 10.15.7           |
+| jdk                          |               17.0.5                |
 
 Do not use JDK 14
 ```
@@ -83,7 +82,7 @@ which java
 
 ### Errors
 
-The MainActivity has 5 buttons that generate the following exception types:
+The Feature List Activity has 5 buttons that generate the following exception types:
 
 1. **Unhandled Error + Attachment** of type Arithmetic Exception
 2. **Unhandled Error + Attachment** of type NegativeArraySizeException + Strips PII (removes user IP address in beforeSend)
