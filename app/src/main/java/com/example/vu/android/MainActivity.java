@@ -106,6 +106,10 @@ public class MainActivity extends MyBaseActivity {
         return true;
     }
 
+    public boolean dummyFunction(boolean value) {
+        return true;
+    } 
+
 //    @Override
 //    public boolean onOptionsItemSelected(MenuItem item) {
 //        switch(item.getItemId()) {
