@@ -106,7 +106,7 @@ public class MainActivity extends MyBaseActivity {
         return true;
     }
 
-    public boolean dummyFunction(boolean value) {
+    public static boolean dummyFunction(boolean value) {
         return true;
     } 
 

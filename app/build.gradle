@@ -1,3 +1,5 @@
+import java.sql.Wrapper
+
 buildscript {
     ext.kotlin_version= '1.6.0'
     dependencies {
@@ -7,7 +9,6 @@ buildscript {
         mavenCentral()
     }
 }
-
 
 plugins {
     id "io.sentry.android.gradle" version "3.3.0"
@@ -24,6 +25,10 @@ apply plugin: 'kotlin-android'
 //    enabledVariants 'all'
 //    logLevel 'off'
 //}
+
+task wrapper(type: org.gradle.api.tasks.wrapper.Wrapper) {
+    gradleVersion = '7.0'
+}
 
 android {
     compileSdkVersion 31
@@ -67,6 +72,7 @@ android {
         debug {
             buildConfigField("String", "SE", "\"tda\"")
             buildConfigField("boolean", "SLOW_PROFILING", "true")
+            testCoverageEnabled true
         }
     }
 
@@ -93,6 +99,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui:2.5.3'
     implementation 'com.android.support:support-core-utils:28.0.0'
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
+    implementation 'junit:junit:4.12'
     def fragment_version = "1.5.6"
     // Java language implementation
     implementation "androidx.fragment:fragment:$fragment_version"
@@ -106,7 +113,6 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    //testImplementation "junit:junit:$jUnitVersion"
 }
 
 sentry {
