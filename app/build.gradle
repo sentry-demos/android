@@ -1,7 +1,7 @@
 import java.sql.Wrapper
 
 buildscript {
-    ext.kotlin_version= '1.8.0'
+    ext.kotlin_version= '1.8.22'
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
@@ -11,7 +11,7 @@ buildscript {
 }
 
 plugins {
-    id "io.sentry.android.gradle" version "3.8.0"
+    id "io.sentry.android.gradle" version "3.11.1"
 }
 
 apply plugin: 'com.android.application'
@@ -27,23 +27,27 @@ apply plugin: 'kotlin-android'
 //}
 
 task wrapper(type: org.gradle.api.tasks.wrapper.Wrapper) {
-    gradleVersion = '7.0'
+    gradleVersion = '8.0.2'
 }
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 33
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
     defaultConfig {
         applicationId "com.example.vu.android"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 33
         versionCode 26
-        versionName "2.4.5"
+        versionName "23.6.5"
 
         externalNativeBuild {
             cmake {
@@ -80,10 +84,11 @@ android {
         dataBinding true
     }
 
-    lintOptions {
+    lint {
         abortOnError false
     }
     ndkVersion '21.3.6528147'
+    namespace 'com.example.vu.android'
 
 }
 
@@ -95,14 +100,14 @@ dependencies {
     implementation 'io.sentry:sentry-android-okhttp:6.20.0'
     implementation 'io.sentry:sentry-android-fragment:6.20.0'
     implementation 'com.google.android.material:material:1.0.0'
-    implementation 'androidx.navigation:navigation-fragment:2.5.3'
-    implementation 'androidx.navigation:navigation-ui:2.5.3'
-    implementation 'com.android.support:support-core-utils:28.0.0'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.6.0'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.6.0'
+    implementation 'androidx.legacy:legacy-support-core-utils:1.0.0'
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
-    implementation 'junit:junit:4.12'
-    def fragment_version = "1.5.6"
+    implementation 'junit:junit:4.13.1'
+    def fragment_version = "1.6.0"
     // Java language implementation
-    implementation "androidx.fragment:fragment:$fragment_version"
+    implementation "androidx.fragment:fragment-ktx:$fragment_version"
 
     // Warning: upgrading the room version beyond 2.0.0 may
     // cause errors running automated Saucelabs tests that generate data.
