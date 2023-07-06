@@ -42,16 +42,12 @@ public class EmpowerPlantActivity extends MyBaseActivity {
                 storeitem.setImage("tmp");
                 storeitem.setItemId(i);
                 storeitem.setQuantity(1);
-
                 tmpStoreItems.add(storeitem);
             }
         
         AppDatabase.getInstance(getApplicationContext())
                 .StoreItemDAO().insertAll(tmpStoreItems);
-        
-        AppDatabase.getInstance(getApplicationContext())
-                .StoreItemDAO().getAll();
-        
+                
         AppDatabase.getInstance(getApplicationContext())
                 .StoreItemDAO().deleteAll();
         

@@ -15,7 +15,6 @@ public interface StoreItemDAO {
     @Query("DELETE FROM storeitem")
     public void deleteAll();
 
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<StoreItem> storeItems);
     //This assumes that PKs of demo data are static. Dynamically generated skus/product ids could problematically accumulate entries across simulations.
