@@ -154,6 +154,17 @@
                 android:textAllCaps="false"
                 android:textColor="#FFFF" />
 
+            <Button
+                android:id="@+id/np1_api"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/mybutton"
+                android:fontFamily="@font/rubik_medium"
+                android:text="N+1 API Call"
+                android:textAllCaps="false"
+                android:textColor="#FFFF" />
+
         </LinearLayout>
 
     </ScrollView>

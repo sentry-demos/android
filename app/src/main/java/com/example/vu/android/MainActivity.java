@@ -4,9 +4,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.widget.Button;
 
+import java.io.IOException;
+
 import io.sentry.Breadcrumb;
+import io.sentry.ISpan;
+import io.sentry.ITransaction;
 import io.sentry.Sentry;
 import io.sentry.SentryLevel;
+import io.sentry.SpanStatus;
 
 public class MainActivity extends MyBaseActivity {
 
@@ -89,6 +94,29 @@ public class MainActivity extends MyBaseActivity {
 
         findViewById(R.id.error_404).setOnClickListener(view -> {
             HTTPClient.makeRequest(getApplicationContext());
+        });
+
+        findViewById(R.id.np1_api).setOnClickListener(view -> {
+            ISpan span = Sentry.getSpan();
+            if (span == null) {
+                span = Sentry.startTransaction("np1_api()", "task");
+            }
+
+            try {
+                for (int i = 0; i < 20; i++) {
+                    try {
+                        HTTPClient.getProductByID(getApplicationContext(), i);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            } catch (Exception e) {
+                span.setThrowable(e);
+                span.setStatus(SpanStatus.INTERNAL_ERROR);
+                throw e;
+            } finally {
+                span.finish();
+            }
         });
     }
 
