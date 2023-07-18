@@ -48,32 +48,26 @@ public class HTTPClient {
     }
 
     public static void getProductByID(Context context, int id) throws IOException {
-        String domain = getEmpowerPlantDomain(context);
-        String getToolsURL = domain + "/product/0/info?id=" + Integer.toString(id);
+        final Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String domain = getEmpowerPlantDomain(context);
+                String getToolsURL = domain + "/product/0/info?id=" + Integer.toString(id);
 
-        OkHttpClient client = new RequestClient().getClient();
+                OkHttpClient client = new RequestClient().getClient();
 
-        Request request = new Request.Builder()
-            .url(getToolsURL)
-            .build();
+                Request request = new Request.Builder()
+                        .url(getToolsURL)
+                        .build();
 
-        // client.newCall(request).enqueue(new Callback() {
-
-        //     @Override
-        //     public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-        //         if (response.isSuccessful()) {
-        //             String responseStr = response.body().string();
-        //         }
-        //     }
-
-        //     @Override
-        //     public void onFailure(@NotNull Call call, @NotNull IOException e) {
-        //         //Failure error will be automatically captured by the Sentry SDK
-        //     }
-        // });
-
-        client.newCall(request).execute();
-
+                try {
+                    client.newCall(request).execute();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        thread.start();
     }
 
     private static String getEmpowerPlantDomain(Context context) {
