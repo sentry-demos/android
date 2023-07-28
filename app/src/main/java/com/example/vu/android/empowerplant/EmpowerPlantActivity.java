@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.fragment.app.FragmentTransaction;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.example.vu.android.MainActivity;
 import com.example.vu.android.MyBaseActivity;
@@ -25,8 +27,30 @@ public class EmpowerPlantActivity extends MyBaseActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_empowerplant);
+        dbQuery();
         addAttachment(true);
         this.loadFragmentList();
+    }
+
+    public void dbQuery() {
+        List<StoreItem> tmpStoreItems = new ArrayList<StoreItem>();
+        for (int i = 0; i < 30; i++) {
+                StoreItem storeitem = new StoreItem();
+                storeitem.setName("tmp");
+                storeitem.setSku("tmp");
+                storeitem.setPrice(i);
+                storeitem.setImage("tmp");
+                storeitem.setItemId(i);
+                storeitem.setQuantity(1);
+                tmpStoreItems.add(storeitem);
+            }
+        
+        AppDatabase.getInstance(getApplicationContext())
+                .StoreItemDAO().insertAll(tmpStoreItems);
+                
+        AppDatabase.getInstance(getApplicationContext())
+                .StoreItemDAO().deleteAll();
+        
     }
 
     @Override
