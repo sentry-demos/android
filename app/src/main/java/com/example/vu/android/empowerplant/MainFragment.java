@@ -276,6 +276,8 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 progressDialog.dismiss();
+                // We need to close the response when we're done with it
+                response.close();
                 if (!response.isSuccessful()) {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
