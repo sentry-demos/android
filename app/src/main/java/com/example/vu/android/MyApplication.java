@@ -70,6 +70,8 @@ public class MyApplication extends Application {
             );
 
             options.setAttachThreads(true);
+            options.setBeforeScreenshotCaptureCallback((event, hint, debounce) -> true);
+            options.setBeforeViewHierarchyCaptureCallback((event, hint, debounce) -> true);
             options.setBeforeSend((event, hint) -> {
 
                 //Remove PII
