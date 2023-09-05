@@ -94,6 +94,13 @@ public class StoreItem  {//why does this extend Fragment?
     public int getPrice() {
         return price;
     }
+
+    public boolean isValid() {
+        // This is a slow regex that matches all words ending with "1". That's why it's reverted when returned
+        return !name.matches("[a-z]*[a-z]*[a-z]*1") &&
+                !sku.matches("[a-z]*[a-z]*[a-z]*1") &&
+                !image.matches("[a-z]*[a-z]*[a-z]*1");
+    }
 }
 
 
