@@ -154,6 +154,11 @@ public class MainActivity extends MyBaseActivity {
     protected void onResume () {
         super.onResume() ;
 
+        // Let's finish the ui load transaction
+        ISpan uiLoadSpan = Sentry.getSpan();
+        if (uiLoadSpan != null && !uiLoadSpan.isFinished()) {
+            uiLoadSpan.finish();
+        }
 
     }
 
