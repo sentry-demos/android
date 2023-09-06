@@ -154,6 +154,50 @@
                 android:textAllCaps="false"
                 android:textColor="#FFFF" />
 
+            <TextView
+                android:id="@+id/performance_issues"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/rubik_regular"
+                android:text="Performance Issues"
+                android:textColor="#4A3E56"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/slow_regex"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/mybutton"
+                android:fontFamily="@font/rubik_medium"
+                android:text="Slow Regex Issue"
+                android:textAllCaps="false"
+                android:textColor="#FFFF" />
+
+            <Button
+                android:id="@+id/slow_image_decoding"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/mybutton"
+                android:fontFamily="@font/rubik_medium"
+                android:text="Slow Image Decoding Issue"
+                android:textAllCaps="false"
+                android:textColor="#FFFF" />
+
+            <Button
+                android:id="@+id/slow_json_decoding"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/mybutton"
+                android:fontFamily="@font/rubik_medium"
+                android:text="Slow Json Decoding Issue"
+                android:textAllCaps="false"
+                android:textColor="#FFFF" />
+
         </LinearLayout>
 
     </ScrollView>
