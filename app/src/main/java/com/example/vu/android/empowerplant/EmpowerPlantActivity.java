@@ -31,12 +31,7 @@ public class EmpowerPlantActivity extends MyBaseActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_empowerplant);
-        ISpan parentSpan = Sentry.getSpan();
-        ISpan span = parentSpan != null ? parentSpan.startChild("Check StoreItems") : null;
         dbQuery();
-        if (span != null) {
-            span.finish();
-        }
         addAttachment(true);
         this.loadFragmentList();
     }
@@ -51,9 +46,7 @@ public class EmpowerPlantActivity extends MyBaseActivity {
                 storeitem.setImage(genRandomString());
                 storeitem.setItemId(i);
                 storeitem.setQuantity(1);
-                if (storeitem.isValid()) {
-                    tmpStoreItems.add(storeitem);
-                }
+                tmpStoreItems.add(storeitem);
             }
         
         AppDatabase.getInstance(getApplicationContext())
