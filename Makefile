@@ -1,4 +1,4 @@
-SENTRY_ORG=testorg-az
+SENTRY_ORG=demo
 SENTRY_PROJECT=mobile-android
 RELEASE=`sentry-cli releases propose-version`
 
