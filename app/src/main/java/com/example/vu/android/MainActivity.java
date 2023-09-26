@@ -104,9 +104,8 @@ public class MainActivity extends MyBaseActivity {
         findViewById(R.id.slow_regex).setOnClickListener(view -> {
             ISpan regexTransaction = Sentry.startTransaction("slow regex performance issue", "slow regex");
             try {
-                Thread.sleep(20);
                 "Long string that will be used to run a slow regex for a profiling issue".matches(".*.*.*.*.*.*#");
-                Thread.sleep(20);
+                Thread.sleep(50);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -117,10 +116,9 @@ public class MainActivity extends MyBaseActivity {
         findViewById(R.id.slow_image_decoding).setOnClickListener(view -> {
             ISpan regexTransaction = Sentry.startTransaction("slow image decoding performance issue", "slow image");
             try {
-                Thread.sleep(20);
                 BitmapFactory.decodeResource(getResources(), R.drawable.plantspider_big);
                 BitmapFactory.decodeResource(getResources(), R.drawable.plantspider_big);
-                Thread.sleep(20);
+                Thread.sleep(50);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -131,7 +129,6 @@ public class MainActivity extends MyBaseActivity {
         findViewById(R.id.slow_json_decoding).setOnClickListener(view -> {
             ISpan regexTransaction = Sentry.startTransaction("slow json decoding performance issue", "slow json");
             try {
-                Thread.sleep(20);
                 StringBuilder json = new StringBuilder("[");
                 for (int i = 0; i < 100000; i++) {
                     json.append("{\"id\":0,\"price\":0,\"quantity\":0},{\"id\":0,\"price\":0,\"quantity\":0},");
@@ -141,7 +138,7 @@ public class MainActivity extends MyBaseActivity {
                 new Gson().fromJson(json.toString(), listType);
                 new Gson().fromJson(json.toString(), listType);
                 new Gson().fromJson(json.toString(), listType);
-                Thread.sleep(20);
+                Thread.sleep(50);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -153,13 +150,19 @@ public class MainActivity extends MyBaseActivity {
     @Override
     protected void onResume () {
         super.onResume() ;
+        new Thread(() -> {
 
-        // Let's finish the ui load transaction
-        ISpan uiLoadSpan = Sentry.getSpan();
-        if (uiLoadSpan != null && !uiLoadSpan.isFinished()) {
-            uiLoadSpan.finish();
-        }
-
+            try {
+                Thread.sleep(150);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            // Let's finish the ui load transaction
+            ISpan uiLoadSpan = Sentry.getSpan();
+            if (uiLoadSpan != null && !uiLoadSpan.isFinished()) {
+                uiLoadSpan.finish();
+            }
+        }).start();
     }
 
     @Override
