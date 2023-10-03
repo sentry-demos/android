@@ -104,7 +104,7 @@ public class MainActivity extends MyBaseActivity {
         findViewById(R.id.slow_regex).setOnClickListener(view -> {
             ISpan regexTransaction = Sentry.startTransaction("slow regex performance issue", "slow regex");
             try {
-                "Long string that will be used to run a slow regex for a profiling issue".matches(".*.*.*.*.*.*#");
+                "Long string that will be used to run a slow regex".matches(".*.*.*.*.*.*#");
                 Thread.sleep(50);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
