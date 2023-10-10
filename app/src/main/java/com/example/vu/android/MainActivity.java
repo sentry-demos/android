@@ -1,10 +1,19 @@
 package com.example.vu.android;
 
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Menu;
 import android.widget.Button;
 
+import com.example.vu.android.empowerplant.StoreItem;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.List;
+
 import io.sentry.Breadcrumb;
+import io.sentry.ISpan;
 import io.sentry.Sentry;
 import io.sentry.SentryLevel;
 
@@ -90,13 +99,70 @@ public class MainActivity extends MyBaseActivity {
         findViewById(R.id.error_404).setOnClickListener(view -> {
             HTTPClient.makeRequest(getApplicationContext());
         });
+
+        // Slow Regex Issue
+        findViewById(R.id.slow_regex).setOnClickListener(view -> {
+            ISpan regexTransaction = Sentry.startTransaction("slow regex performance issue", "slow regex");
+            try {
+                "Long string that will be used to run a slow regex".matches(".*.*.*.*.*.*#");
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            regexTransaction.finish();
+        });
+
+        // Slow Image Decoding Issue
+        findViewById(R.id.slow_image_decoding).setOnClickListener(view -> {
+            ISpan regexTransaction = Sentry.startTransaction("slow image decoding performance issue", "slow image");
+            try {
+                BitmapFactory.decodeResource(getResources(), R.drawable.plantspider_big);
+                BitmapFactory.decodeResource(getResources(), R.drawable.plantspider_big);
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            regexTransaction.finish();
+        });
+
+        // Slow Json Decoding Issue
+        findViewById(R.id.slow_json_decoding).setOnClickListener(view -> {
+            ISpan regexTransaction = Sentry.startTransaction("slow json decoding performance issue", "slow json");
+            try {
+                StringBuilder json = new StringBuilder("[");
+                for (int i = 0; i < 100000; i++) {
+                    json.append("{\"id\":0,\"price\":0,\"quantity\":0},{\"id\":0,\"price\":0,\"quantity\":0},");
+                }
+                json.append("{\"id\":0,\"price\":0,\"quantity\":0},{\"id\":0,\"price\":0,\"quantity\":0}]");
+                Type listType = new TypeToken<List<StoreItem>>() {}.getType();
+                new Gson().fromJson(json.toString(), listType);
+                new Gson().fromJson(json.toString(), listType);
+                new Gson().fromJson(json.toString(), listType);
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            regexTransaction.finish();
+        });
+
     }
 
     @Override
     protected void onResume () {
         super.onResume() ;
+        new Thread(() -> {
 
-
+            try {
+                Thread.sleep(150);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            // Let's finish the ui load transaction
+            ISpan uiLoadSpan = Sentry.getSpan();
+            if (uiLoadSpan != null && !uiLoadSpan.isFinished()) {
+                uiLoadSpan.finish();
+            }
+        }).start();
     }
 
     @Override

@@ -42,8 +42,8 @@ android {
         applicationId "com.example.vu.android"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 27
-        versionName "2.5.0"
+        versionCode 28
+        versionName "2.5.1"
 
         externalNativeBuild {
             cmake {
@@ -97,6 +97,7 @@ dependencies {
     implementation 'com.android.support:support-core-utils:28.0.0'
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
     implementation 'junit:junit:4.12'
+    implementation 'com.google.code.gson:gson:2.10.1'
     def fragment_version = "1.5.6"
     // Java language implementation
     implementation "androidx.fragment:fragment:$fragment_version"

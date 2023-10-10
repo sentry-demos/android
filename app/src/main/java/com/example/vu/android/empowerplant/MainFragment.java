@@ -359,7 +359,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         ISpan processDeliverySpan = checkoutTransaction.startChild("task", "process delivery");
 
         try {
-            throw new MainFragment.ItemDeliveryProcessException("Failed to init delivery workflow");
+            throw new MainFragment.BackendAPIException("Failed to init delivery workflow");
         } catch (Exception e) {
             processDeliverySpan.setThrowable(e);
             processDeliverySpan.setStatus(SpanStatus.INTERNAL_ERROR);
@@ -372,9 +372,9 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         processDeliverySpan.finish();
     }
 
-    class ItemDeliveryProcessException extends RuntimeException {
+    class BackendAPIException extends RuntimeException {
 
-        public ItemDeliveryProcessException(String message) {
+        public BackendAPIException(String message) {
             super(message);
         }
     }

@@ -83,7 +83,7 @@ public class MyApplication extends Application {
                 }
 
                 SentryException currentException = event.getExceptions().get(0);
-                if(currentException != null && currentException.getType().endsWith("ItemDeliveryProcessException")){
+                if(currentException != null && currentException.getType().endsWith("BackendAPIException")){
                     this.launchUserFeedback(event.getEventId());
                 }
 
