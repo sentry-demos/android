@@ -164,7 +164,13 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
                         dbSpan.finish();
                     }
 
-                    Sentry.getCurrentHub().getSpan().finish();//finish Empower txn manually
+
+                    getActivity().runOnUiThread(() -> {
+                        ISpan processProductsSpan = Sentry.getSpan().startChild("product_processing", "Product Processing");//finish Empower txn manually
+                        processProducts();
+                        processProductsSpan.finish();
+                        Sentry.getCurrentHub().getSpan().finish();//finish Empower txn manually
+                    });
 
                 }
 
@@ -221,6 +227,18 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
                 }
             });
 
+        }
+    }
+
+    private void processProducts() {
+        for (StoreItem empowerStoreItem : empowerStoreItems) {
+            empowerStoreItem.isValid();
+            empowerStoreItem.isValid();
+        }
+        try {
+            Thread.sleep(50);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 

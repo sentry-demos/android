@@ -11,10 +11,14 @@ import android.widget.TextView;
 import androidx.fragment.app.FragmentTransaction;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import com.example.vu.android.MainActivity;
 import com.example.vu.android.MyBaseActivity;
 import com.example.vu.android.R;
+
+import io.sentry.ISpan;
+import io.sentry.Sentry;
 
 public class EmpowerPlantActivity extends MyBaseActivity {
 
@@ -36,10 +40,10 @@ public class EmpowerPlantActivity extends MyBaseActivity {
         List<StoreItem> tmpStoreItems = new ArrayList<StoreItem>();
         for (int i = 0; i < 30; i++) {
                 StoreItem storeitem = new StoreItem();
-                storeitem.setName("tmp");
-                storeitem.setSku("tmp");
+                storeitem.setName(genRandomString());
+                storeitem.setSku(genRandomString());
                 storeitem.setPrice(i);
-                storeitem.setImage("tmp");
+                storeitem.setImage(genRandomString());
                 storeitem.setItemId(i);
                 storeitem.setQuantity(1);
                 tmpStoreItems.add(storeitem);
@@ -51,6 +55,18 @@ public class EmpowerPlantActivity extends MyBaseActivity {
         AppDatabase.getInstance(getApplicationContext())
                 .StoreItemDAO().deleteAll();
         
+    }
+
+    // Generates a randome string of characters from a to z
+    private String genRandomString() {
+        byte[] array = new byte[200];
+        Random r = new Random();
+        for (int index = 0; index < array.length; index++) {
+            int b = r.nextInt(26);
+            b += 97;
+            array[index] = ((byte) b);
+        }
+        return new String(array);
     }
 
     @Override
