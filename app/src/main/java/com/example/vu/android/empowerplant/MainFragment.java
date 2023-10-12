@@ -258,6 +258,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
     }
 
     public void checkout() {
+        Log.i("checkout", "checkout >>>");
         selectedStoreItems = this.adapter.getSelectedStoreItems();
         ITransaction checkoutTransaction = Sentry.startTransaction("checkout [android]", "http.client");
         checkoutTransaction.setOperation("http");
@@ -281,6 +282,9 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
 
         RequestBody body = RequestBody.create(object.toString(), JSON);
 
+        Log.d("checkout", "checkoutURL: " + checkoutURL);
+        Log.d("checkout", "JSON of selectedStoreItems: " + object.toString());
+
         Request request = new Request.Builder()
                 .url(checkoutURL)
                 .header("email", "someone@gmail.com")
@@ -295,6 +299,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 progressDialog.dismiss();
                 if (!response.isSuccessful()) {
+                    Log.d("checkout", "response failed");
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -315,8 +320,10 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
 
                 processDeliveryItem(checkoutTransaction);
                 checkoutTransaction.finish(SpanStatus.INTERNAL_ERROR);
+                Log.e("checkout", "checkout failed");
             }
         });
+        Log.i("checkout", "<<< checkout");
     }
 
     private JSONObject buildJSONPostData(HashMap<String, StoreItem> selectedStoreItems) {
@@ -356,9 +363,11 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
     }
 
     private void processDeliveryItem(ITransaction checkoutTransaction) {
+        Log.i("processDeliveryItem", "processDeliveryItem >>>");
         ISpan processDeliverySpan = checkoutTransaction.startChild("task", "process delivery");
 
         try {
+            Log.e("processDeliveryItem", "ERROR");
             throw new MainFragment.BackendAPIException("Failed to init delivery workflow");
         } catch (Exception e) {
             processDeliverySpan.setThrowable(e);
@@ -370,6 +379,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
             processDeliverySpan.setStatus(SpanStatus.OK);
         }
         processDeliverySpan.finish();
+        Log.i("processDeliveryItem", "<<< processDeliveryItem");
     }
 
     class BackendAPIException extends RuntimeException {
