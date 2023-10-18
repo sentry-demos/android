@@ -24,6 +24,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -276,6 +280,24 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
             Thread.currentThread().interrupt();
         }
         processDataSpan.finish();
+
+        // copy of function from Slow Json Decoding Issue button 
+        ISpan regexTransaction = Sentry.startTransaction("slow json decoding performance issue", "slow json");
+        try {
+            StringBuilder json = new StringBuilder("[");
+            for (int i = 0; i < 100000; i++) {
+                json.append("{\"id\":0,\"price\":0,\"quantity\":0},{\"id\":0,\"price\":0,\"quantity\":0},");
+            }
+            json.append("{\"id\":0,\"price\":0,\"quantity\":0},{\"id\":0,\"price\":0,\"quantity\":0}]");
+            Type listType = new TypeToken<List<StoreItem>>() {}.getType();
+            new Gson().fromJson(json.toString(), listType);
+            new Gson().fromJson(json.toString(), listType);
+            new Gson().fromJson(json.toString(), listType);
+            Thread.sleep(50);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        regexTransaction.finish();
 
         String domain = this.getEmpowerPlantDomain();
         String checkoutURL = domain + this.END_POINT_CHECKOUT;
