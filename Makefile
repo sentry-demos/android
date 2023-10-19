@@ -1,5 +1,5 @@
 SENTRY_ORG=demo
-SENTRY_PROJECT=mobile-android
+SENTRY_PROJECT=android
 RELEASE=`sentry-cli releases propose-version`
 
 all: gradle_build setup_release
