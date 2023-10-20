@@ -128,6 +128,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
     public void fetchToolsFromServer() {
         progressDialog = new ProgressDialog(getContext());//ProgressDialog has been deprecated in API 26 https://developer.android.com/reference/android/app/ProgressDialog
         progressDialog.setMessage("Loading...");
+        progressDialog.setCancelable(false);
         progressDialog.show();
 
         ISpan transaction = Sentry.getSpan();
@@ -265,6 +266,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         Sentry.configureScope(scope -> scope.setTransaction(checkoutTransaction));
 
         final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setCancelable(false);
         progressDialog.setMessage("Checking Out...");
         progressDialog.show();
 
@@ -298,7 +300,9 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 progressDialog.dismiss();
-                if (!response.isSuccessful()) {
+                boolean success = response.isSuccessful();
+                response.close();
+                if (!success) {
                     Log.d("checkout", "response failed");
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
