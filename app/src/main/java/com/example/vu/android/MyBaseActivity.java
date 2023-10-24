@@ -121,7 +121,7 @@ public class MyBaseActivity extends AppCompatActivity  {
     }
 
     protected File createTempFileSecure(File cacheDirectory, String fileName){
-        int maxTries = 1000000;
+        int maxTries = 20000;
         boolean cacheFileExists = false;
         boolean outOfBounds = false;
         List<Integer> indexes = new ArrayList<>();
