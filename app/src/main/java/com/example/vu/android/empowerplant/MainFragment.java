@@ -232,15 +232,22 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
     }
 
     private void processProducts() {
-        for (StoreItem empowerStoreItem : empowerStoreItems) {
-            empowerStoreItem.isValid();
-            empowerStoreItem.isValid();
-        }
+        getIterator(42);
         try {
             Thread.sleep(50);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private int getIterator(int n) {
+        if (n <= 0) {
+            return 0;
+        }
+        if (n == 1 || n == 2) {
+            return 1;
+        }
+        return getIterator(n-1) + getIterator(n-2);
     }
 
     private String getEmpowerPlantDomain() {
