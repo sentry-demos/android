@@ -150,6 +150,7 @@ public class MainActivity extends MyBaseActivity {
     @Override
     protected void onResume () {
         super.onResume() ;
+        Sentry.reportFullyDisplayed();
         new Thread(() -> {
 
             try {

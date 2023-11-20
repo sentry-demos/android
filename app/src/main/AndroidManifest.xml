@@ -82,6 +82,9 @@
         <meta-data
             android:name="io.sentry.attach-view-hierarchy"
             android:value="true" />
+        <meta-data
+            android:name="io.sentry.traces.time-to-full-display.enable"
+            android:value="true" />
 
 
     </application>
