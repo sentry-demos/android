@@ -39,7 +39,7 @@ public class EmpowerPlantActivity extends MyBaseActivity {
 
     public void dbQuery() {
         List<StoreItem> tmpStoreItems = new ArrayList<StoreItem>();
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 60; i++) {
                 StoreItem storeitem = new StoreItem();
                 storeitem.setName(genRandomString());
                 storeitem.setSku(genRandomString());
