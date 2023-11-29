@@ -169,6 +169,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
                     getActivity().runOnUiThread(() -> {
                         ISpan processProductsSpan = Sentry.getSpan().startChild("product_processing", "Product Processing");//finish Empower txn manually
                         processProducts();
+                        Sentry.reportFullyDisplayed();
                         processProductsSpan.finish();
                         Sentry.getCurrentHub().getSpan().finish();//finish Empower txn manually
                     });
