@@ -233,7 +233,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
     }
 
     private void processProducts() {
-        getIterator(42);
+        getIterator(44);
         try {
             Thread.sleep(50);
         } catch (InterruptedException e) {
