@@ -144,6 +144,7 @@ public class MainActivity extends MyBaseActivity {
             }
             regexTransaction.finish();
         });
+        checkRelease();
 
     }
 

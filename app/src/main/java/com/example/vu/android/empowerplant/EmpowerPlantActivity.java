@@ -33,11 +33,15 @@ public class EmpowerPlantActivity extends MyBaseActivity {
         setContentView(R.layout.activity_empowerplant);
         dbQuery();
         addAttachment(true);
+        checkRelease();
         this.loadFragmentList();
         Sentry.reportFullyDisplayed();
     }
 
     public void dbQuery() {
+        AppDatabase.getInstance(getApplicationContext())
+                .StoreItemDAO().getAllSlow();
+
         List<StoreItem> tmpStoreItems = new ArrayList<StoreItem>();
         for (int i = 0; i < 60; i++) {
                 StoreItem storeitem = new StoreItem();

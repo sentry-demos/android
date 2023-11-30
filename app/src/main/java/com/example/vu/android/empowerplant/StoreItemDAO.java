@@ -12,6 +12,15 @@ public interface StoreItemDAO {
     @Query("SELECT * FROM storeitem")
     List<StoreItem> getAll();
 
+    @Query("select distinct storeitem.* from storeitem\n" +
+           "inner join storeitem as s\n" +
+           "inner join storeitem as s2\n" +
+           "inner join storeitem as s3\n" +
+           "inner join storeitem as s4\n" +
+           "inner join storeitem as s5\n" +
+           "inner join storeitem as s6")
+    List<StoreItem> getAllSlow();
+
     @Query("DELETE FROM storeitem")
     public void deleteAll();
 
