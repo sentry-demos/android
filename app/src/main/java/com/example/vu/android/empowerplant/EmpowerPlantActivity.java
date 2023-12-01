@@ -59,7 +59,7 @@ public class EmpowerPlantActivity extends MyBaseActivity {
 
         AppDatabase.getInstance(getApplicationContext())
                 .StoreItemDAO().slowQuery();
-                
+
         AppDatabase.getInstance(getApplicationContext())
                 .StoreItemDAO().deleteAll();
         
