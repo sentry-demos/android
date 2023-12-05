@@ -43,7 +43,7 @@ public class EmpowerPlantActivity extends MyBaseActivity {
                 .StoreItemDAO().deleteAll();
 
         List<StoreItem> tmpStoreItems = new ArrayList<StoreItem>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 5; i++) {
                 StoreItem storeitem = new StoreItem();
                 storeitem.setName(genRandomString());
                 storeitem.setSku(genRandomString());
