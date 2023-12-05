@@ -65,6 +65,18 @@ public class MyBaseActivity extends AppCompatActivity  {
             mMyApp.setCurrentActivity( null ) ;
     }
 
+    /** Add a delay based on version code. */
+    protected void checkRelease() {
+        // Even versions will wait 1 second, to make it more obvious the difference between releases
+        if (BuildConfig.VERSION_CODE % 2 == 0) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
     protected Boolean addAttachment(Boolean secure) {
         File f = null;
         String fileName = "tmp" + UUID.randomUUID();

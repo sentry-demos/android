@@ -17,7 +17,6 @@ import com.example.vu.android.MainActivity;
 import com.example.vu.android.MyBaseActivity;
 import com.example.vu.android.R;
 
-import io.sentry.ISpan;
 import io.sentry.Sentry;
 
 public class EmpowerPlantActivity extends MyBaseActivity {
@@ -33,12 +32,17 @@ public class EmpowerPlantActivity extends MyBaseActivity {
         setContentView(R.layout.activity_empowerplant);
         dbQuery();
         addAttachment(true);
+        checkRelease();
         this.loadFragmentList();
     }
 
     public void dbQuery() {
+
+        AppDatabase.getInstance(getApplicationContext())
+                .StoreItemDAO().deleteAll();
+
         List<StoreItem> tmpStoreItems = new ArrayList<StoreItem>();
-        for (int i = 0; i < 60; i++) {
+        for (int i = 0; i < 2; i++) {
                 StoreItem storeitem = new StoreItem();
                 storeitem.setName(genRandomString());
                 storeitem.setSku(genRandomString());
@@ -51,7 +55,10 @@ public class EmpowerPlantActivity extends MyBaseActivity {
         
         AppDatabase.getInstance(getApplicationContext())
                 .StoreItemDAO().insertAll(tmpStoreItems);
-                
+
+        AppDatabase.getInstance(getApplicationContext())
+                .StoreItemDAO().slowQuery();
+
         AppDatabase.getInstance(getApplicationContext())
                 .StoreItemDAO().deleteAll();
         

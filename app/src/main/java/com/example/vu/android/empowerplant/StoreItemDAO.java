@@ -4,6 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.SkipQueryVerification;
 
 import java.util.List;
 @Dao
@@ -11,6 +12,10 @@ public interface StoreItemDAO {
 
     @Query("SELECT * FROM storeitem")
     List<StoreItem> getAll();
+
+    @SkipQueryVerification
+    @Query("update storeitem set first_name = '' where first_name regexp '.*.*.*.*1'")
+    void slowQuery();
 
     @Query("DELETE FROM storeitem")
     public void deleteAll();
