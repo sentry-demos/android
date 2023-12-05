@@ -43,8 +43,8 @@ android {
         applicationId "com.example.vu.android"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 38
-        versionName "2.9.0"
+        versionCode 39
+        versionName "2.10.0"
 
         externalNativeBuild {
             cmake {
