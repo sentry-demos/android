@@ -132,6 +132,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         progressDialog.show();
 
         ISpan transaction = Sentry.getSpan();
+        ISpan productRetrieveSpan = transaction.startChild("product_retrieval", "Product Retrieval");
 
         String domain = this.getEmpowerPlantDomain();
         String getToolsURL = domain + this.END_POINT_PRODUCTS;
@@ -154,25 +155,30 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
 
                     if (responseStr != null && !responseStr.equals("")) {
 
-                        ISpan taskSpan = transaction.startChild("task", "Process server response.");
+                        ISpan taskSpan = productRetrieveSpan.startChild("task", "Process server response.");
 
                         processGetToolsResponse(responseStr);
 
                         taskSpan.finish(SpanStatus.OK);
 
-                        ISpan dbSpan = transaction.startChild("db.insertAll", "Persist Store Items");
+                        ISpan dbSpan = productRetrieveSpan.startChild("db.insertAll", "Persist Store Items");
                         insertMultipleStoreItems();
                         dbSpan.finish();
                     }
 
 
+                    ISpan processProductsSpan = Sentry.getSpan().startChild("product_processing", "Product Processing");//finish Empower txn manually
                     getActivity().runOnUiThread(() -> {
-                        ISpan processProductsSpan = Sentry.getSpan().startChild("product_processing", "Product Processing");//finish Empower txn manually
                         processProducts();
+                        Sentry.reportFullyDisplayed();
                         processProductsSpan.finish();
+                        productRetrieveSpan.finish();
                         Sentry.getCurrentHub().getSpan().finish();//finish Empower txn manually
                     });
 
+                } else {
+                    productRetrieveSpan.finish();
+                    Sentry.reportFullyDisplayed();
                 }
 
 
@@ -181,6 +187,8 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 progressDialog.dismiss();
+                Sentry.reportFullyDisplayed();
+                productRetrieveSpan.finish();
                 transaction.finish(SpanStatus.INTERNAL_ERROR);
             }
         });
@@ -232,7 +240,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
     }
 
     private void processProducts() {
-        getIterator(42);
+        getIterator(44);
         try {
             Thread.sleep(50);
         } catch (InterruptedException e) {
