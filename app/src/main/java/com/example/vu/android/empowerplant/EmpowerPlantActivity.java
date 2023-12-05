@@ -34,7 +34,6 @@ public class EmpowerPlantActivity extends MyBaseActivity {
         dbQuery();
         addAttachment(true);
         this.loadFragmentList();
-        Sentry.reportFullyDisplayed();
     }
 
     public void dbQuery() {
