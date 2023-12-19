@@ -69,7 +69,7 @@ public class MyBaseActivity extends AppCompatActivity  {
     /** Add a delay based on version code. */
     protected void checkRelease() {
         ISpan span = Sentry.getSpan();
-        ISpan innerSpan = span.startChild("file.read", "Check Release");
+        ISpan innerSpan = span.startChild("ui.load", "Check Release");
 
         // Even versions will wait 1 second, to make it more obvious the difference between releases
         if (BuildConfig.VERSION_CODE % 2 == 0) {
