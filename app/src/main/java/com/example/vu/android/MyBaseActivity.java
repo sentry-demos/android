@@ -22,6 +22,7 @@ import java.util.UUID;
 
 import io.sentry.Attachment;
 import io.sentry.Sentry;
+import io.sentry.ISpan;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -67,6 +68,9 @@ public class MyBaseActivity extends AppCompatActivity  {
 
     /** Add a delay based on version code. */
     protected void checkRelease() {
+        ISpan span = Sentry.getSpan();
+        ISpan innerSpan = span.startChild("ui.load", "Check Release");
+
         // Even versions will wait 1 second, to make it more obvious the difference between releases
         if (BuildConfig.VERSION_CODE % 2 == 0) {
             try {
@@ -75,6 +79,8 @@ public class MyBaseActivity extends AppCompatActivity  {
                 throw new RuntimeException(e);
             }
         }
+
+        innerSpan.finish();
     }
 
     protected Boolean addAttachment(Boolean secure) {
