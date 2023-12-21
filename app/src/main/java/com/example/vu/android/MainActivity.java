@@ -114,7 +114,7 @@ public class MainActivity extends MyBaseActivity {
 
         // Slow Image Decoding Issue
         findViewById(R.id.slow_image_decoding).setOnClickListener(view -> {
-            ISpan regexTransaction = Sentry.startTransaction("slow image decoding performance issue", "slow image");
+            ISpan imageTransaction = Sentry.startTransaction("slow image decoding performance issue", "slow image");
             try {
                 BitmapFactory.decodeResource(getResources(), R.drawable.plantspider_big);
                 BitmapFactory.decodeResource(getResources(), R.drawable.plantspider_big);
@@ -122,12 +122,12 @@ public class MainActivity extends MyBaseActivity {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            regexTransaction.finish();
+            imageTransaction.finish();
         });
 
         // Slow Json Decoding Issue
         findViewById(R.id.slow_json_decoding).setOnClickListener(view -> {
-            ISpan regexTransaction = Sentry.startTransaction("slow json decoding performance issue", "slow json");
+            ISpan jsonTransaction = Sentry.startTransaction("slow json decoding performance issue", "slow json");
             try {
                 StringBuilder json = new StringBuilder("[");
                 for (int i = 0; i < 100000; i++) {
@@ -142,7 +142,7 @@ public class MainActivity extends MyBaseActivity {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            regexTransaction.finish();
+            jsonTransaction.finish();
         });
         checkRelease();
 
