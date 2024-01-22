@@ -1,15 +1,27 @@
+# Function to display error message and exit
+error_exit() {
+    echo "$1" >&2
+    exit 1
+}
+
+# Check if gh is installed
+if ! command -v gh &> /dev/null; then
+  error_exit "gh is not installed, make sure you run 'make init' (see README.md)."
+fi
+
 PACKAGE_NAME=$(grep 'applicationId' app/build.gradle | awk -F\" {'print $2'})
-PACKAGE_VERSION=$(adb shell dumpsys package $PACKAGE_NAME | grep versionName | awk -F= {'print $2'})
+PACKAGE_VERSION=$(grep 'versionName' app/build.gradle | awk -F\" {'print $2'})
 REPO=sentry-demos/android
 
-while true; do
-  read -p "Do you wish to create Github Release $PACKAGE_VERSION for $REPO and upload the generated release and debug artifacts? Answer y/n: " yn
-    case $yn in
-        [Yy]* ) make install; break;;
-        [Nn]* ) exit;;
-        * ) echo "Please answer y or n.";;
-    esac
-done
+# Build the release bundle
+echo "Building the release bundle..."
+./gradlew assemble
+
 
 echo "Releasing to Github..."
-gh release create $PACKAGE_VERSION app-debug.apk app-release.apk
+gh release create $PACKAGE_VERSION app/build/outputs/apk/debug/app-debug.apk app/build/outputs/apk/release/app-release.apk || error_exit "Failed to create GitHub release."
+#gh release create $TAG $ZIP_PATH -t "$TITLE" -n "$NOTES" || error_exit "Failed to create GitHub release."
+
+echo "Release created successfully with version $PACKAGE_VERSION!"
+
+
