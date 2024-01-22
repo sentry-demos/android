@@ -19,8 +19,7 @@ echo "Building the release bundle..."
 
 
 echo "Releasing to Github..."
-gh release create $PACKAGE_VERSION app/build/outputs/apk/debug/app-debug.apk app/build/outputs/apk/release/app-release.apk || error_exit "Failed to create GitHub release."
-#gh release create $TAG $ZIP_PATH -t "$TITLE" -n "$NOTES" || error_exit "Failed to create GitHub release."
+gh release create $PACKAGE_VERSION app/build/outputs/apk/debug/app-debug.apk app/build/outputs/apk/release/app-release.apk -t "$PACKAGE_VERSION" --generate-notes || error_exit "Failed to create GitHub release."
 
 echo "Release created successfully with version $PACKAGE_VERSION!"
 
