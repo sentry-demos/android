@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Run Deploy Script
-        run: ./github_release.sh
+        run: ./deploy_project.sh
         shell: sh
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
