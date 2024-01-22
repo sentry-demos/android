@@ -13,6 +13,12 @@ PACKAGE_NAME=$(grep 'applicationId' app/build.gradle | awk -F\" {'print $2'})
 PACKAGE_VERSION=$(grep 'versionName' app/build.gradle | awk -F\" {'print $2'})
 REPO=sentry-demos/android
 
+# Check if current version was already released
+currentVersion=$(gh release list | awk '{print $1}' | grep -x "$PACKAGE_VERSION")
+if [ "$currentVersion" != "" ]; then
+  error_exit "Version $PACKAGE_VERSION was already released."
+fi
+
 # Build the release bundle
 echo "Building the release bundle..."
 ./gradlew assemble
