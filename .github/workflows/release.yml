@@ -4,7 +4,7 @@ on:
 
 jobs:
   empower-plant-release:
-    runs-on: ubuntu-latest
+    runs-on: macos-13
     name: 'Release a new Android Empower Plant version'
     steps:
       - uses: actions/checkout@v4
