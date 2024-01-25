@@ -4,10 +4,18 @@ on:
 
 jobs:
   empower-plant-release:
-    runs-on: ubuntu-latest
+    runs-on: macos-13
     name: 'Release a new Android Empower Plant version'
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Java Version
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
       - name: Run Deploy Script
         run: ./deploy_project.sh
         shell: sh
