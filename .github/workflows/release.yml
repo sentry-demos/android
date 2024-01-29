@@ -21,3 +21,4 @@ jobs:
         shell: sh
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
