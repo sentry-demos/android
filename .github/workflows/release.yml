@@ -1,0 +1,24 @@
+name: Release
+on:
+  workflow_dispatch:
+
+jobs:
+  empower-plant-release:
+    runs-on: macos-13
+    name: 'Release a new Android Empower Plant version'
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Java Version
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Run Deploy Script
+        run: ./deploy_project.sh
+        shell: sh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
