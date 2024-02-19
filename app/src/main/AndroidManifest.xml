@@ -87,6 +87,11 @@
             android:value="true" />
 
 
+        <provider
+            android:exported="false"
+            android:authorities="${applicationId}.thirdpartycontentprovider"
+            android:name=".ThirdPartyContentProvider" />
+
     </application>
 
 </manifest>
