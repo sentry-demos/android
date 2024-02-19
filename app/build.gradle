@@ -43,7 +43,7 @@ android {
         applicationId "com.example.vu.android"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 44
+        versionCode 43
         versionName "2.10.4"
 
         externalNativeBuild {
