@@ -9,6 +9,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import io.sentry.Attachment;
 import io.sentry.ISpan;
@@ -41,6 +43,7 @@ import io.sentry.SpanStatus;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -64,6 +67,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
     ProgressDialog progressDialog = null;
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     public String END_POINT_PRODUCTS = "/products";
+    public String END_POINT_PRODUCT_INFO = "/product/0/info";
     public String END_POINT_CHECKOUT = "/checkout";
     int mCartItemCount = 0;
 
@@ -167,9 +171,10 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
                     }
 
 
-                    ISpan processProductsSpan = Sentry.getSpan().startChild("product_processing", "Product Processing");//finish Empower txn manually
+                    ISpan processProductsSpan = Sentry.getSpan().startChild("product_processing", "Product Processing");
                     getActivity().runOnUiThread(() -> {
                         processProducts();
+                        processProductsInfo();
                         Sentry.reportFullyDisplayed();
                         processProductsSpan.finish();
                         productRetrieveSpan.finish();
@@ -239,6 +244,24 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         }
     }
 
+    private void processProductsInfo() {
+        OkHttpClient client = new RequestClient().getNp1Client();
+        // Docs say we need at least 10 calls to get a n+1 api issue
+        for (int i = 0; i < 20; i++) {
+            final int index = i;
+            new Thread(() -> {
+                Request request = new Request.Builder()
+                        .url(getProductInfoUrl(index))
+                        .build();
+                try {
+                    client.newCall(request).execute().close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }).start();
+        }
+    }
+
     private void processProducts() {
         getIterator(44);
         try {
@@ -271,6 +294,11 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
             Sentry.captureException(e);
         }
         return domain;
+    }
+
+    private String getProductInfoUrl(int index) {
+        String domain = this.getEmpowerPlantDomain();
+        return domain + this.END_POINT_PRODUCT_INFO + "?id=" + index;
     }
 
     public void checkout() {

@@ -64,7 +64,7 @@ public class EmpowerPlantActivity extends MyBaseActivity {
         
     }
 
-    // Generates a randome string of characters from a to z
+    // Generates a random string of characters from a to z
     private String genRandomString() {
         byte[] array = new byte[200];
         Random r = new Random();
