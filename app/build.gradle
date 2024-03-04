@@ -12,7 +12,7 @@ buildscript {
 }
 
 plugins {
-    id "io.sentry.android.gradle" version "3.14.0"
+    id "io.sentry.android.gradle" version "4.3.0"
 }
 
 apply plugin: 'com.android.application'
@@ -121,6 +121,12 @@ sentry {
     debug = true
     includeSourceContext = true
     additionalSourceDirsForSourceContext = ["src/main/java"]
+
+    autoInstallation {
+        enabled = true
+        sentryVersion = "7.5.0"
+    }
+
     tracingInstrumentation {
         enabled = true
         logcat {
