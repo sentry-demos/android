@@ -1,4 +1,3 @@
-import java.sql.Wrapper
 import io.sentry.android.gradle.instrumentation.logcat.LogcatLevel
 
 buildscript {
@@ -12,7 +11,7 @@ buildscript {
 }
 
 plugins {
-    id "io.sentry.android.gradle" version "3.14.0"
+    id "io.sentry.android.gradle" version "4.4.0"
 }
 
 apply plugin: 'com.android.application'
@@ -43,8 +42,8 @@ android {
         applicationId "com.example.vu.android"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 43
-        versionName "2.10.4"
+        versionCode 44
+        versionName "2.10.5"
 
         externalNativeBuild {
             cmake {

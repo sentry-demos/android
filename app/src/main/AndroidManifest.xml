@@ -86,6 +86,11 @@
             android:name="io.sentry.traces.time-to-full-display.enable"
             android:value="true" />
 
+        <provider
+            android:exported="false"
+            android:authorities="${applicationId}.thirdpartycontentprovider"
+            android:name=".ThirdPartyContentProvider" />
+
 
     </application>
 
