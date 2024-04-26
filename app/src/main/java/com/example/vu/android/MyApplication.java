@@ -72,6 +72,7 @@ public class MyApplication extends Application {
             options.setAttachThreads(true);
             options.setEnableAppStartProfiling(true);
             options.setEnablePerformanceV2(true);
+            options.setEnableMetrics(true);
             options.setBeforeSend((event, hint) -> {
 
                 //Remove PII

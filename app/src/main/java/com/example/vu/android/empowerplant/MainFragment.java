@@ -32,10 +32,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.sentry.Attachment;
 import io.sentry.ISpan;
 import io.sentry.ITransaction;
+import io.sentry.MeasurementUnit;
 import io.sentry.Sentry;
 import io.sentry.SpanStatus;
 
@@ -143,10 +145,20 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
 
         OkHttpClient client = new RequestClient().getClient();
 
+        long startTime = System.currentTimeMillis();
         client.newCall(request).enqueue(new Callback() {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                long elapsedTime = System.currentTimeMillis() - startTime;
+                final Map<String, String> tags = new HashMap<>();
+                tags.put("endpoint", getToolsURL);
+                Sentry.metrics().distribution(
+                        "products_request.duration",
+                        elapsedTime,
+                        MeasurementUnit.Duration.MILLISECOND,
+                        tags
+                        );
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     String responseStr = response.body().string();
@@ -186,6 +198,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                long elapsedTime = System.currentTimeMillis() - startTime;
                 progressDialog.dismiss();
                 Sentry.reportFullyDisplayed();
                 productRetrieveSpan.finish();
@@ -274,7 +287,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
     }
 
     public void checkout() {
-        Log.i("checkout", "checkout >>>");
+        Sentry.metrics().increment("checkout.click");
         selectedStoreItems = this.adapter.getSelectedStoreItems();
         ITransaction checkoutTransaction = Sentry.startTransaction("checkout [android]", "http.client");
         checkoutTransaction.setOperation("http");
@@ -318,6 +331,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
                 boolean success = response.isSuccessful();
                 response.close();
                 if (!success) {
+                    Sentry.metrics().increment("checkout.error", 1);
                     Log.d("checkout", "response failed");
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
@@ -329,11 +343,14 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
                             checkoutTransaction.finish(SpanStatus.INTERNAL_ERROR);
                         }
                     });
+                } else {
+                    Sentry.metrics().increment("checkout.success");
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Sentry.metrics().increment("checkout.error", 1);
                 progressDialog.dismiss();
                 Sentry.captureException(e);
 
