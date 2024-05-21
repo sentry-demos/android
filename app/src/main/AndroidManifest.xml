@@ -91,6 +91,12 @@
             android:authorities="${applicationId}.thirdpartycontentprovider"
             android:name=".ThirdPartyContentProvider" />
 
+        <provider
+            android:exported="false"
+            android:authorities="${applicationId}.initcontentprovider"
+            android:initOrder="9999"
+            android:name=".InitContentProvider" />
+
 
     </application>
 
