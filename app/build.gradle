@@ -93,7 +93,7 @@ jacoco {
 }
 
 task jacocoTestReport(type: JacocoReport) {
-    dependsOn 'connectedDebugAndroidTest' // Use 'testDebugUnitTest' for unit tests in the debug build type
+    dependsOn 'testDebugUnitTest' // Use 'testDebugUnitTest' for unit tests in the debug build type
 
     reports {
         xml.enabled = true
