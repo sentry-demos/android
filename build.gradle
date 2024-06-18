@@ -19,14 +19,14 @@ plugins {
     id 'jacoco'
 }
 
-//android {
+// android {
 //    // Your existing configuration
 //    buildTypes {
 //        debug {
 //            testCoverageEnabled = true
 //        }
 //    }
-//}
+// }
 
 jacoco {
     toolVersion = "0.8.5"

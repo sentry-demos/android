@@ -93,7 +93,7 @@ jacoco {
 }
 
 task jacocoTestReport(type: JacocoReport) {
-    dependsOn 'testDebugUnitTest' // Use 'testDebugUnitTest' for unit tests in the debug build type
+    dependsOn 'connectedDebugAndroidTest' // Use 'testDebugUnitTest' for unit tests in the debug build type
 
     reports {
         xml.enabled = true
@@ -113,7 +113,7 @@ task jacocoTestReport(type: JacocoReport) {
 
     sourceDirectories.setFrom(files([mainSrc]))
     classDirectories.setFrom(files([debugTree]))
-    executionData.setFrom(fileTree(dir: "${buildDir}/jacoco", includes: ["testDebugUnitTest.exec"]))
+    executionData.setFrom(fileTree(dir: "${buildDir}/outputs/code_coverage/debugAndroidTest/connected", includes: ["*.ec"]))
 }
 
 dependencies {
@@ -127,9 +127,16 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
     implementation 'junit:junit:4.12'
     implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'androidx.test:core:1.5.0'
+    implementation 'androidx.test.ext:junit:1.1.5'
+    implementation 'androidx.test.espresso:espresso-core:3.5.1'
     def fragment_version = "1.5.6"
     // Java language implementation
     implementation "androidx.fragment:fragment:$fragment_version"
+    implementation 'androidx.test:rules:1.4.0'
+    implementation 'org.mockito:mockito-core:3.11.2'
+    implementation 'org.mockito:mockito-android:3.11.2'
+    //implementation 'io.sentry:sentry-android:5.4.0'
 
     // Warning: upgrading the room version beyond 2.0.0 may
     // cause errors running automated Saucelabs tests that generate data.
