@@ -1,6 +1,6 @@
 # uploading codecov report
 
-ame: hello-world
+name: hello-world
 on: [push, workflow_dispatch]
 jobs:
   my-job:
