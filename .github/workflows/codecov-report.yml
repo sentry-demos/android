@@ -21,10 +21,9 @@ jobs:
         run: |
           echo "Listing contents of build/reports/jacoco:"
           ls -l build/reports/jacoco
-      - name: Upload coverage to Codecov
-        env:
-          CODECOV_TOKEN: 4b643ba1-1aaf-47a2-89cd-56f7d6ab45ad
-        run: |
-          curl -Os https://uploader.codecov.io/latest/macos/codecov
-          chmod +x codecov
-          ./codecov -t $CODECOV_TOKEN
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
+          verbose: true
