@@ -17,6 +17,10 @@ jobs:
       - name: Build and run unit tests
         run: |
           ./gradlew build jacocoTestReport
+      - name: List coverage report files
+        run: |
+          echo "Listing contents of build/reports/jacoco:"
+          ls -l build/reports/jacoco
       - name: Upload coverage to Codecov
         env:
           CODECOV_TOKEN: 4b643ba1-1aaf-47a2-89cd-56f7d6ab45ad
