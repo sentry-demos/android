@@ -1,8 +1,6 @@
 # uploading codecov report
 
 name: Android
-env:
-  CODECOV_TOKEN: ${{ 4b643ba1-1aaf-47a2-89cd-56f7d6ab45ad }}
 
 on: [push, pull_request]
 
