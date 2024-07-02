@@ -281,6 +281,15 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         return getIterator(n-1) + getIterator(n-2);
     }
 
+    public int getNumber() {
+        int result = getAnotherNumber();
+        return result;
+    }
+
+    public int getAnotherNumber() {
+        return 2;
+    }
+
     private String getEmpowerPlantDomain() {
         String domain = null;
         try {
