@@ -206,7 +206,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         adapter.notifyDataSetChanged();
     }
 
-    private void processGetToolsResponse(String body) {
+    void processGetToolsResponse(String body) {
 
         JSONObject jsonObject = null;
         try {
@@ -271,7 +271,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         }
     }
 
-    private int getIterator(int n) {
+    int getIterator(int n) {
         if (n <= 0) {
             return 0;
         }
@@ -281,7 +281,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         return getIterator(n-1) + getIterator(n-2);
     }
 
-    private String getEmpowerPlantDomain() {
+    String getEmpowerPlantDomain() {
         String domain = null;
         try {
             final ApplicationInfo appInfo = getActivity().getApplicationContext().getPackageManager().getApplicationInfo(getActivity().getApplicationContext().getPackageName(),
