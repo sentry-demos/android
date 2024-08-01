@@ -4,6 +4,7 @@ buildscript {
     ext.kotlin_version= '1.8.20'
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath('com.dicedmelon.gradle:jacoco-android:0.1.5')
     }
     repositories {
         mavenCentral()
@@ -21,6 +22,7 @@ apply plugin: 'com.ydq.android.gradle.native-aar.import'
 apply plugin: 'io.sentry.android.gradle'
 apply plugin: 'kotlin-android'
 apply plugin: 'jacoco'
+apply plugin: 'com.dicedmelon.gradle.jacoco-android'
 //apply plugin: 'fullstory'
 
 //fullstory {
@@ -138,6 +140,20 @@ jacoco {
     toolVersion = "0.8.7"
 }
 
+jacocoAndroidUnitTestReport {
+    html.enabled(true)
+    xml.enabled(true)
+    destination "${buildDir}/reports/jacoco"
+    excludes += [
+            '**/R.class',
+            '**/R$*.class',
+            '**/BuildConfig.*',
+            '**/Manifest*.*',
+            '**/*Test*.*',
+            'android/**/*.*'
+    ]
+}
+
 tasks.withType(Test) {
     jacoco.includeNoLocationClasses = true // is this necessary
     jacoco.excludes = ['jdk.internal.*'] // is this necessary
@@ -165,54 +181,6 @@ task verifyExecutionData {
         }
     }
 }
-
-
-task jacocoTestReport(type: JacocoReport) {
-    dependsOn 'testDebugUnitTest', 'testReleaseUnitTest', verifyExecutionData
-
-    reports {
-        xml.enabled = true
-        csv.enabled = false
-        html.enabled = true
-        html.destination file("${buildDir}/reports/jacoco")
-    }
-
-    def fileFilter = [
-            '**/R.class',
-            '**/R$*.class',
-            '**/BuildConfig.*',
-            '**/Manifest*.*',
-            '**/*Test*.*',
-            'android/**/*.*'
-    ]
-    
-    def debugTree = fileTree(dir: "${buildDir}/intermediates/javac/debug", excludes: fileFilter)
-    def releaseTree = fileTree(dir: "${buildDir}/intermediates/javac/release", excludes: fileFilter)
-    def kotlinDebugTree = fileTree(dir: "${buildDir}/tmp/kotlin-classes/debug", excludes: fileFilter)
-    def kotlinReleaseTree = fileTree(dir: "${buildDir}/tmp/kotlin-classes/release", excludes: fileFilter)
-    def mainSrc = "${project.projectDir}/src/main/java"
-
-    sourceDirectories.setFrom(files([mainSrc]))
-    classDirectories.setFrom(files([debugTree, releaseTree, kotlinDebugTree, kotlinReleaseTree]))
-    executionData.setFrom(fileTree(dir: project.buildDir, includes: [
-            'jacoco/testDebugUnitTest.exec',
-            'jacoco/testReleaseUnitTest.exec'
-    ]))
-
-    doFirst {
-        logger.lifecycle("Configuring JaCoCo report task...")
-    }
-
-    doLast {
-        logger.lifecycle("JaCoCo report task completed.")
-    }
-
-    afterEvaluate {
-        logger.lifecycle("Execution data files: ${executionData.files}")
-    }
-}
-
-jacocoTestReport.dependsOn verifyExecutionData
 
 sentry {
     autoUpload = true
