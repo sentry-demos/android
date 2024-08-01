@@ -1,8 +1,9 @@
 package com.example.vu.android.empowerplant;
 
 import android.content.Context;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+
+import org.junit.Before;
+import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -17,7 +18,7 @@ public class MainFragmentTest {
 
     private MainFragment mainFragment;
 
-    @BeforeEach
+    @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         mainFragment = new MainFragment();
