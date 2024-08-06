@@ -26,6 +26,11 @@ import java.nio.charset.StandardCharsets;
 import io.sentry.SentryAppStartProfilingOptions;
 import io.sentry.SentryOptions;
 
+/*
+ * This class is used to initialize the options of the App Start Profiling.
+ * It creates the options and writes them to a file to make the SDK think it was already initialized, so that ui tests will run app start profiling.
+ * It has no effect on the SDK initialization or behavior.
+ */
 public class InitContentProvider extends ContentProvider {
 
     @Override
@@ -58,11 +63,6 @@ public class InitContentProvider extends ContentProvider {
     private SentryOptions createOptions(final @NotNull Context context) {
         SentryOptions options = new SentryOptions();
         options.setDsn("https://3d2ac63d6e1a4c6e9214443678f119a3@o87286.ingest.sentry.io/1801383");
-
-        // Currently under experimental options:
-        options.getExperimental().getSessionReplay().setSessionSampleRate(1.0);
-        options.getExperimental().getSessionReplay().setErrorSampleRate(1.0);
-
         options.setCacheDirPath(new File(context.getCacheDir(), "sentry").getAbsolutePath());
         return options;
     }
