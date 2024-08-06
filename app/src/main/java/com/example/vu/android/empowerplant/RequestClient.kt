@@ -3,7 +3,7 @@ package com.example.vu.android.empowerplant
 import okhttp3.OkHttpClient
 import java.util.concurrent.TimeUnit
 import io.sentry.HttpStatusCodeRange
-import io.sentry.android.okhttp.SentryOkHttpInterceptor
+import io.sentry.okhttp.SentryOkHttpInterceptor
 import okhttp3.Interceptor
 
 public class RequestClient {

@@ -11,7 +11,7 @@ buildscript {
 }
 
 plugins {
-    id "io.sentry.android.gradle" version "4.4.0"
+    id "io.sentry.android.gradle" version "4.10.0"
 }
 
 apply plugin: 'com.android.application'
@@ -42,8 +42,8 @@ android {
         applicationId "com.example.vu.android"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 45
-        versionName "2.10.6"
+        versionCode 46
+        versionName "2.11.0"
 
         externalNativeBuild {
             cmake {
