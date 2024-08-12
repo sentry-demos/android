@@ -26,6 +26,11 @@ import java.nio.charset.StandardCharsets;
 import io.sentry.SentryAppStartProfilingOptions;
 import io.sentry.SentryOptions;
 
+/*
+ * This class is used to initialize the options of the App Start Profiling.
+ * It creates the options and writes them to a file to make the SDK think it was already initialized, so that ui tests will run app start profiling.
+ * It has no effect on the SDK initialization or behavior.
+ */
 public class InitContentProvider extends ContentProvider {
 
     @Override
