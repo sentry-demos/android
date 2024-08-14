@@ -414,9 +414,9 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         ISpan processDeliverySpan = checkoutTransaction.startChild("task", "process delivery");
 
         try {
-            Log.e("processDeliveryItem", "ERROR");
-            throw new MainFragment.BackendAPIException("Failed to init delivery workflow");
+            throw new MainFragment.BackendAPIException("Failed to init delivery item workflow");
         } catch (Exception e) {
+            Log.e("processDeliveryItem", e.getMessage());
             processDeliverySpan.setThrowable(e);
             processDeliverySpan.setStatus(SpanStatus.INTERNAL_ERROR);
             Sentry.captureException(e);
