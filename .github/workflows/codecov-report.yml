@@ -1,6 +1,6 @@
 # uploading codecov report
 
-name: Android
+name: Upload Codecov Report
 
 on: [push, pull_request]
 
