@@ -111,6 +111,10 @@ public class MyApplication extends Application {
             });
         });
 
+        String[] allCustomerTypes = {"medium-plan", "large-plan", "small-plan", "enterprise"};
+        String customerType = allCustomerTypes[(int) (Math.random() * 4)];
+        Sentry.setTag("customerType", customerType);
+
         Sentry.setTag("se", SE);
 
         // Set User info on Sentry event using a random email

@@ -29,7 +29,6 @@ public class MainActivity extends MyBaseActivity {
         // SENTRY Tag and Breadcrumb
         String activity = this.getClass().getSimpleName();
         Sentry.setTag("activity", activity);
-        Sentry.setTag("customerType", "enterprise");
 
         Breadcrumb breadcrumb = new Breadcrumb();
         breadcrumb.setMessage("Android activity was created");
