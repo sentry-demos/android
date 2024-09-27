@@ -396,6 +396,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
             cart.put("quantities", quantities);
             postBody.put("cart", cart);
             postBody.put("form", new JSONObject());// This line currently mocks non existent form data
+            postBody.put("validate_inventory", "true");
 
         } catch (JSONException e) {
             ISpan span = Sentry.getSpan();
