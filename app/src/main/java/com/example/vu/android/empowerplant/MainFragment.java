@@ -304,6 +304,13 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
     public void checkout() {
         Log.i("checkout", "checkout >>>");
         selectedStoreItems = this.adapter.getSelectedStoreItems();
+        
+        if (selectedStoreItems == null || selectedStoreItems.isEmpty()) {
+            Log.w("checkout", "Attempted checkout with empty cart");
+            Sentry.captureMessage("Attempted checkout with empty cart", SentryLevel.WARNING);
+            return;
+        }
+
         ITransaction checkoutTransaction = Sentry.startTransaction("checkout [android]", "http.client");
         checkoutTransaction.setOperation("http");
         Sentry.configureScope(scope -> scope.setTransaction(checkoutTransaction));
@@ -350,20 +357,36 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            progressDialog.dismiss();
+                try {
+                    if (!response.isSuccessful()) {
+                        String errorBody = response.body() != null ? response.body().string() : "Unknown error";
+                        Log.e("checkout", "Checkout failed with status: " + response.code() + ", error: " + errorBody);
+                        
+                        Sentry.configureScope(scope -> {
+                            scope.setExtra("response_code", response.code());
+                            scope.setExtra("error_body", errorBody);
+                            scope.setTag("error.type", "checkout_failed");
+                        });
+                        
+                        getActivity().runOnUiThread(() -> {
 
-                            processDeliveryItem(checkoutTransaction);
-
-                            checkoutTransaction.finish(SpanStatus.INTERNAL_ERROR);
-                        }
-                    });
-                }
-            }
-
-            @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                progressDialog.dismiss();
-                Sentry.captureException(e);
+                        });
+                    } else {
+                        String successBody = response.body() != null ? response.body().string() : "";
+                        Log.d("checkout", "Checkout successful: " + successBody);
+                        
+                        getActivity().runOnUiThread(() -> {
+                            checkoutTransaction.finish(SpanStatus.OK);
+                            // Reset cart
+                            mCartItemCount = 0;
+                            ((EmpowerPlantActivity) getActivity()).textCartItemCount.setText("0");
+                            selectedStoreItems.clear();
+                            adapter.notifyDataSetChanged();
+                        });
+                    }
+                } finally {
+                    response.close();
 
                 processDeliveryItem(checkoutTransaction);
                 checkoutTransaction.finish(SpanStatus.INTERNAL_ERROR);
@@ -401,30 +424,49 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         } catch (JSONException e) {
             ISpan span = Sentry.getSpan();
             if (span != null) {
+        JSONObject form = new JSONObject();
                 span.setThrowable(e);
                 span.finish(SpanStatus.INTERNAL_ERROR);
                 span.finish();
             }
-            Sentry.captureException(e);
         }
         return postBody;
     }
 
-    private void processDeliveryItem(ITransaction checkoutTransaction) {
         Log.i("processDeliveryItem", "processDeliveryItem >>>");
         ISpan processDeliverySpan = checkoutTransaction.startChild("task", "process delivery");
-
         try {
             throw new MainFragment.BackendAPIException("Failed to init delivery item workflow");
         } catch (Exception e) {
             Log.e("processDeliveryItem", e.getMessage());
-            processDeliverySpan.setThrowable(e);
+            
+            // Add required form fields with proper structure
+            form.put("email", "someone@gmail.com");
+            form.put("shipping", new JSONObject()
+                .put("address", "123 Street")
+                .put("city", "San Francisco")
+                .put("state", "CA")
+                .put("zip", "94105")
+                .put("country", "US"));
+            form.put("billing", new JSONObject()
+                .put("address", "123 Street")
+                .put("city", "San Francisco")
+                .put("state", "CA")
+                .put("zip", "94105")
+                .put("country", "US"));
+            form.put("payment", new JSONObject()
+                .put("method", "credit_card")
+                .put("card_token", "tok_visa"));
+                
+            postBody.put("form", form);
             processDeliverySpan.setStatus(SpanStatus.INTERNAL_ERROR);
             Sentry.captureException(e);
         }
 
         if (processDeliverySpan.getStatus() != SpanStatus.INTERNAL_ERROR) {
             processDeliverySpan.setStatus(SpanStatus.OK);
+                span.setTag("error.type", "json_construction");
+                span.setTag("error.details", e.getMessage());
         }
         processDeliverySpan.finish();
         Log.i("processDeliveryItem", "<<< processDeliveryItem");
