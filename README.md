@@ -60,7 +60,7 @@ which java
 
 6. For Performance Demo: Configure your *backend endpoint* in the `empowerplant.domain` attribute in `AndroidManifest.xml` (`application-monitoring-python` by default)
 
-7. Put your AUTH Token and project name in sentry.properties
+7. Put your AUTH Token and project name in `sentry.properties`. Then, check the `Makefile` and put the desired values for `SENTRY_ORG` and `SENTRY_PROJECT`
 
 8. `make all`
 
