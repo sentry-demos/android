@@ -1,6 +1,17 @@
 name: Release
 on:
   workflow_dispatch:
+    inputs:
+      version_name:
+        description: 'The version name to release. E.g. 24.12.31'
+        required: true
+        default: null
+      version_code:
+        description: 'The version code (numeric) to release. E.g. 241231'
+        required: true
+        default: null
+  schedule:
+    - cron: "0 0 * * 0" # Runs every Sunday at midnight
 
 jobs:
   empower-plant-release:
@@ -16,8 +27,26 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Run Deploy Script
-        run: ./deploy_project.sh
+      - name: Setup Automatic Version Name And Code
+        if: inputs.version_name == null
+        run: |
+          echo "VERSION_NAME=$(date +'%y.%m.%d')" >> $GITHUB_ENV
+          echo "VERSION_CODE=$(date +'%y%m%d')" >> $GITHUB_ENV
+        shell: sh
+
+      - name: Run Deploy Script (manual version)
+        if: inputs.version_name != null
+        run: ./deploy_project.sh ${{ inputs.version_name }}
+        shell: sh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          VERSION_NAME: ${{ inputs.version_name }}
+          VERSION_CODE: ${{ inputs.version_code }}
+
+      - name: Run Deploy Script (automatic version)
+        if: inputs.version_name == null
+        run: ./deploy_project.sh "$(date +'%y.%m.%d')"
         shell: sh
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
