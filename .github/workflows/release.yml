@@ -11,7 +11,7 @@ on:
         required: true
         default: null
   schedule:
-    - cron: "0 0 * * 0" # Runs every Sunday at midnight
+    - cron: "0 0 1,8,15,22 * *" # 1st, 8th, 15th, and 22nd of the month
 
 jobs:
   empower-plant-release:
