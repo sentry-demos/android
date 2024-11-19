@@ -9,8 +9,12 @@ if ! command -v gh &> /dev/null; then
   error_exit "gh is not installed, make sure you run 'make init' (see README.md)."
 fi
 
+# When this script is called from release workflow, the version is passed as an argument, otherwise it will be read from the app/build.gradle file
+PACKAGE_VERSION=$1
+if [ -z "$1" ]; then
+  PACKAGE_VERSION=$(grep 'versionName' app/build.gradle | awk -F\" {'print $2'})
+fi
 PACKAGE_NAME=$(grep 'applicationId' app/build.gradle | awk -F\" {'print $2'})
-PACKAGE_VERSION=$(grep 'versionName' app/build.gradle | awk -F\" {'print $2'})
 REPO=sentry-demos/android
 
 # Check if current version was already released
