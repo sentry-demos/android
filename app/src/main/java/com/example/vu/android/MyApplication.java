@@ -75,7 +75,7 @@ public class MyApplication extends Application {
 
             // Currently under experimental options:
             options.getExperimental().getSessionReplay().setSessionSampleRate(1.0);
-            options.getExperimental().getSessionReplay().setErrorSampleRate(1.0);
+            options.getExperimental().getSessionReplay().setOnErrorSampleRate(1.0);
 
             options.setBeforeSend((event, hint) -> {
 
