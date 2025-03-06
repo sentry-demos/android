@@ -62,7 +62,7 @@ public class InitContentProvider extends ContentProvider {
     @SuppressLint("VisibleForTests")
     private SentryOptions createOptions(final @NotNull Context context) {
         SentryOptions options = new SentryOptions();
-        options.setDsn("https://3d2ac63d6e1a4c6e9214443678f119a3@o87286.ingest.sentry.io/1801383");
+        options.setDsn("https://6de4ac3993f24074820d83751794ca39@sandbox-mirror.sentry.gg/1");
         options.setCacheDirPath(new File(context.getCacheDir(), "sentry").getAbsolutePath());
         return options;
     }
