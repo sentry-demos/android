@@ -346,14 +346,32 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
                 boolean success = response.isSuccessful();
                 response.close();
                 if (!success) {
-                    Log.d("checkout", "response failed");
+                    Log.d("checkout", "Checkout request failed - retrying...");
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             progressDialog.dismiss();
-
-                            processDeliveryItem(checkoutTransaction);
-
+                            // Show retry dialog
+                            new AlertDialog.Builder(getActivity())
+                                .setTitle("Checkout Failed")
+                                .setMessage("Would you like to retry?")
+                                .setPositiveButton("Retry", (dialog, which) -> {
+                                    // Retry checkout
+                                    progressDialog.show();
+                                    client.newCall(request).enqueue(this);
+                                })
+                                .setNegativeButton("Cancel", (dialog, which) -> {
+                                    processDeliveryItem(checkoutTransaction);
+                                    dialog.dismiss();
+                                })
+                                .create()
+                                .show();
+                            
+                            // Track failed attempt
+                            Sentry.addBreadcrumb(
+                                new Breadcrumb("Checkout attempt failed")
+                            );
+                            
                             checkoutTransaction.finish(SpanStatus.INTERNAL_ERROR);
                         }
                     });
@@ -431,27 +449,51 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
     }
 
     class BackendAPIException extends RuntimeException {
-
-        public BackendAPIException(String message) {
-            super(message);
+        
+        try {
+            // Process delivery workflow
+            if (selectedStoreItems != null && !selectedStoreItems.isEmpty()) {
+                for (StoreItem item : selectedStoreItems.values()) {
+                    updateDeliveryStatus(item);
+                }
+                processDeliverySpan.setStatus(SpanStatus.OK);
+            } else {
+                processDeliverySpan.setStatus(SpanStatus.INVALID_ARGUMENT);
+                Log.w("processDeliveryItem", "No items to process for delivery");
+            }
         }
     }
 
     protected Boolean addAttachment() {
         File f = null;
-        try {
-            Context c = getActivity().getApplicationContext();
-            File cacheDirectory = c.getCacheDir();
-            f = File.createTempFile("tmp", ".txt", cacheDirectory);
+            
+            // Show error to user
+            getActivity().runOnUiThread(() -> {
+                Toast.makeText(getContext(), 
+                    "Failed to process delivery. Please try again later.",
+                    Toast.LENGTH_LONG).show();
+            });
             System.out.println("File path: " + f.getAbsolutePath());
             f.deleteOnExit();
             try (FileOutputStream fos = new FileOutputStream(f)) {
                 fos.write("test".getBytes(UTF_8));
             }
             String dateStr = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
-
             Attachment attachment1 = new Attachment(f.getAbsolutePath(), "tmp_" + dateStr + ".txt", "text/plain");
 
+        }
+    }
+    
+    private void updateDeliveryStatus(StoreItem item) {
+        // Update delivery status in local DB
+        try {
+            AppDatabase.getInstance(getActivity().getApplicationContext())
+                .StoreItemDAO()
+                .updateDeliveryStatus(item.getItemId(), "PENDING");
+        } catch (Exception e) {
+            Log.e("updateDeliveryStatus", "Failed to update status for item " + item.getItemId());
+            Sentry.captureException(e);
+            throw e;
             Sentry.configureScope(
                     scope -> {
                         String json = "{ \"number\": 10 }";
