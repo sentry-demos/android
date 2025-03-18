@@ -352,11 +352,13 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
                         public void run() {
                             progressDialog.dismiss();
 
-                            processDeliveryItem(checkoutTransaction);
+                            processDeliveryItem(checkoutTransaction, false);
 
                             checkoutTransaction.finish(SpanStatus.INTERNAL_ERROR);
                         }
                     });
+                } else {
+                    processDeliveryItem(checkoutTransaction, true);
                 }
             }
 
@@ -365,7 +367,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
                 progressDialog.dismiss();
                 Sentry.captureException(e);
 
-                processDeliveryItem(checkoutTransaction);
+                processDeliveryItem(checkoutTransaction, false);
                 checkoutTransaction.finish(SpanStatus.INTERNAL_ERROR);
                 Log.e("checkout", "checkout failed");
             }
@@ -410,22 +412,27 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         return postBody;
     }
 
-    private void processDeliveryItem(ITransaction checkoutTransaction) {
+    private void processDeliveryItem(ITransaction checkoutTransaction, boolean checkoutSuccess) {
         Log.i("processDeliveryItem", "processDeliveryItem >>>");
         ISpan processDeliverySpan = checkoutTransaction.startChild("task", "process delivery");
 
-        try {
-            throw new MainFragment.BackendAPIException("Failed to init delivery item workflow");
-        } catch (Exception e) {
-            Log.e("processDeliveryItem", e.getMessage());
-            processDeliverySpan.setThrowable(e);
-            processDeliverySpan.setStatus(SpanStatus.INTERNAL_ERROR);
-            Sentry.captureException(e);
+        if (!checkoutSuccess) {
+            // Checkout failed, log the error but don't throw an exception
+            Log.e("processDeliveryItem", "Cannot initialize delivery workflow due to checkout failure");
+            processDeliverySpan.setStatus(SpanStatus.INVALID_ARGUMENT);
+        } else {
+            // Proceed with delivery processing for successful checkout
+            try {
+                // Delivery initialization logic would go here
+                processDeliverySpan.setStatus(SpanStatus.OK);
+            } catch (Exception e) {
+                Log.e("processDeliveryItem", e.getMessage());
+                processDeliverySpan.setThrowable(e);
+                processDeliverySpan.setStatus(SpanStatus.INTERNAL_ERROR);
+                Sentry.captureException(e);
+            }
         }
 
-        if (processDeliverySpan.getStatus() != SpanStatus.INTERNAL_ERROR) {
-            processDeliverySpan.setStatus(SpanStatus.OK);
-        }
         processDeliverySpan.finish();
         Log.i("processDeliveryItem", "<<< processDeliveryItem");
     }
