@@ -131,8 +131,8 @@ tasks.withType(Test) {
 
 sentry {
     autoUpload = true
-    uploadNativeSymbols = false
-    includeNativeSources = false
+    uploadNativeSymbols = true
+    includeNativeSources = true
     debug = true
     includeSourceContext = true
     additionalSourceDirsForSourceContext = ["src/main/java"]
