@@ -83,6 +83,8 @@ android {
 }
 
 dependencies {
+    // This should be included by default in the Android SDK, but it seems to be a problem with v8+ of the SDK, so we have to manually add it
+    implementation 'io.sentry:sentry-native-ndk:0.8.3'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation group: 'androidx.constraintlayout', name: 'constraintlayout', version: '1.1.3'
