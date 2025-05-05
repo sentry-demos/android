@@ -56,15 +56,15 @@ which java
     File -> Sync Project with Gradle Files
     ```
 
-5. Put your Sentry DSN key in `AndroidManifest.xml` and your 'project' name in the Makefile
+5. Put your Sentry DSN key in `AndroidManifest.xml`.
+6. Put your project name and org slug in the `Makefile` under `SENTRY_ORG` and `SENTRY_PROJECT`
 
-6. For Performance Demo: Configure your *backend endpoint* in the `empowerplant.domain` attribute in `AndroidManifest.xml` (`application-monitoring-python` by default)
+7. For Performance Demo: Configure your *backend endpoint* in the `empowerplant.domain` attribute in `AndroidManifest.xml` (`application-monitoring-python` by default)
 
-7. Put your AUTH Token and project name in sentry.properties
+8. Put your AUTH Token and project name in `sentry.properties`. 
+9. `make all`
 
-8. `make all`
-
-9. Android Studio install Android NDK in Preferences > System & Behavior > System Settings > Android SDK > SDK Tools > and install the following:
+10. Android Studio install Android NDK in Preferences > System & Behavior > System Settings > Android SDK > SDK Tools > and install the following:
 ![AndroidTools](screenshots/android-tools.png)
 
 ![gif](screenshots/debug-information-files-settings.png)
