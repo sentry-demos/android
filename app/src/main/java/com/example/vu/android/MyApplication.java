@@ -72,8 +72,8 @@ public class MyApplication extends Application {
             options.setAttachThreads(true);
             options.setEnableAppStartProfiling(true);
             options.setEnablePerformanceV2(true);
-            options.sessionReplay.onErrorSampleRate = 1.0
-            options.sessionReplay.sessionSampleRate = 1.1
+            options.getSessionReplay().setOnErrorSampleRate(1.0);
+            options.getSessionReplay().setSessionSampleRate(1.0);
 
             options.setBeforeSend((event, hint) -> {
 
