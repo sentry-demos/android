@@ -71,17 +71,8 @@
             android:name="io.sentry.traces.profiling.enable"
             android:value="true" />
         <meta-data
-            android:name="io.sentry.traces.profiling.session-sample-rate"
+            android:name="io.sentry.traces.profiling.sample-rate"
             android:value="1.0" />
-        <meta-data
-            android:name="io.sentry.traces.profiling.lifecycle"
-            android:value="trace"
-        />
-        <!-- Enable profiling on app start. The app start profile has to be stopped through Sentry.stopProfiler() -->
-        <meta-data
-            android:name="io.sentry.traces.profiling.start-on-app-start"
-            android:value="true"
-        />
         <meta-data
             android:name="empowerplant.domain"
             android:value="https://application-monitoring-flask-dot-sales-engineering-sf.appspot.com" />
