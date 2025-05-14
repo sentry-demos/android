@@ -343,20 +343,27 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 progressDialog.dismiss();
-                boolean success = response.isSuccessful();
+                int statusCode = response.code();
+                String responseBody = response.body() != null ? response.body().string() : "";
                 response.close();
-                if (!success) {
+                
+                if (statusCode == 422) {
+                    try {
+                        JSONObject errorObj = new JSONObject(responseBody);
+                        final String errorMessage = errorObj.optString("error", "Item is out of stock");
+                        getActivity().runOnUiThread(() -> {
+                            new AlertDialog.Builder(getActivity())
+                                .setTitle("Cannot Complete Purchase")
+                                .setMessage(errorMessage)
+                                .setPositiveButton("OK", null)
+                                .show();
+                        });
+                    } catch (JSONException e) {
+                        handleGenericError(checkoutTransaction);
+                    }
+                } else if (!response.isSuccessful()) {
                     Log.d("checkout", "response failed");
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            progressDialog.dismiss();
-
-                            processDeliveryItem(checkoutTransaction);
-
-                            checkoutTransaction.finish(SpanStatus.INTERNAL_ERROR);
-                        }
-                    });
+                    handleGenericError(checkoutTransaction);
                 }
             }
 
@@ -408,6 +415,19 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
             Sentry.captureException(e);
         }
         return postBody;
+    }
+
+    private void handleGenericError(ITransaction checkoutTransaction) {
+        getActivity().runOnUiThread(() -> {
+            progressDialog.dismiss();
+            new AlertDialog.Builder(getActivity())
+                .setTitle("Error")
+                .setMessage("An error occurred processing your order. Please try again.")
+                .setPositiveButton("OK", null)
+                .show();
+            processDeliveryItem(checkoutTransaction);
+            checkoutTransaction.finish(SpanStatus.INTERNAL_ERROR);
+        });
     }
 
     private void processDeliveryItem(ITransaction checkoutTransaction) {
