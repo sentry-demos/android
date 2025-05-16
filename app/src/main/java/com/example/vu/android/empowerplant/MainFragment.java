@@ -344,19 +344,36 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 progressDialog.dismiss();
                 boolean success = response.isSuccessful();
-                response.close();
                 if (!success) {
                     Log.d("checkout", "response failed");
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            progressDialog.dismiss();
+                    String errorBody = response.body() != null ? response.body().string() : "";
+                    response.close();
+                    try {
+                        JSONObject errorJson = new JSONObject(errorBody);
+                        final String errorMessage = errorJson.optString("message", "Checkout failed");
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                progressDialog.dismiss();
 
-                            processDeliveryItem(checkoutTransaction);
+                                processDeliveryItem(checkoutTransaction, errorMessage);
 
-                            checkoutTransaction.finish(SpanStatus.INTERNAL_ERROR);
-                        }
-                    });
+                                checkoutTransaction.finish(SpanStatus.INTERNAL_ERROR);
+                            }
+                        });
+                    } catch (JSONException e) {
+                        Log.e("checkout", "Failed to parse error response: " + errorBody);
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                progressDialog.dismiss();
+                                processDeliveryItem(checkoutTransaction, "Checkout failed");
+                                checkoutTransaction.finish(SpanStatus.INTERNAL_ERROR);
+                            }
+                        });
+                    }
+                } else {
+                    response.close();
                 }
             }
 
@@ -410,12 +427,12 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         return postBody;
     }
 
-    private void processDeliveryItem(ITransaction checkoutTransaction) {
+    private void processDeliveryItem(ITransaction checkoutTransaction, String errorMessage) {
         Log.i("processDeliveryItem", "processDeliveryItem >>>");
         ISpan processDeliverySpan = checkoutTransaction.startChild("task", "process delivery");
 
         try {
-            throw new MainFragment.BackendAPIException("Failed to init delivery workflow");
+            throw new MainFragment.BackendAPIException(errorMessage);
         } catch (Exception e) {
             Log.e("processDeliveryItem", e.getMessage());
             processDeliverySpan.setThrowable(e);
@@ -428,6 +445,10 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         }
         processDeliverySpan.finish();
         Log.i("processDeliveryItem", "<<< processDeliveryItem");
+    }
+    
+    private void processDeliveryItem(ITransaction checkoutTransaction) {
+        processDeliveryItem(checkoutTransaction, "Failed to init delivery workflow");
     }
 
     class BackendAPIException extends RuntimeException {
