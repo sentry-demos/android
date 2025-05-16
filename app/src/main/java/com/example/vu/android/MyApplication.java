@@ -72,10 +72,8 @@ public class MyApplication extends Application {
             options.setAttachThreads(true);
             options.setEnableAppStartProfiling(true);
             options.setEnablePerformanceV2(true);
-
-            // Currently under experimental options:
-            options.getExperimental().getSessionReplay().setSessionSampleRate(1.0);
-            options.getExperimental().getSessionReplay().setOnErrorSampleRate(1.0);
+            options.getSessionReplay().setOnErrorSampleRate(1.0);
+            options.getSessionReplay().setSessionSampleRate(1.0);
 
             options.setBeforeSend((event, hint) -> {
 
