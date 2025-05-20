@@ -70,12 +70,12 @@ public class InitContentProvider extends ContentProvider {
     @SuppressLint("VisibleForTests")
     private SentryAppStartProfilingOptions createAppStartOptions(SentryOptions options) {
         SentryAppStartProfilingOptions appStartProfilingOptions = new SentryAppStartProfilingOptions();
-        appStartProfilingOptions.setProfileSampled(true);
+        appStartProfilingOptions.setContinuousProfileSampled(true);
+        appStartProfilingOptions.setStartProfilerOnAppStart(true);
         appStartProfilingOptions.setTraceSampled(true);
-        appStartProfilingOptions.setProfileSampleRate(1.0);
         appStartProfilingOptions.setTraceSampleRate(1.0);
         appStartProfilingOptions.setProfilingTracesDirPath(options.getProfilingTracesDirPath());
-        appStartProfilingOptions.setProfilingEnabled(true);
+        appStartProfilingOptions.setContinuousProfilingEnabled(true);
         appStartProfilingOptions.setProfilingTracesHz(options.getProfilingTracesHz());
         return appStartProfilingOptions;
     }

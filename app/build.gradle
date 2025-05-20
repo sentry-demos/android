@@ -12,7 +12,7 @@ buildscript {
 }
 
 plugins {
-    id "io.sentry.android.gradle" version "5.5.0"
+    id "io.sentry.android.gradle" version "5.6.0"
     id 'com.android.application'
     id 'kotlin-android'
     id 'com.ydq.android.gradle.native-aar.import'
