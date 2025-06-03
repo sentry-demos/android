@@ -1,7 +1,7 @@
 import io.sentry.android.gradle.instrumentation.logcat.LogcatLevel
 
 buildscript {
-    ext.kotlin_version= '1.8.20'
+    ext.kotlin_version= '1.9.20'
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath('com.mxalbert.gradle:jacoco-android:0.2.1')
@@ -27,7 +27,7 @@ plugins {
 //}
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 34
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -75,6 +75,10 @@ android {
 
     buildFeatures {
         dataBinding true
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion "1.5.4"
     }
 
     lintOptions {
@@ -84,6 +88,7 @@ android {
 
 dependencies {
     // This should be included by default in the Android SDK, but it seems to be a problem with v8+ of the SDK, so we have to manually add it
+    implementation 'io.sentry:sentry-android:8.14.1-SNAPSHOT'
     implementation 'io.sentry:sentry-native-ndk:0.8.3'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0'
@@ -103,11 +108,24 @@ dependencies {
     // cause errors running automated Saucelabs tests that generate data.
     // If you upgrade the room version, ensure you run associated automated
     // tests locally and that they pass.
-    def room_version = "2.0.0"
+    def room_version = "2.6.1"
 
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
+    implementation 'io.reactivex.rxjava3:rxjava:3.1.8'
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.2'
+    implementation 'androidx.room:room-rxjava3:2.6.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    def compose_version = "1.5.4"
+    def compose_material3_version = "1.1.2"
+
+    // Compose
+    implementation "androidx.activity:activity-compose:1.8.2"
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.material3:material3:$compose_material3_version"
+    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+    implementation "io.coil-kt:coil-compose:2.5.0"
 
     testImplementation 'org.jetbrains:annotations:23.0.0'
     testImplementation 'org.jetbrains.kotlin:kotlin-test-junit:1.8.0'
