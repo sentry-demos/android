@@ -1,6 +1,7 @@
 package com.example.vu.android.empowerplant;
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -106,14 +107,13 @@ public class EmpowerPlantActivity extends MyBaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
-            case R.id.action_cart:
-                fragment.checkout();
-                return(true);
-            case R.id.action_open_listapp:
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-                return true;
+        if (item.getItemId() == R.id.action_cart) {
+            fragment.checkout();
+            return (true);
+        } else if (item.getItemId() == R.id.action_open_listapp) {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            return true;
         }
         return(super.onOptionsItemSelected(item));
     }
