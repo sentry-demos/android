@@ -304,7 +304,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         final ProgressDialog progressDialog = new ProgressDialog(getActivity());
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Checking Out...");
-        //progressDialog.show();
+        progressDialog.show();
 
         ISpan processDataSpan = checkoutTransaction.startChild("task", "process_cart_data");
         JSONObject object = this.buildJSONPostData(selectedStoreItems);
