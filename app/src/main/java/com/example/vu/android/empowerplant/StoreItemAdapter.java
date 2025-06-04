@@ -1,5 +1,6 @@
 package com.example.vu.android.empowerplant;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,30 +20,16 @@ public class StoreItemAdapter extends RecyclerView.Adapter<StoreItemAdapter.View
 
     private List<StoreItem> list;
     private ItemClickListener clickListener;
-    private HashMap<String,StoreItem> quantities;
 
-    private void updateQuantities(StoreItem selectedItem){
-
-        String itemKey = String.valueOf(selectedItem.getItemId());
-        if(quantities.containsKey(itemKey)){
-            int currentCount = quantities.get(itemKey).getQuantity();
-            selectedItem.setQuantity(currentCount + 1);
-
-        }else{
-            quantities.put(itemKey,selectedItem);
-        }
+    private void updateQuantities(Context context, StoreItem selectedItem){
+        AppDatabase.getInstance(context).StoreItemDAO().selectItem(selectedItem.getSku());
     }
 
 
     public StoreItemAdapter(List<StoreItem> list, ItemClickListener clickListener) {
         this.list = list;
         this.clickListener  = clickListener;
-        quantities = new HashMap<String,StoreItem>();
 
-    }
-
-    public HashMap<String, StoreItem> getSelectedStoreItems() {
-        return quantities;
     }
 
     @Override
@@ -64,10 +51,11 @@ public class StoreItemAdapter extends RecyclerView.Adapter<StoreItemAdapter.View
             @Override
             public void onClick(View v ) {
                 StoreItem selectedItem = list.get(holder.getAdapterPosition());
-                updateQuantities(selectedItem);
-                clickListener.onItemClick(selectedItem);
+                updateQuantities(v.getContext(), selectedItem);
             }
         });
+
+        holder.itemView.setOnClickListener(v -> clickListener.onItemClick(storeItem));
     }
 
     private int getDrawable(String path){
