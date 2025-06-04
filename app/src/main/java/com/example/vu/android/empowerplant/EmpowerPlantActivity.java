@@ -12,6 +12,8 @@ import androidx.fragment.app.FragmentTransaction;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import com.example.vu.android.MainActivity;
 import com.example.vu.android.MyBaseActivity;
@@ -24,14 +26,22 @@ public class EmpowerPlantActivity extends MyBaseActivity {
     static boolean active = false;
     MainFragment fragment = null;
     TextView textCartItemCount;
+    private ExecutorService executorService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_empowerplant);
-        dbQuery();
-        addAttachment(true);
+
+        executorService = Executors.newSingleThreadExecutor();
+
+        // Move blocking operations to a background thread
+        executorService.submit(() -> {
+            dbQuery();
+            addAttachment(true);
+        });
+
         checkRelease();
         this.loadFragmentList();
     }
@@ -126,5 +136,13 @@ public class EmpowerPlantActivity extends MyBaseActivity {
     public void onStop() {
         super.onStop();
         active = false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (executorService != null) {
+            executorService.shutdown();
+        }
     }
 }
