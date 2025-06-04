@@ -22,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -30,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import io.sentry.compose.SentryModifier.sentryTag
+import io.sentry.compose.SentryTraced
 
 class StoreItemDetailActivity : ComponentActivity() {
     companion object {
@@ -52,7 +54,7 @@ class StoreItemDetailActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun StoreItemDetailScreen(storeItem: StoreItem, onBack: () -> Unit) {
     val context = LocalContext.current
@@ -68,40 +70,50 @@ fun StoreItemDetailScreen(storeItem: StoreItem, onBack: () -> Unit) {
             )
         }
     ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Image(
-                painter = rememberAsyncImagePainter(storeItem.image),
-                contentDescription = storeItem.name,
+        SentryTraced("item_details") {
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth(),
-                contentScale = ContentScale.Crop
-            )
-            Text(
-                text = storeItem.name,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(top = 8.dp)
-            )
-            Text(
-                text = "SKU: ${storeItem.sku}",
-                fontSize = 16.sp,
-                modifier = Modifier.padding(top = 8.dp)
-            )
-            Text(
-                text = "Price: $${storeItem.price}",
-                fontSize = 16.sp,
-                modifier = Modifier.padding(top = 8.dp)
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Button(onClick = {
-                AppDatabase.getInstance(context).StoreItemDAO().selectItem(storeItem.sku)
-            }, modifier = Modifier.sentryTag("add_to_cart")) {
-                Text(text = "Add to Cart")
+                    .fillMaxSize()
+                    .padding(paddingValues),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                SentryTraced("item_details_image") {
+                    Image(
+                        painter = rememberAsyncImagePainter(storeItem.image),
+                        contentDescription = storeItem.name,
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        contentScale = ContentScale.Crop
+                    )
+                }
+                SentryTraced("item_details_name") {
+                    Text(
+                        text = storeItem.name,
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
+                SentryTraced("item_details_sku") {
+                    Text(
+                        text = "SKU: ${storeItem.sku}",
+                        fontSize = 16.sp,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
+                SentryTraced("item_details_price") {
+                    Text(
+                        text = "Price: $${storeItem.price}",
+                        fontSize = 16.sp,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+                Button(onClick = {
+                    AppDatabase.getInstance(context).StoreItemDAO().selectItem(storeItem.sku)
+                }, modifier = Modifier.sentryTag("add_to_cart")) {
+                    Text(text = "Add to Cart")
+                }
             }
         }
     }
