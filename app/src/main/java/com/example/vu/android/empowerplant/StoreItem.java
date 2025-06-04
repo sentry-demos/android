@@ -7,12 +7,13 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.Query;
 
+import java.io.Serializable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 @Entity
-public class StoreItem  {//why does this extend Fragment?
+public class StoreItem implements Serializable {//why does this extend Fragment?
     @NotNull
     @PrimaryKey
     String sku;

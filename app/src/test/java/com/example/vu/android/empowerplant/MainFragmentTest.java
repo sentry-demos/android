@@ -1,20 +1,15 @@
 package com.example.vu.android.empowerplant;
 
-import android.content.Context;
-
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
+import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.anyInt;
-import static org.mockito.Mockito.when;
 
+@RunWith(AndroidJUnit4.class)
 public class MainFragmentTest {
-
-    @Mock
-    Context mockContext;
 
     private MainFragment mainFragment;
 
@@ -22,13 +17,11 @@ public class MainFragmentTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         mainFragment = new MainFragment();
-        mainFragment.onAttach(mockContext);
     }
 
     @Test
     public void testGetEmpowerPlantDomain() {
         String domain = "https://application-monitoring-flask-dot-sales-engineering-sf.appspot.com";
-        when(mockContext.getString(anyInt())).thenReturn(domain);
 
         String result = mainFragment.getEmpowerPlantDomain();
 

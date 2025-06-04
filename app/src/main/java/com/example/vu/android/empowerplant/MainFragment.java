@@ -5,11 +5,13 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
+import android.os.Handler;
+import android.os.Looper;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,7 +22,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.vu.android.MyApplication;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,9 +35,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import io.sentry.Attachment;
 import io.sentry.ISpan;
@@ -43,7 +45,6 @@ import io.sentry.SpanStatus;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -62,7 +63,6 @@ import com.example.vu.android.R;
 public class MainFragment extends Fragment implements StoreItemAdapter.ItemClickListener {
     protected List<StoreItem> empowerStoreItems = new ArrayList<StoreItem>();
     private DividerItemDecoration dividerItemDecoration;
-    private HashMap<String, StoreItem> selectedStoreItems;
     protected StoreItemAdapter adapter;
     ProgressDialog progressDialog = null;
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
@@ -70,6 +70,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
     public String END_POINT_PRODUCT_INFO = "/product/0/info";
     public String END_POINT_CHECKOUT = "/checkout";
     int mCartItemCount = 0;
+    private Handler mainHandler = new Handler(Looper.getMainLooper());
 
     public MainFragment() {
         // Required empty public constructor
@@ -116,7 +117,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         this.fetchToolsFromServer();
         adapter = new StoreItemAdapter(empowerStoreItems, this);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(view.getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), layoutManager.getOrientation());
         recyclerView.setHasFixedSize(true);
@@ -125,9 +126,6 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         recyclerView.setAdapter(adapter);
     }
 
-    public void setBadgeNumber() {
-        ((EmpowerPlantActivity) getActivity()).textCartItemCount.setText(String.valueOf(++mCartItemCount));
-    }
 
     public void fetchToolsFromServer() {
         progressDialog = new ProgressDialog(getContext());//ProgressDialog has been deprecated in API 26 https://developer.android.com/reference/android/app/ProgressDialog
@@ -171,14 +169,26 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
                     }
 
 
-                    ISpan processProductsSpan = Sentry.getSpan().startChild("product_processing", "Product Processing");
-                    getActivity().runOnUiThread(() -> {
+                    final @Nullable ISpan currentSpan = Sentry.getSpan();
+                    ISpan processProductsSpan;
+                    if (currentSpan != null) {
+                        processProductsSpan =
+                            Sentry.getSpan().startChild("product_processing", "Product Processing");
+                    } else {
+                        processProductsSpan = null;
+                    }
+                    runOnUiThread(() -> {
                         processProducts();
                         processProductsInfo();
                         Sentry.reportFullyDisplayed();
-                        processProductsSpan.finish();
+                        if (processProductsSpan != null) {
+                            processProductsSpan.finish();
+                        }
                         productRetrieveSpan.finish();
-                        Sentry.getCurrentHub().getSpan().finish();//finish Empower txn manually
+                        final ISpan empowerTx = Sentry.getSpan();
+                        if (empowerTx != null) {
+                            empowerTx.finish(); //finish Empower txn manually
+                        }
                     });
 
                 } else {
@@ -201,9 +211,8 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
 
     @Override
     public void onItemClick(StoreItem storeItem) {
-        setBadgeNumber();
-        //TODO: might not need this
-        adapter.notifyDataSetChanged();
+        startActivity(new Intent(getContext(), StoreItemDetailActivity.class)
+            .putExtra(StoreItemDetailActivity.EXTRA_STORE_ITEM, storeItem));
     }
 
     void processGetToolsResponse(String body) {
@@ -221,7 +230,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
                 storeitem.setPrice(jsonObject.getInt("price"));
                 storeitem.setImage(jsonObject.getString("imgcropped"));
                 storeitem.setItemId(jsonObject.getInt("id"));
-                storeitem.setQuantity(1);
+                storeitem.setQuantity(0);
 
                 empowerStoreItems.add(storeitem);
             }
@@ -234,13 +243,12 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
                 Sentry.captureException(e);
             }
         } finally {
-            getActivity().runOnUiThread(new Runnable() {
+            runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     adapter.notifyDataSetChanged();
                 }
             });
-
         }
     }
 
@@ -284,8 +292,8 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
     String getEmpowerPlantDomain() {
         String domain = null;
         try {
-            final ApplicationInfo appInfo = getActivity().getApplicationContext().getPackageManager().getApplicationInfo(getActivity().getApplicationContext().getPackageName(),
-                    PackageManager.GET_META_DATA);
+            final ApplicationInfo appInfo = MyApplication.appContext.getPackageManager()
+                .getApplicationInfo(MyApplication.appContext.getPackageName(), PackageManager.GET_META_DATA);
 
             if (appInfo.metaData != null) {
                 domain = (String) appInfo.metaData.get("empowerplant.domain");
@@ -303,7 +311,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
 
     public void checkout() {
         Log.i("checkout", "checkout >>>");
-        selectedStoreItems = this.adapter.getSelectedStoreItems();
+        List<StoreItem> selectedStoreItems = AppDatabase.getInstance(MyApplication.appContext).StoreItemDAO().getSelectedItems();
         ITransaction checkoutTransaction = Sentry.startTransaction("checkout [android]", "http.client");
         checkoutTransaction.setOperation("http");
         Sentry.configureScope(scope -> scope.setTransaction(checkoutTransaction));
@@ -347,7 +355,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
                 response.close();
                 if (!success) {
                     Log.d("checkout", "response failed");
-                    getActivity().runOnUiThread(new Runnable() {
+                    runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             progressDialog.dismiss();
@@ -373,14 +381,14 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         Log.i("checkout", "<<< checkout");
     }
 
-    private JSONObject buildJSONPostData(HashMap<String, StoreItem> selectedStoreItems) {
+    private JSONObject buildJSONPostData(List<StoreItem> selectedStoreItems) {
         JSONObject jsonObject, postBody = new JSONObject();
         JSONObject cart = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         JSONObject quantities = new JSONObject();
 
         try {
-            for (StoreItem s : selectedStoreItems.values()) {
+            for (StoreItem s : selectedStoreItems) {
                 jsonObject = new JSONObject();
 
                 jsonObject.put("name", s.getName());
@@ -440,8 +448,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
     protected Boolean addAttachment() {
         File f = null;
         try {
-            Context c = getActivity().getApplicationContext();
-            File cacheDirectory = c.getCacheDir();
+            File cacheDirectory = MyApplication.appContext.getCacheDir();
             f = File.createTempFile("tmp", ".txt", cacheDirectory);
             System.out.println("File path: " + f.getAbsolutePath());
             f.deleteOnExit();
@@ -467,9 +474,14 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
     }
 
     public void insertMultipleStoreItems() {
-
-        AppDatabase.getInstance(getActivity().getApplicationContext())
-                .StoreItemDAO().insertAll(empowerStoreItems);
+        AppDatabase.getInstance(MyApplication.appContext).StoreItemDAO().insertAll(empowerStoreItems);
     }
 
+    private void runOnUiThread(Runnable action) {
+        if (Looper.getMainLooper() != Looper.myLooper()) {
+            mainHandler.post(action);
+        } else {
+            action.run();
+        }
+    }
 }
