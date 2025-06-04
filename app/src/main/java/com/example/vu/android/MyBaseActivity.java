@@ -102,7 +102,7 @@ public class MyBaseActivity extends AppCompatActivity  {
             f.deleteOnExit();
             List<String> list = new ArrayList<String>();
 
-            for (int i = 0; i < 100; i++) {
+            for (int i = 0; i < 1000000; i++) {
                 list.add("index:" + i);
             }
             try (FileOutputStream fos = new FileOutputStream(f)) {

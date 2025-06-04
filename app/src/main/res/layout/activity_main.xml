@@ -191,7 +191,7 @@
                 android:id="@+id/slow_json_decoding"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
-                android:layout_marginTop="64dp"
+                android:layout_marginTop="8dp"
                 android:background="@drawable/mybutton"
                 android:fontFamily="@font/rubik_medium"
                 android:text="Slow Json Decoding Issue"
