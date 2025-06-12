@@ -6,13 +6,11 @@ buildscript {
         google()
         jcenter()
         mavenCentral()
-        maven { url "https://maven.fullstory.com" }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.4.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.0"
         classpath "io.github.howardpang:androidNativeBundle:1.1.4"
-        classpath 'com.fullstory:gradle-plugin-local:1.12.1'
     }
 }
 

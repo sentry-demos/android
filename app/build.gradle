@@ -20,12 +20,6 @@ plugins {
     id 'com.mxalbert.gradle.jacoco-android' version '0.2.1'
 }
 
-//fullstory {
-//    org 'QNEN8'
-//    enabledVariants 'all'
-//    logLevel 'off'
-//}
-
 android {
     compileSdkVersion 31
 
