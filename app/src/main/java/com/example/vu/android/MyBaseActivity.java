@@ -7,10 +7,6 @@ import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-//import com.fullstory.FS;
-//import com.fullstory.FSOnReadyListener;
-//import com.fullstory.FSSessionData;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
@@ -29,24 +25,10 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class MyBaseActivity extends AppCompatActivity  {
 
     protected MyApplication mMyApp ;
-    protected String FS_sessionURL = null;
-
-//    @Override
-//    public void onReady(FSSessionData sessionData) {
-//        // Use either sessionData.getCurrentSessionURL()
-//        // or FS.getCurrentSessionURL() here to retrieve session URL
-//        //String sessionUrlfromData = sessionData.getCurrentSessionURL();
-//        FS_sessionURL = FS.getCurrentSessionURL();
-//    }
-
-//    public String getFullStorySessionURL(){
-//        return this.FS_sessionURL;
-//    }
 
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState) ;
         mMyApp = (MyApplication) this .getApplicationContext() ;
-//        FS.setReadyListener(this);
     }
     protected void onResume () {
         super.onResume() ;

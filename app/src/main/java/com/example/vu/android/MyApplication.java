@@ -92,8 +92,6 @@ public class MyApplication extends Application {
                     this.launchUserFeedback(event.getEventId());
                 }
 
-                //event.setExtra("fullStoryURL", this.mCurrentActivity.getFullStorySessionURL());
-
                 if (SE == "tda") {
                     event.setFingerprints(Arrays.asList("{{ default }}", SE, BuildConfig.VERSION_NAME));
                 } else if (SE != null || SE.length() != 0) {
