@@ -1,6 +1,5 @@
 package com.example.vu.android;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Application;
 import android.content.Context;
@@ -11,6 +10,10 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+import io.sentry.Hint;
+import io.sentry.SamplingContext;
+import io.sentry.SentryOptions;
+import io.sentry.SentryReplayEvent;
 import io.sentry.android.fragment.FragmentLifecycleIntegration;
 
 import java.util.Arrays;
@@ -23,6 +26,8 @@ import io.sentry.SentryLevel;
 import io.sentry.protocol.SentryException;
 import io.sentry.protocol.SentryId;
 import io.sentry.protocol.User;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import static android.content.ContentValues.TAG;
 
@@ -43,10 +48,13 @@ public class MyApplication extends Application {
         return context.getApplicationInfo().loadLabel(context.getPackageManager()).toString();
     }
 
+    public static volatile Context appContext = null;
+    public static volatile boolean isRelaunchedForSend = false;
+
     @Override
     public void onCreate() {
         super.onCreate();
-
+        appContext = getApplicationContext();
         Log.i(TAG, BuildConfig.SE);
         String SE = BuildConfig.SE;
 
@@ -84,13 +92,11 @@ public class MyApplication extends Application {
                     if("NegativeArraySizeException".equals(exception.getType())) {
                         User user = event.getUser();
                         user.setIpAddress(null);
+                    } else if (exception.getType().endsWith("BackendAPIException")) {
+                        this.launchUserFeedback(event.getEventId());
                     }
                 }
 
-                SentryException currentException = event.getExceptions().get(0);
-                if(currentException != null && currentException.getType().endsWith("BackendAPIException")){
-                    this.launchUserFeedback(event.getEventId());
-                }
 
                 //event.setExtra("fullStoryURL", this.mCurrentActivity.getFullStorySessionURL());
 
@@ -106,6 +112,40 @@ public class MyApplication extends Application {
                 else
                     return event;
 
+            });
+
+            options.setTracesSampler(new SentryOptions.TracesSamplerCallback() {
+                @Override public @Nullable Double sample(@NotNull SamplingContext samplingContext) {
+                    if (isRelaunchedForSend) {
+                        Log.i("MyApplication", "Relaunching for send, not sampling traces");
+                        return 0.0; // Don't sample traces when relaunching for send
+                    }
+                    return 1.0;
+                }
+            });
+
+            options.setProfilesSampler(new SentryOptions.ProfilesSamplerCallback() {
+                @Override public @Nullable Double sample(@NotNull SamplingContext samplingContext) {
+                    if (isRelaunchedForSend) {
+                        Log.i("MyApplication", "Relaunching for send, not sampling profiles");
+                        return 0.0; // Don't sample profiles when relaunching for send
+                    }
+                    return 1.0;
+                }
+            });
+
+            options.setBeforeSendReplay(new SentryOptions.BeforeSendReplayCallback() {
+                @Override
+                public @Nullable SentryReplayEvent execute(@NotNull SentryReplayEvent event,
+                    @NotNull Hint hint) {
+                    if (isRelaunchedForSend && event.getReplayId() != null &&
+                        // only drop replays if it's a current replay after relaunch
+                        event.getReplayId().equals(options.getReplayController().getReplayId())) {
+                        Log.i("MyApplication", "Relaunching for send, not sending replay event");
+                        return null; // Don't send replay events when relaunching for send
+                    }
+                    return event;
+                }
             });
         });
 

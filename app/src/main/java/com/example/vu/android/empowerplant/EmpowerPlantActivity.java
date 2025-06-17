@@ -4,12 +4,14 @@ package com.example.vu.android.empowerplant;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.fragment.app.FragmentTransaction;
+import com.example.vu.android.MyApplication;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -31,7 +33,7 @@ public class EmpowerPlantActivity extends MyBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        MyApplication.isRelaunchedForSend = getIntent().getBooleanExtra("relaunch_for_send", false);
         setContentView(R.layout.activity_empowerplant);
         dbQuery();
         addAttachment(true);

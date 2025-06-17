@@ -2,6 +2,8 @@ package com.example.vu.android;
 
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.Button;
 
@@ -18,6 +20,8 @@ import io.sentry.Sentry;
 import io.sentry.SentryLevel;
 
 public class MainActivity extends MyBaseActivity {
+
+    final Object mutex = new Object();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,11 +81,36 @@ public class MainActivity extends MyBaseActivity {
         anr_button.setOnClickListener(view -> {
 
             Sentry.addBreadcrumb("Button for ANR clicked...");
-            try {
-                Thread.sleep(20000);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
+            // try to cause a deadlock by synchronizing on the same lock in two threads
+            new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        synchronized (mutex) {
+                            while (true) {
+                                try {
+                                    Thread.sleep(10000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    }
+                })
+                .start();
+
+            new Handler()
+                .postDelayed(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            synchronized (mutex) {
+                                // Shouldn't happen
+                                throw new IllegalStateException();
+                            }
+                        }
+                    },
+                    1000);
         });
 
         // Native Crash - SIGSEGV
@@ -91,7 +120,6 @@ public class MainActivity extends MyBaseActivity {
 
         // Native Message
         findViewById(R.id.native_message).setOnClickListener(view -> {
-
             NativeSample.message();
         });
 

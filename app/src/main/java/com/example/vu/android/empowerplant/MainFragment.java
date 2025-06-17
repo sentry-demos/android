@@ -10,6 +10,8 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
+import android.os.Handler;
+import android.os.Looper;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.vu.android.MyApplication;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONArray;
@@ -67,6 +70,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
     public String END_POINT_PRODUCT_INFO = "/product/0/info";
     public String END_POINT_CHECKOUT = "/checkout";
     int mCartItemCount = 0;
+    private Handler mainHandler = new Handler(Looper.getMainLooper());
 
     public MainFragment() {
         // Required empty public constructor
@@ -113,7 +117,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         this.fetchToolsFromServer();
         adapter = new StoreItemAdapter(empowerStoreItems, this);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(view.getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), layoutManager.getOrientation());
         recyclerView.setHasFixedSize(true);
@@ -165,14 +169,26 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
                     }
 
 
-                    ISpan processProductsSpan = Sentry.getSpan().startChild("product_processing", "Product Processing");
-                    getActivity().runOnUiThread(() -> {
+                    final @Nullable ISpan currentSpan = Sentry.getSpan();
+                    ISpan processProductsSpan;
+                    if (currentSpan != null) {
+                        processProductsSpan =
+                            Sentry.getSpan().startChild("product_processing", "Product Processing");
+                    } else {
+                        processProductsSpan = null;
+                    }
+                    runOnUiThread(() -> {
                         processProducts();
                         processProductsInfo();
                         Sentry.reportFullyDisplayed();
-                        processProductsSpan.finish();
+                        if (processProductsSpan != null) {
+                            processProductsSpan.finish();
+                        }
                         productRetrieveSpan.finish();
-                        Sentry.getCurrentHub().getSpan().finish();//finish Empower txn manually
+                        final ISpan empowerTx = Sentry.getSpan();
+                        if (empowerTx != null) {
+                            empowerTx.finish(); //finish Empower txn manually
+                        }
                     });
 
                 } else {
@@ -195,7 +211,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
 
     @Override
     public void onItemClick(StoreItem storeItem) {
-        startActivity(new Intent(getActivity(), StoreItemDetailActivity.class)
+        startActivity(new Intent(getContext(), StoreItemDetailActivity.class)
             .putExtra(StoreItemDetailActivity.EXTRA_STORE_ITEM, storeItem));
     }
 
@@ -227,13 +243,12 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
                 Sentry.captureException(e);
             }
         } finally {
-            getActivity().runOnUiThread(new Runnable() {
+            runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     adapter.notifyDataSetChanged();
                 }
             });
-
         }
     }
 
@@ -277,8 +292,8 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
     String getEmpowerPlantDomain() {
         String domain = null;
         try {
-            final ApplicationInfo appInfo = getActivity().getApplicationContext().getPackageManager().getApplicationInfo(getActivity().getApplicationContext().getPackageName(),
-                    PackageManager.GET_META_DATA);
+            final ApplicationInfo appInfo = MyApplication.appContext.getPackageManager()
+                .getApplicationInfo(MyApplication.appContext.getPackageName(), PackageManager.GET_META_DATA);
 
             if (appInfo.metaData != null) {
                 domain = (String) appInfo.metaData.get("empowerplant.domain");
@@ -296,7 +311,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
 
     public void checkout() {
         Log.i("checkout", "checkout >>>");
-        List<StoreItem> selectedStoreItems = AppDatabase.getInstance(getActivity()).StoreItemDAO().getSelectedItems();
+        List<StoreItem> selectedStoreItems = AppDatabase.getInstance(MyApplication.appContext).StoreItemDAO().getSelectedItems();
         ITransaction checkoutTransaction = Sentry.startTransaction("checkout [android]", "http.client");
         checkoutTransaction.setOperation("http");
         Sentry.configureScope(scope -> scope.setTransaction(checkoutTransaction));
@@ -340,7 +355,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
                 response.close();
                 if (!success) {
                     Log.d("checkout", "response failed");
-                    getActivity().runOnUiThread(new Runnable() {
+                    runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             progressDialog.dismiss();
@@ -433,8 +448,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
     protected Boolean addAttachment() {
         File f = null;
         try {
-            Context c = getActivity().getApplicationContext();
-            File cacheDirectory = c.getCacheDir();
+            File cacheDirectory = MyApplication.appContext.getCacheDir();
             f = File.createTempFile("tmp", ".txt", cacheDirectory);
             System.out.println("File path: " + f.getAbsolutePath());
             f.deleteOnExit();
@@ -460,9 +474,14 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
     }
 
     public void insertMultipleStoreItems() {
-
-        AppDatabase.getInstance(getActivity().getApplicationContext())
-                .StoreItemDAO().insertAll(empowerStoreItems);
+        AppDatabase.getInstance(MyApplication.appContext).StoreItemDAO().insertAll(empowerStoreItems);
     }
 
+    private void runOnUiThread(Runnable action) {
+        if (Looper.getMainLooper() != Looper.myLooper()) {
+            mainHandler.post(action);
+        } else {
+            action.run();
+        }
+    }
 }
