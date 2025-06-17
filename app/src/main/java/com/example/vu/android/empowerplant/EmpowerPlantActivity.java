@@ -1,6 +1,7 @@
 package com.example.vu.android.empowerplant;
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,6 +10,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.fragment.app.FragmentTransaction;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -17,13 +21,12 @@ import com.example.vu.android.MainActivity;
 import com.example.vu.android.MyBaseActivity;
 import com.example.vu.android.R;
 
-import io.sentry.Sentry;
-
 public class EmpowerPlantActivity extends MyBaseActivity {
 
     static boolean active = false;
     MainFragment fragment = null;
     TextView textCartItemCount;
+    private CompositeDisposable disposables = new CompositeDisposable();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +52,7 @@ public class EmpowerPlantActivity extends MyBaseActivity {
                 storeitem.setPrice(i);
                 storeitem.setImage(genRandomString());
                 storeitem.setItemId(i);
-                storeitem.setQuantity(1);
+                storeitem.setQuantity(0);
                 tmpStoreItems.add(storeitem);
             }
         
@@ -104,14 +107,13 @@ public class EmpowerPlantActivity extends MyBaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
-            case R.id.action_cart:
-                fragment.checkout();
-                return(true);
-            case R.id.action_open_listapp:
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-                return true;
+        if (item.getItemId() == R.id.action_cart) {
+            fragment.checkout();
+            return (true);
+        } else if (item.getItemId() == R.id.action_open_listapp) {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            return true;
         }
         return(super.onOptionsItemSelected(item));
     }
@@ -120,6 +122,27 @@ public class EmpowerPlantActivity extends MyBaseActivity {
     public void onStart() {
         super.onStart();
         active = true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        disposables.add(
+            AppDatabase.getInstance(this)
+                .StoreItemDAO()
+                .observeSelectedCount()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(count ->
+                    textCartItemCount.setText(String.valueOf(count))
+                )
+        );
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        disposables.clear();
     }
 
     @Override

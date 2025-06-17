@@ -5,11 +5,11 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,9 +32,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import io.sentry.Attachment;
 import io.sentry.ISpan;
@@ -43,7 +42,6 @@ import io.sentry.SpanStatus;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -62,7 +60,6 @@ import com.example.vu.android.R;
 public class MainFragment extends Fragment implements StoreItemAdapter.ItemClickListener {
     protected List<StoreItem> empowerStoreItems = new ArrayList<StoreItem>();
     private DividerItemDecoration dividerItemDecoration;
-    private HashMap<String, StoreItem> selectedStoreItems;
     protected StoreItemAdapter adapter;
     ProgressDialog progressDialog = null;
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
@@ -125,9 +122,6 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         recyclerView.setAdapter(adapter);
     }
 
-    public void setBadgeNumber() {
-        ((EmpowerPlantActivity) getActivity()).textCartItemCount.setText(String.valueOf(++mCartItemCount));
-    }
 
     public void fetchToolsFromServer() {
         progressDialog = new ProgressDialog(getContext());//ProgressDialog has been deprecated in API 26 https://developer.android.com/reference/android/app/ProgressDialog
@@ -201,9 +195,8 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
 
     @Override
     public void onItemClick(StoreItem storeItem) {
-        setBadgeNumber();
-        //TODO: might not need this
-        adapter.notifyDataSetChanged();
+        startActivity(new Intent(getActivity(), StoreItemDetailActivity.class)
+            .putExtra(StoreItemDetailActivity.EXTRA_STORE_ITEM, storeItem));
     }
 
     void processGetToolsResponse(String body) {
@@ -221,7 +214,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
                 storeitem.setPrice(jsonObject.getInt("price"));
                 storeitem.setImage(jsonObject.getString("imgcropped"));
                 storeitem.setItemId(jsonObject.getInt("id"));
-                storeitem.setQuantity(1);
+                storeitem.setQuantity(0);
 
                 empowerStoreItems.add(storeitem);
             }
@@ -303,7 +296,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
 
     public void checkout() {
         Log.i("checkout", "checkout >>>");
-        selectedStoreItems = this.adapter.getSelectedStoreItems();
+        List<StoreItem> selectedStoreItems = AppDatabase.getInstance(getActivity()).StoreItemDAO().getSelectedItems();
         ITransaction checkoutTransaction = Sentry.startTransaction("checkout [android]", "http.client");
         checkoutTransaction.setOperation("http");
         Sentry.configureScope(scope -> scope.setTransaction(checkoutTransaction));
@@ -373,14 +366,14 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         Log.i("checkout", "<<< checkout");
     }
 
-    private JSONObject buildJSONPostData(HashMap<String, StoreItem> selectedStoreItems) {
+    private JSONObject buildJSONPostData(List<StoreItem> selectedStoreItems) {
         JSONObject jsonObject, postBody = new JSONObject();
         JSONObject cart = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         JSONObject quantities = new JSONObject();
 
         try {
-            for (StoreItem s : selectedStoreItems.values()) {
+            for (StoreItem s : selectedStoreItems) {
                 jsonObject = new JSONObject();
 
                 jsonObject.put("name", s.getName());
