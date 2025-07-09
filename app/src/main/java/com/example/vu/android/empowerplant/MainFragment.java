@@ -340,7 +340,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
 
         Request request = new Request.Builder()
                 .url(checkoutURL)
-                .header("email", "someone@gmail.com")
+                // .header("email", "someone@gmail.com") // Remove this line
                 .post(body)
                 .build();
 
@@ -405,6 +405,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
             postBody.put("cart", cart);
             postBody.put("form", new JSONObject());// This line currently mocks non existent form data
             postBody.put("validate_inventory", "true");
+            postBody.put("email", "someone@gmail.com"); // Add this line
 
         } catch (JSONException e) {
             ISpan span = Sentry.getSpan();
