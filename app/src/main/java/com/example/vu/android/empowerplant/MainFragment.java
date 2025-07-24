@@ -316,6 +316,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         checkoutTransaction.setOperation("http");
         Sentry.configureScope(scope -> scope.setTransaction(checkoutTransaction));
 
+        Log.v("checkout", "showing dialog");
         final ProgressDialog progressDialog = new ProgressDialog(getActivity());
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Checking Out...");
@@ -354,7 +355,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
                 boolean success = response.isSuccessful();
                 response.close();
                 if (!success) {
-                    Log.d("checkout", "response failed");
+                    Log.w("checkout", "response failed");
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

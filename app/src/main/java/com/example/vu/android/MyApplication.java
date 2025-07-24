@@ -23,6 +23,7 @@ import io.sentry.Sentry;
 import io.sentry.UserFeedback;
 import io.sentry.android.core.SentryAndroid;
 import io.sentry.SentryLevel;
+import io.sentry.protocol.Feedback;
 import io.sentry.protocol.SentryException;
 import io.sentry.protocol.SentryId;
 import io.sentry.protocol.User;
@@ -82,6 +83,7 @@ public class MyApplication extends Application {
             options.setEnablePerformanceV2(true);
             options.getSessionReplay().setOnErrorSampleRate(1.0);
             options.getSessionReplay().setSessionSampleRate(1.0);
+            options.getLogs().setEnabled(true);
 
             options.setBeforeSend((event, hint) -> {
 
@@ -169,7 +171,17 @@ public class MyApplication extends Application {
         Sentry.setUser(user);
     }
 
-    private void launchUserFeedback(SentryId sentryId){
+    private void launchUserFeedback(SentryId sentryId) {
+        /* TODO replace with Sentry.showUserFeedback() when new version of the plugin is out
+        Sentry.showUserFeedbackDialog(sentryId, options -> {
+            options.setFormTitle("Ooops, Checkout Failed!");
+            options.setMessagePlaceholder("OMG! What happened??");
+            options.setShowName(true);
+            options.setShowEmail(true);
+            options.setSubmitButtonLabel("Submit");
+            options.setCancelButtonLabel("Cancel");
+            options.setUseSentryUser(false);
+        }*/
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mCurrentActivity);
         final EditText editTextName1 = new EditText(MyApplication.this);
@@ -188,11 +200,11 @@ public class MyApplication extends Application {
                 Toast.makeText(mCurrentActivity,"Thank you!",Toast.LENGTH_LONG).show();
                 String txt = editTextName1.getText().toString(); // variable to collect user input
 
-                UserFeedback userFeedback = new UserFeedback(sentryId);
-                userFeedback.setComments( txt );
-                userFeedback.setEmail("john.doe@example.com");
-                userFeedback.setName("John Doe");
-                Sentry.captureUserFeedback(userFeedback);
+                Feedback feedback = new Feedback(txt);
+                feedback.setAssociatedEventId(sentryId);
+                feedback.setContactEmail("john.doe@example.com");
+                feedback.setName("John Doe");
+                Sentry.captureFeedback(feedback);
 
             }
         });
@@ -207,6 +219,5 @@ public class MyApplication extends Application {
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
-
 
 }
