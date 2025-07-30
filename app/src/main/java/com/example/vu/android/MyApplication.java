@@ -79,7 +79,6 @@ public class MyApplication extends Application {
             );
 
             options.setAttachThreads(true);
-            options.setEnableAppStartProfiling(true);
             options.setEnablePerformanceV2(true);
             options.getSessionReplay().setOnErrorSampleRate(1.0);
             options.getSessionReplay().setSessionSampleRate(1.0);
