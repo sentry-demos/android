@@ -1,40 +1,51 @@
 # Android Demo
 
-This app demonstrates how to use Sentry in an Android application for capturing 4 types of exceptions:
+This app demonstrates how to use Sentry in an Android application:
 
-- Unhandled Exceptions (2)
+**Error Events**
+- Unhandled Exceptions
 - Handled Exceptions
+- HTTP Client Errors
 - Application Not Responding
 - Native Crashes from C++ native code
 - Message Capture
 
-This app has all configuration (e.g. gradle) set to include Sentry SDK and ANR (Application Not Responding) and NDK (crash) events.
+**Performance Issues**
+- DB on Main Thread
+- File IO on Main Thread
+- Image Decoding on Main Thread
+- Regex on Main Thread
+- JSON Decoding on Main Thread
 
-Sentry NDK libraries are used in addition to the Sentry SDK, for capturing errors and crashes in C++.
+**Tracing**
+- Time to Initial/Full Display
+- Automatic Instrumentation for UI Activity (UI Load, App Start Warm/Cold, Slow and Frozen Frames, OkHttp Library, File I/O Instrumentation, SQLite and Room query)
+- Manual Instrumentation
+- Profiling
+- CPU Usage, Memory
 
-For use in **Production** see the [Official Sentry Android Documentation](https://docs.sentry.io/platforms/android/)
-Additional documentation:
-[ANR Configuration](https://docs.sentry.io/platforms/android/#configuration-options)
-[NDK Configuration](https://docs.sentry.io/platforms/android/#integrating-the-ndk)
+**Other**
+- Session Replay
+- Logs
+- Screenshots
+- View Hierary
+- User Feedback
 
 ## Versions
 
 | dependency    | version
 | ------------- |:-------------:|
-| sentry-java | 5.1.2 |
-| sentry-android-gradle-plugin | 3.0.0 |
-| Android Studio Arctic Fox | 2020.3.1 |
-| Gradle | 7.0.2 |
-| AVD | Nexus 5x API 29 x86, Pixel 2 API 29 |
-| sentry-cli | 1.55.1 |
-| macOS | Catalina 10.15.7 |
-| java | 16.0.2  |
-| jdk | 11.0.13 |
-
-Do not use JDK 14
+| sentry-java | 8.17.0 |
+| sentry-android-gradle-plugin | 5.8.0 |
+| Android Studio Narwhal | 2025.1.1 Patch 1 |
+| Android Gradle Plugin | 8.6.0 (requires a minimum Gradle version of 8.7) |
+| sentry-cli | 2.44.0 |
+| macOS | Sequoia 15.5 |
+| OpenJDK supported, supported `java -version`:
 ```
-which java
-/usr/bin/java
+openjdk version "21.0.2" 2024-01-16
+OpenJDK Runtime Environment Homebrew (build 21.0.2)
+OpenJDK 64-Bit Server VM Homebrew (build 21.0.2, mixed mode, sharing)
 ```
 
 ## Setup
@@ -76,63 +87,10 @@ which java
 
 ## Run
 
-1. `make all` if you haven't yet, or have made significant changes to your code. otherwise run the app.
+1. `make all` if you haven't yet, or have made significant changes to your code. Otherwise run the app.
 2. Run 'app' in Android Studio on an Android Virtual Device.
-
-## What's Happening
-
-### Errors
-
-The MainActivity has 5 buttons that generate the following exception types:
-
-1. **Unhandled Error + Attachment** of type Arithmetic Exception
-2. **Unhandled Error + Attachment** of type NegativeArraySizeException + Strips PII (removes user IP address in beforeSend)
-3. **Handled Error + Attachment** of type ArrayIndexOutOfBoundsException
-4. **ApplicationNotResponding (ANR)** Uses an infinite loop to crash the app after 5 seconds and reports event to Sentry.
-5. **Native Crash** of type SIGSEGV from native C++. The Sentry NDK sends this to Sentry.io for symbolication
-6. **Native Message** send custom event/message from native C++.
-
-### Performance
-
-The Android ToolStore demos the 2 classic toolstore transactions:
-1. **toolstore [android]** -
-    * Is the ToolStore activity load triggered by clicking on the tools icon in the top header
-    * The transaction creates spans for loading the activity UI elements, calling the `/tools` flask backend, and processing the response
-
-2. **checkout [android]** -
-    * Add some items to the cart by clicking `Add to Cart`
-    * Start the checkout transaction by clicking on the shopping cart icon
-    * The transaction contains 3 spans (including a call to the flask `/checkout` endpoint
-    * The transaction generates 2 errors - one on the Android side `Exception:Failed to init delivery workflow` and the `Not enough inventory for wrench` exception on the backend.
-
-![gif](screenshots/android_transactions.gif)
-
-
-## Android Native Crash: Missing Symbols for System Libraries
-
-The Android team has added Android system symbol files to our built-in repositories (Add the new Android option in your project settings). If the native crash generated from your emulator is not fully symbolicated, this probably means our symbol server doesn't have the files relevant for your (virtual) device. 
-In this case, you can fix that by updating Sentry's server. To do that:
-
-1. Download the `Symbol Collector` app  (**io.sentry.symbol.collector-Signed.apk**) which is available in the latest [release](https://github.com/getsentry/symbol-collector/releases/)
-2. Install it on to your emulator by drag-and-dropping the apk into the emulator screen.
-3. Run the Symbol Collector application
-4. Configure the target URL to transport the symbols to: `https://symbol-collector.services.sentry.io`
-5. Click `Collect Symbols`
-6. Once the transport completes, re-generate the crash.
-
-## Release Health Testing
-Use two different devices (ie. two different android emulators). Keep one device crash free and one that has crashes so you can compare the crash free user rates.
-1. Select second device, different from the primary device you threw errors and crashes in
-2. Click Play/run
-3. Remember - do NOT click buttons and cause errors! you want to keep this one Crash Free. You could always make a new release if you want 100% crash free rates again.
-
-1st device - errors, so you see Crash Free Rate go Down
-2nd device - sessions w/out errors, so if you keep creaitng healthy sessions, the nCrash Free Rate should go back up
-
-ANR - click button, then start clicking on other areas of the screen. The second click (not the button click) is when it starts counting the seconds
-right when pop-up comes , event should be sent to Sentry. click 'close-up'.
-
-See AndroidManifest.xml for different settings we tweak for demo's (e.g. default Session time, default ANR time
+3. Open the app, add items to cart, check out; open List App and click error-related buttons
+![demo](screenshots/demo.gif)
 
 ## How To Make a New Release
 
@@ -140,99 +98,62 @@ See AndroidManifest.xml for different settings we tweak for demo's (e.g. default
 
 ### Part 1: Generate Release artifacts
 
-1. **Increment both `versionName` and `versionCode` by 1 in `build.gradle`.** I.e. in the below example, we updated versionCode from `12` to `13` and versionName from `1.2.0` to `1.3.0`. Then run the app once so the executable gets this updated value.
-```
-defaultConfig {
-    applicationId "com.example.vu.android"
-    minSdkVersion 21
-    targetSdkVersion 29
-    versionCode 13
-    versionName "1.3.0"
-}
-```
+1. Checkout a new git branch.
+2. Run `./generate_release_artifacts.sh`, then run `./gradlew assembleRelease` to generate debug-build and release-build `.apk` files; copy them to the `/release` folder with `cp app/build/outputs/apk/release/app-release.apk ./release`
+3. Commit the changes to `build.gradle`, `app-release.apk`, and `app-debug.apk`.
+4. Push up the changes in a pull request.
+5. Get an approval and merge the changes.
 
-(This would make for a release of `1.3.0 (13) com.example.vu.androidh@1.3+13`.)
+### Part 2: Create the GitHub release
 
-2. **Run `./generate_release_artifacts.sh`, which generates debug-build and release-build `.apk` files.**
-3. **Checkout a new git branch (if your release version is 1.3.0, you can call the branch 1.3.0). Commit the changes to `build.gradle`, `app-release.apk`, and `app-debug.apk`.**
-4. **Push up the changes in a pull request.**
-5. **Get an approval and merge the changes.**
-
-### Part 2: Create the Github release
-
-1. After completing the steps in Part 1, and once your release branch is merged in, checkout the `master` branch and pull down the latest changes. Ensure your branch is clean (no untracked git changes).
-2. Run `./github_release.sh`, and select `y` when prompted.
-3. That's it. You'll see that a new release was created in https://github.com/sentry-demos/android/releases.
-4. You may need to restart your demo automation tools so they'll still hitting the latest APK release.
+(After completing the steps in Part 1, and once your release branch is merged in.)
+1. Run the Release GitHub Action https://github.com/sentry-demos/android/actions/workflows/release.yml, choose a version name and version code as prompted, then `Run workflow`.
+2. You'll see that a new release was created in https://github.com/sentry-demos/android/releases.
+3. Restart your demo automation tools so they'll still hitting the latest APK release.
 
 ### Other Notes on releases
 
 The version code is unique. This is already part of build system in Android. The app won't compile without it.
 
 Optional - Setting the release in AndroidManifest.xml will override what's set in src/build.gradle. Possible uses cases would be:
-1. indicating Paid vs Free versions of your apps
-2. match versionf for your Android and iOS apps together. force a release name.
-3. the pattern 'package@name+version' is new from Sentry, so you could override that in AndroidManifest.xml
+1. Indicating Paid vs Free versions of your apps
+2. Match versions for your Android and iOS apps together. force a release name.
+3. The pattern 'package@name+version' is new from Sentry, so you could override that in AndroidManifest.xml
 4. Good for testing if you're iterating quickly, but not publishing your app.
 ```
 <meta-data android:name="io.sentry.release" android:value="io.sentry.sample@1.0.0+1" />
 ```
 
 ## How To Upgrade SDK
-1. increment sdk numbers in src/build.gradle like:
+1. Change to the latest Sentry Android Gradle Plugin as shown in https://docs.sentry.io/platforms/android/configuration/gradle/#setup:
 ```
-    implementation 'io.sentry:sentry-android:5.6.0'
-    implementation 'io.sentry:sentry-android-okhttp:5.6.0'
-    implementation 'io.sentry:sentry-android-fragment:5.6.0'
+plugins {
+    id "com.android.application"
+    id "io.sentry.android.gradle" version "5.8.0"
+}
+```
+2. Match the sdk_version from https://github.com/getsentry/sentry-android-gradle-plugin/blob/main/plugin-build/gradle.properties in src/build.gradle like:
+```
+    implementation 'io.sentry:sentry-android:8.17.0'
 ``` 
-2. Consider making a new Release
-3. click 'Sync Now' for sync'ing your gradle files in AndroidStudio
-4. `make all` will do a new `./gradlew build`
+Note: This step may not be necessary with newer versions of Sentry Android Gradle Plugin
 
-## ANR
-Sometimes you'll see extra ANR events, because you have setting set to 3 seconds
-Hard to compare Total Number of Crashes to a report in Discover on handled:no and the release, because when a crash happens, you have to wait for the device to come back online again.
-There are some other technical reasons as well, which are still being sorted out.
-For instance, if you're ever filtering, sampling or Rate Limiting events/crashes out, then it's possible that the Sessions data isn ot getting filtered/sampled and so your Crash Free rate will appear higher than it actually is.
+3. Make a new Release
+4. Click 'Sync Now' for sync'ing your gradle files in AndroidStudio
+5. `make all` will do a new `./gradlew build`
 
 ## Sessions
-- if you put app to background, and put to foreground in less than 30seconds, it does not create new Session
-- if you put app to background, and wait more than 30seconds, then put to foreground, it will create new session
-- swiping up "close"", there's no way to know what happened to the Session. it's not a error/crash. it's a normal exited session.
-    - opening the app again right away, should great a fresh new session
-- i write 30seconds here, but we set our default in AndroidManifest.xml to "3seconds" for demo purposes
-- if device has a stable connection, events sent right away
-    - SentryServer has a pipeline that's queuing events, depends on state of Sentry
-    - c++ crashes go through Symbolicator which has its own queuing and symbolication takes longer
-        - need to restart the app
-- Session (ending) is sent when App goes to Background OR there's a crash
-- Session data is sent when Session Starts and when Session Ends
+- If you put app to background, then put to foreground within 30 seconds, it does not create new Session.
+- If you put app to background, then wait more than 30 seconds, then put to foreground, it will create new session.
+    - 30 seconds is mentioned here, but we set our default in AndroidManifest.xml to 3 seconds (3000 millisecond) for demo purposes.
+- Swiping up "close", there's no way to know what happened to the session. It's not a error/crash. It's a normal exited session.
+    - Opening the app again right away should great a fresh new session.
+- If device has a stable connection, events sent right away.
+    - SentryServer has a pipeline that's queuing events, depends on state of Sentry.
+    - C++ crashes go through Symbolicator which has its own queuing and symbolication takes slightly longer.
+        - Need to restart the app.
+- Session (ending) is sent when App goes to Background OR there's a crash.
+- Session data is sent when Session Starts and when Session Ends.
 - So if you make a Handled Error, the Session data is not sent just yet. updates the session only locally in the device.
-
-## Misc Knowledge
-- Release dashboard, open 1, 'All Issues' is issues across all the releases
-- Release dashboard, open 1, 'New Issue' sometimes not populating...
-- View Data in Discover if things aren't adding up / looking right in the Release Page
-- see Notion page on 'Crashes in SDKs and Product' for status updates on this stuff
-- `mechanism:signalHandler` comes from sentry-native and `mechanism:uncaughtException` comes from java/kotlin
-- Now (06/02/2020) ANR reported only if the pop-up comes up. doing 5seconds like Google does
-- When there's not a lot data yet, it's hard to calculate/show things.
-- Unique Users isn't the user's email, it's the Device. so in Discover could try things (but not working) like user.id, device.uuid, device. We didn't want to use sensitive data for Sessions. We generate a uuid for the user - Installation ID of the app on that device
-- Check Documentation, things may have changed.
-
-## GIF Android Java Exception
-
-![Android demo flow](android-demo.gif)
-
-## GIF Android ANR
-
-![Alt Text](android-demo-anr.gif)
-
-## GIF Android Native Crash C++
-
-![Native Crash](android-native-crash-take-1.gif)
-
-## Troubleshooting
-If you're getting errors about "You need Java 11, not 1.8" and when you run `java --version` it says you're already on Java 11, then you may need to go into Android Studio Settings > Preferences > Build, Execution, Deployment > Gradle > Select jdk-11.
- 
-If youre app builds, compiles and starts to run but the AVD screen never appears and the Logcat is stuck on "E/GnssHAL_GnssInterface: gnssSvStatusCb: b: input svInfo.flags is", then you may need to disable Location and GPS services from your AVD. If you can't edit these settings on an existing AVD (as they're from the Hardware Profile), then create a new AVD and as you're doing that, go into the Hardware Profile settings and uncheck the box for GPS.
+- Difficult to compare crashes with a report in Discover (with `handled:no`) vs the Release because when a crash happens, you have to wait for the device to come back online again.
+- If you are ever filtering, sampling, or rate .imiting events/crashes out, then it's possible that the Sessions data isn't getting filtered/sampled and so your Crash Free Rate will appear higher than it actually is.
