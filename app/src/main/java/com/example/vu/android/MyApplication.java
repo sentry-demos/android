@@ -178,8 +178,8 @@ public class MyApplication extends Application {
             options.setShowEmail(true);
             options.setSubmitButtonLabel("Submit");
             options.setCancelButtonLabel("Cancel");
-            options.setUseSentryUser(false);
-        }
+            options.setUseSentryUser(true);
+        });
     }
 
 }
