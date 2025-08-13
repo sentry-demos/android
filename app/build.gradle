@@ -16,7 +16,7 @@ plugins {
 //}
 
 android {
-    compileSdkVersion 34
+    compileSdkVersion 36
     namespace "com.example.vu.android"
 
     compileOptions {
@@ -27,7 +27,7 @@ android {
     defaultConfig {
         applicationId "com.example.vu.android"
         minSdkVersion 21
-        targetSdkVersion 34
+        targetSdkVersion 36
         versionCode System.getenv('VERSION_CODE')?.toInteger() ?: 241226
         versionName System.getenv('VERSION_NAME') ?: "24.12.26"
 

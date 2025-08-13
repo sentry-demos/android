@@ -9,3 +9,7 @@ target_link_libraries(native-sample ${LOG_LIB})
 include (${ANDROID_GRADLE_NATIVE_BUNDLE_PLUGIN_MK})
 # change native-sample to your native lib's name
 target_link_libraries(native-sample ${ANDROID_GRADLE_NATIVE_MODULES})
+
+# Android 15: Support 16KB page sizes
+# see https://developer.android.com/guide/practices/page-sizes
+target_link_options(native-sample PRIVATE "-Wl,-z,max-page-size=16384")
