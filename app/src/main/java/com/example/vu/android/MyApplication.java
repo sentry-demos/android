@@ -171,7 +171,6 @@ public class MyApplication extends Application {
     }
 
     private void launchUserFeedback(SentryId sentryId) {
-        /* TODO replace with Sentry.showUserFeedback() when new version of the plugin is out
         Sentry.showUserFeedbackDialog(sentryId, options -> {
             options.setFormTitle("Ooops, Checkout Failed!");
             options.setMessagePlaceholder("OMG! What happened??");
@@ -179,44 +178,8 @@ public class MyApplication extends Application {
             options.setShowEmail(true);
             options.setSubmitButtonLabel("Submit");
             options.setCancelButtonLabel("Cancel");
-            options.setUseSentryUser(false);
-        }*/
-
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mCurrentActivity);
-        final EditText editTextName1 = new EditText(MyApplication.this);
-        editTextName1.setHint("OMG! What happened??");
-
-        LinearLayout layoutName = new LinearLayout(this);
-        layoutName.setOrientation(LinearLayout.VERTICAL);
-        layoutName.setPadding(60, 20, 60, 20);
-        layoutName.addView(editTextName1);
-        alertDialogBuilder.setView(layoutName);
-
-        alertDialogBuilder.setTitle("Ooops, Checkout Failed!");
-        alertDialogBuilder.setPositiveButton("Submit", new DialogInterface.OnClickListener(){
-            @Override
-            public void onClick(DialogInterface arg0, int arg1) {
-                Toast.makeText(mCurrentActivity,"Thank you!",Toast.LENGTH_LONG).show();
-                String txt = editTextName1.getText().toString(); // variable to collect user input
-
-                Feedback feedback = new Feedback(txt);
-                feedback.setAssociatedEventId(sentryId);
-                feedback.setContactEmail("john.doe@example.com");
-                feedback.setName("John Doe");
-                Sentry.captureFeedback(feedback);
-
-            }
+            options.setUseSentryUser(true);
         });
-
-        alertDialogBuilder.setNegativeButton("Cancel",new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
     }
 
 }
