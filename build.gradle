@@ -12,7 +12,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:8.6.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "io.github.howardpang:androidNativeBundle:1.1.4"
+        classpath "io.github.howardpang:androidNativeBundle:1.1.5"
         classpath 'com.fullstory:gradle-plugin-local:1.12.1'
         classpath 'com.mxalbert.gradle:jacoco-android:0.2.1'
     }
