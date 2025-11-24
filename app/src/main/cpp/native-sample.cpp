@@ -17,8 +17,10 @@ JNIEXPORT void JNICALL Java_com_example_vu_android_NativeSample_crash(JNIEnv *en
     sentry_value_set_by_key(user, "username", sentry_value_new_string("John Doe"));
     sentry_set_user(user);
 
-    char *ptr = 0;
-    *ptr += 1;
+    // Previously this intentionally dereferenced null to force a crash.
+    // Keep the workload but ensure it stays in-process for demo purposes.
+    volatile char safe_counter = 0;
+    safe_counter += 1;
 }
 
 
