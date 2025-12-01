@@ -80,7 +80,7 @@
             android:value="true" />
         <meta-data
             android:name="empowerplant.domain"
-            android:value="https://application-monitoring-flask-dot-sales-engineering-sf.appspot.com" />
+            android:value="http://flask.empower-plant.com/" />
         <meta-data
             android:name="io.sentry.attach-screenshot"
             android:value="true" />
