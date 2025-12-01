@@ -21,7 +21,7 @@ public class MainFragmentTest {
 
     @Test
     public void testGetEmpowerPlantDomain() {
-        String domain = "http://flask.empower-plant.com";
+        String domain = "https://flask.empower-plant.com";
 
         String result = mainFragment.getEmpowerPlantDomain();
 
