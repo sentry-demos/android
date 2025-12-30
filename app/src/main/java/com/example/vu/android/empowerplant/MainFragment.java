@@ -353,15 +353,27 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 progressDialog.dismiss();
                 boolean success = response.isSuccessful();
+                String errorMessage = null;
+                if (!success) {
+                    // Read the response body before closing to get the actual error message
+                    try {
+                        if (response.body() != null) {
+                            errorMessage = response.body().string();
+                        }
+                    } catch (Exception e) {
+                        Log.e("checkout", "Failed to read error response body", e);
+                    }
+                }
                 response.close();
                 if (!success) {
-                    Log.w("checkout", "response failed");
+                    final String finalErrorMessage = errorMessage;
+                    Log.w("checkout", "response failed with status: " + response.code() + ", body: " + errorMessage);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             progressDialog.dismiss();
 
-                            processDeliveryItem(checkoutTransaction);
+                            processDeliveryItem(checkoutTransaction, finalErrorMessage);
 
                             checkoutTransaction.finish(SpanStatus.INTERNAL_ERROR);
                         }
@@ -420,11 +432,19 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
     }
 
     private void processDeliveryItem(ITransaction checkoutTransaction) {
+        processDeliveryItem(checkoutTransaction, null);
+    }
+
+    private void processDeliveryItem(ITransaction checkoutTransaction, String backendErrorMessage) {
         Log.i("processDeliveryItem", "processDeliveryItem >>>");
         ISpan processDeliverySpan = checkoutTransaction.startChild("task", "process delivery");
 
         try {
-            throw new MainFragment.BackendAPIException("Failed to init delivery workflow.");
+            String errorMessage = "Failed to init delivery workflow.";
+            if (backendErrorMessage != null && !backendErrorMessage.isEmpty()) {
+                errorMessage = errorMessage + " Backend error: " + backendErrorMessage;
+            }
+            throw new MainFragment.BackendAPIException(errorMessage);
         } catch (Exception e) {
             Log.e("processDeliveryItem", e.getMessage());
             processDeliverySpan.setThrowable(e);
