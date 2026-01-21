@@ -46,7 +46,7 @@ jobs:
 
       - name: Run Deploy Script (automatic version)
         if: inputs.version_name == null
-        run: ./deploy_project.sh "$(date +'%y.%m.%d')"
+        run: ./deploy_project.sh "$(date +'%y.%m.%d')" release app-release.apk
         shell: sh
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
