@@ -18,6 +18,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ExecutorService;
 
 import com.example.vu.android.MainActivity;
 import com.example.vu.android.MyBaseActivity;
@@ -29,6 +31,7 @@ public class EmpowerPlantActivity extends MyBaseActivity {
     MainFragment fragment = null;
     TextView textCartItemCount;
     private CompositeDisposable disposables = new CompositeDisposable();
+    private ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,31 +45,35 @@ public class EmpowerPlantActivity extends MyBaseActivity {
     }
 
     public void dbQuery() {
+        // Execute all database operations on a background thread
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                AppDatabase.getInstance(getApplicationContext())
+                        .StoreItemDAO().deleteAll();
 
-        AppDatabase.getInstance(getApplicationContext())
-                .StoreItemDAO().deleteAll();
+                List<StoreItem> tmpStoreItems = new ArrayList<StoreItem>();
+                for (int i = 0; i < 2; i++) {
+                    StoreItem storeitem = new StoreItem();
+                    storeitem.setName(genRandomString());
+                    storeitem.setSku(genRandomString());
+                    storeitem.setPrice(i);
+                    storeitem.setImage(genRandomString());
+                    storeitem.setItemId(i);
+                    storeitem.setQuantity(0);
+                    tmpStoreItems.add(storeitem);
+                }
+                
+                AppDatabase.getInstance(getApplicationContext())
+                        .StoreItemDAO().insertAll(tmpStoreItems);
 
-        List<StoreItem> tmpStoreItems = new ArrayList<StoreItem>();
-        for (int i = 0; i < 2; i++) {
-                StoreItem storeitem = new StoreItem();
-                storeitem.setName(genRandomString());
-                storeitem.setSku(genRandomString());
-                storeitem.setPrice(i);
-                storeitem.setImage(genRandomString());
-                storeitem.setItemId(i);
-                storeitem.setQuantity(0);
-                tmpStoreItems.add(storeitem);
+                AppDatabase.getInstance(getApplicationContext())
+                        .StoreItemDAO().slowQuery();
+
+                AppDatabase.getInstance(getApplicationContext())
+                        .StoreItemDAO().deleteAll();
             }
-        
-        AppDatabase.getInstance(getApplicationContext())
-                .StoreItemDAO().insertAll(tmpStoreItems);
-
-        AppDatabase.getInstance(getApplicationContext())
-                .StoreItemDAO().slowQuery();
-
-        AppDatabase.getInstance(getApplicationContext())
-                .StoreItemDAO().deleteAll();
-        
+        });
     }
 
     // Generates a random string of characters from a to z
@@ -151,5 +158,13 @@ public class EmpowerPlantActivity extends MyBaseActivity {
     public void onStop() {
         super.onStop();
         active = false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (executorService != null && !executorService.isShutdown()) {
+            executorService.shutdown();
+        }
     }
 }
