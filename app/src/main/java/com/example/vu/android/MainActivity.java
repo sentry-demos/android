@@ -58,7 +58,7 @@ public class MainActivity extends MyBaseActivity {
         negative_index_button.setOnClickListener(view -> {
             addAttachment(false);
             Sentry.addBreadcrumb("Button for NegativeArraySizeException clicked...");
-            int[] a = new int[-5];
+            int[] a = new int[5];
         });
 
         // Handled - ArrayIndexOutOfBoundsException
