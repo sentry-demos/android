@@ -341,7 +341,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
 
         Request request = new Request.Builder()
                 .url(checkoutURL)
-                .header("email", "someone@gmail.com")
+                .header("email", "someone@example.com")
                 .post(body)
                 .build();
 
