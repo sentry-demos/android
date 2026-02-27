@@ -42,31 +42,39 @@ public class EmpowerPlantActivity extends MyBaseActivity {
     }
 
     public void dbQuery() {
+        disposables.add(
+            io.reactivex.rxjava3.core.Completable.fromAction(() -> {
+                AppDatabase db = AppDatabase.getInstance(getApplicationContext());
+                
+                db.StoreItemDAO().deleteAll();
 
-        AppDatabase.getInstance(getApplicationContext())
-                .StoreItemDAO().deleteAll();
-
-        List<StoreItem> tmpStoreItems = new ArrayList<StoreItem>();
-        for (int i = 0; i < 2; i++) {
-                StoreItem storeitem = new StoreItem();
-                storeitem.setName(genRandomString());
-                storeitem.setSku(genRandomString());
-                storeitem.setPrice(i);
-                storeitem.setImage(genRandomString());
-                storeitem.setItemId(i);
-                storeitem.setQuantity(0);
-                tmpStoreItems.add(storeitem);
-            }
-        
-        AppDatabase.getInstance(getApplicationContext())
-                .StoreItemDAO().insertAll(tmpStoreItems);
-
-        AppDatabase.getInstance(getApplicationContext())
-                .StoreItemDAO().slowQuery();
-
-        AppDatabase.getInstance(getApplicationContext())
-                .StoreItemDAO().deleteAll();
-        
+                List<StoreItem> tmpStoreItems = new ArrayList<StoreItem>();
+                for (int i = 0; i < 2; i++) {
+                    StoreItem storeitem = new StoreItem();
+                    storeitem.setName(genRandomString());
+                    storeitem.setSku(genRandomString());
+                    storeitem.setPrice(i);
+                    storeitem.setImage(genRandomString());
+                    storeitem.setItemId(i);
+                    storeitem.setQuantity(0);
+                    tmpStoreItems.add(storeitem);
+                }
+                
+                db.StoreItemDAO().insertAll(tmpStoreItems);
+                db.StoreItemDAO().slowQuery();
+                db.StoreItemDAO().deleteAll();
+            })
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                () -> {
+                    Log.d("EmpowerPlantActivity", "Database operations completed successfully");
+                },
+                error -> {
+                    Log.e("EmpowerPlantActivity", "Error during database operations", error);
+                }
+            )
+        );
     }
 
     // Generates a random string of characters from a to z
@@ -151,5 +159,11 @@ public class EmpowerPlantActivity extends MyBaseActivity {
     public void onStop() {
         super.onStop();
         active = false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        disposables.dispose();
     }
 }
