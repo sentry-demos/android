@@ -35,7 +35,15 @@ public class EmpowerPlantActivity extends MyBaseActivity {
         super.onCreate(savedInstanceState);
         MyApplication.isRelaunchedForSend = getIntent().getBooleanExtra("relaunch_for_send", false);
         setContentView(R.layout.activity_empowerplant);
-        dbQuery();
+        disposables.add(
+            io.reactivex.rxjava3.core.Completable.fromAction(this::dbQuery)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    () -> Log.d("EmpowerPlantActivity", "Database initialization completed"),
+                    error -> Log.e("EmpowerPlantActivity", "Database initialization failed", error)
+                )
+        );
         addAttachment(true);
         checkRelease();
         this.loadFragmentList();
