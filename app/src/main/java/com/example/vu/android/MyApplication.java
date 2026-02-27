@@ -163,7 +163,7 @@ public class MyApplication extends Application {
             int index = (int)(AlphaNumericString.length() * Math.random());
             sb.append(AlphaNumericString.charAt(index));
         }
-        String email = sb.toString() + "@gmail.com";
+        String email = sb.toString() + "@example.com";
 
         User user = new User();
         user.setEmail(email);
