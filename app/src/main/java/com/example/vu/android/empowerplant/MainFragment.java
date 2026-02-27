@@ -36,6 +36,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import io.sentry.Attachment;
 import io.sentry.ISpan;
@@ -71,6 +73,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
     public String END_POINT_CHECKOUT = "/checkout";
     int mCartItemCount = 0;
     private Handler mainHandler = new Handler(Looper.getMainLooper());
+    private ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     public MainFragment() {
         // Required empty public constructor
@@ -475,7 +478,12 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
     }
 
     public void insertMultipleStoreItems() {
-        AppDatabase.getInstance(MyApplication.appContext).StoreItemDAO().insertAll(empowerStoreItems);
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                AppDatabase.getInstance(MyApplication.appContext).StoreItemDAO().insertAll(empowerStoreItems);
+            }
+        });
     }
 
     private void runOnUiThread(Runnable action) {
