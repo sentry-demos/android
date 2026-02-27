@@ -15,7 +15,7 @@ on:
 
 jobs:
   empower-plant-release:
-    runs-on: macos-13
+    runs-on: macos-14
     name: 'Release a new Android Empower Plant version'
     steps:
       - name: Checkout Repo
