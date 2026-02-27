@@ -81,18 +81,16 @@ public class MainActivity extends MyBaseActivity {
         anr_button.setOnClickListener(view -> {
 
             Sentry.addBreadcrumb("Button for ANR clicked...");
-            // try to cause a deadlock by synchronizing on the same lock in two threads
+            // Fixed: Removed deadlock by ensuring background thread releases mutex
             new Thread(
                 new Runnable() {
                     @Override
                     public void run() {
                         synchronized (mutex) {
-                            while (true) {
-                                try {
-                                    Thread.sleep(10000);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
+                            try {
+                                Thread.sleep(500);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
                             }
                         }
                     }
@@ -105,8 +103,7 @@ public class MainActivity extends MyBaseActivity {
                         @Override
                         public void run() {
                             synchronized (mutex) {
-                                // Shouldn't happen
-                                throw new IllegalStateException();
+                                Log.d("MainActivity", "Successfully acquired mutex on main thread");
                             }
                         }
                     },
