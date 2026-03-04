@@ -42,31 +42,39 @@ public class EmpowerPlantActivity extends MyBaseActivity {
     }
 
     public void dbQuery() {
+        disposables.add(
+            io.reactivex.rxjava3.core.Completable.fromAction(() -> {
+                AppDatabase.getInstance(getApplicationContext())
+                        .StoreItemDAO().deleteAll();
 
-        AppDatabase.getInstance(getApplicationContext())
-                .StoreItemDAO().deleteAll();
+                List<StoreItem> tmpStoreItems = new ArrayList<StoreItem>();
+                for (int i = 0; i < 2; i++) {
+                    StoreItem storeitem = new StoreItem();
+                    storeitem.setName(genRandomString());
+                    storeitem.setSku(genRandomString());
+                    storeitem.setPrice(i);
+                    storeitem.setImage(genRandomString());
+                    storeitem.setItemId(i);
+                    storeitem.setQuantity(0);
+                    tmpStoreItems.add(storeitem);
+                }
+                
+                AppDatabase.getInstance(getApplicationContext())
+                        .StoreItemDAO().insertAll(tmpStoreItems);
 
-        List<StoreItem> tmpStoreItems = new ArrayList<StoreItem>();
-        for (int i = 0; i < 2; i++) {
-                StoreItem storeitem = new StoreItem();
-                storeitem.setName(genRandomString());
-                storeitem.setSku(genRandomString());
-                storeitem.setPrice(i);
-                storeitem.setImage(genRandomString());
-                storeitem.setItemId(i);
-                storeitem.setQuantity(0);
-                tmpStoreItems.add(storeitem);
-            }
-        
-        AppDatabase.getInstance(getApplicationContext())
-                .StoreItemDAO().insertAll(tmpStoreItems);
+                AppDatabase.getInstance(getApplicationContext())
+                        .StoreItemDAO().slowQuery();
 
-        AppDatabase.getInstance(getApplicationContext())
-                .StoreItemDAO().slowQuery();
-
-        AppDatabase.getInstance(getApplicationContext())
-                .StoreItemDAO().deleteAll();
-        
+                AppDatabase.getInstance(getApplicationContext())
+                        .StoreItemDAO().deleteAll();
+            })
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                () -> Log.d("EmpowerPlantActivity", "Database operations completed"),
+                error -> Log.e("EmpowerPlantActivity", "Database operation failed", error)
+            )
+        );
     }
 
     // Generates a random string of characters from a to z
