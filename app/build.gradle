@@ -1,7 +1,7 @@
 import io.sentry.android.gradle.instrumentation.logcat.LogcatLevel
 
 plugins {
-    id "io.sentry.android.gradle" version "5.9.0"
+    id "io.sentry.android.gradle" version "6.1.0"
     id 'com.android.application'
     id 'kotlin-android'
     id 'com.ydq.android.gradle.native-aar.import'
