@@ -69,7 +69,7 @@ public class MainActivity extends MyBaseActivity {
             Sentry.addBreadcrumb("Button for ArrayIndexOutOfBoundsException clicked..");
                 try {
                     String[] strArr = new String[1];
-                    String s1 = strArr[2];
+                    String s1 = strArr[0];
                 } catch (Exception e) {
                     Sentry.captureException(e);
                 }
