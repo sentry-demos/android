@@ -24,7 +24,7 @@ public interface StoreItemDAO {
     void selectItem(String sku);
 
     @SkipQueryVerification
-    @Query("update storeitem set first_name = '' where first_name regexp '.*.*.*.*1'")
+    @Query("update storeitem set first_name = '' where first_name regexp '.*1'")
     void slowQuery();
 
     @Query("DELETE FROM storeitem")
