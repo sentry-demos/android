@@ -35,7 +35,7 @@ public class EmpowerPlantActivity extends MyBaseActivity {
         super.onCreate(savedInstanceState);
         MyApplication.isRelaunchedForSend = getIntent().getBooleanExtra("relaunch_for_send", false);
         setContentView(R.layout.activity_empowerplant);
-        dbQuery();
+        new Thread(this::dbQuery).start();
         addAttachment(true);
         checkRelease();
         this.loadFragmentList();
