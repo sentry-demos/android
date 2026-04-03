@@ -53,12 +53,12 @@ public class MainActivity extends MyBaseActivity {
             int t = 5 / 0;
         });
 
-        // Unhandled - NegativeArraySizeException
+        // Fixed - NegativeArraySizeException
         Button negative_index_button = findViewById(R.id.negative_index);
         negative_index_button.setOnClickListener(view -> {
             addAttachment(false);
             Sentry.addBreadcrumb("Button for NegativeArraySizeException clicked...");
-            int[] a = new int[-5];
+            int[] a = new int[5];
         });
 
         // Handled - ArrayIndexOutOfBoundsException
