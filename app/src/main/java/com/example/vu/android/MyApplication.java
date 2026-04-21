@@ -108,7 +108,7 @@ public class MyApplication extends Application {
                 }
 
                 //Drop event
-                if (SentryLevel.DEBUG.equals(event.getLevel()))
+                if (SentryLevel.DEBUG.equals(event.getLevel()) || SentryLevel.INFO.equals(event.getLevel()))
                     return null;
                 else
                     return event;
