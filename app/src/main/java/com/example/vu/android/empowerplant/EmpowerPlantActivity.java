@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.fragment.app.FragmentTransaction;
 import com.example.vu.android.MyApplication;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import java.util.ArrayList;
@@ -35,8 +36,20 @@ public class EmpowerPlantActivity extends MyBaseActivity {
         super.onCreate(savedInstanceState);
         MyApplication.isRelaunchedForSend = getIntent().getBooleanExtra("relaunch_for_send", false);
         setContentView(R.layout.activity_empowerplant);
-        dbQuery();
-        addAttachment(true);
+        
+        // Execute database and file I/O operations off the main thread
+        disposables.add(
+            Completable.fromAction(this::dbQuery)
+                .subscribeOn(Schedulers.io())
+                .subscribe()
+        );
+        
+        disposables.add(
+            Completable.fromAction(() -> addAttachment(true))
+                .subscribeOn(Schedulers.io())
+                .subscribe()
+        );
+        
         checkRelease();
         this.loadFragmentList();
     }
@@ -151,5 +164,11 @@ public class EmpowerPlantActivity extends MyBaseActivity {
     public void onStop() {
         super.onStop();
         active = false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        disposables.clear();
+        super.onDestroy();
     }
 }
