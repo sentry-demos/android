@@ -81,18 +81,17 @@ public class MainActivity extends MyBaseActivity {
         anr_button.setOnClickListener(view -> {
 
             Sentry.addBreadcrumb("Button for ANR clicked...");
-            // try to cause a deadlock by synchronizing on the same lock in two threads
+            // Simulate work on background thread without causing permanent deadlock
             new Thread(
                 new Runnable() {
                     @Override
                     public void run() {
                         synchronized (mutex) {
-                            while (true) {
-                                try {
-                                    Thread.sleep(10000);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
+                            try {
+                                // Hold lock for limited time to avoid permanent deadlock
+                                Thread.sleep(3000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
                             }
                         }
                     }
