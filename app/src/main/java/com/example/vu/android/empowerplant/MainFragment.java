@@ -354,18 +354,18 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
                 progressDialog.dismiss();
                 boolean success = response.isSuccessful();
                 response.close();
-                if (!success) {
-                    Log.w("checkout", "response failed");
+                if (success) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            progressDialog.dismiss();
-
                             processDeliveryItem(checkoutTransaction);
 
-                            checkoutTransaction.finish(SpanStatus.INTERNAL_ERROR);
+                            checkoutTransaction.finish(SpanStatus.OK);
                         }
                     });
+                } else {
+                    Log.w("checkout", "response failed");
+                    checkoutTransaction.finish(SpanStatus.INTERNAL_ERROR);
                 }
             }
 
@@ -373,8 +373,6 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 progressDialog.dismiss();
                 Sentry.captureException(e);
-
-                processDeliveryItem(checkoutTransaction);
                 checkoutTransaction.finish(SpanStatus.INTERNAL_ERROR);
                 Log.e("checkout", "checkout failed");
             }
