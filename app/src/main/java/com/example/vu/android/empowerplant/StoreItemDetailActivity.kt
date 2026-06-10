@@ -46,7 +46,6 @@ class StoreItemDetailActivity : ComponentActivity() {
 
         Sentry.setAttribute("screen", "item_detail")
         Sentry.setAttribute("item.sku", storeItem.sku)
-        Sentry.addFeatureFlag("show-reviews", storeItem.price > 20)
 
         setContent {
             MaterialTheme {
@@ -101,14 +100,14 @@ fun StoreItemDetailScreen(storeItem: StoreItem, onBack: () -> Unit) {
                 }
                 SentryTraced("item_details_sku") {
                     Text(
-                        text = "SKU: \${storeItem.sku}",
+                        text = "SKU: ${storeItem.sku}",
                         fontSize = 16.sp,
                         modifier = Modifier.padding(top = 8.dp)
                     )
                 }
                 SentryTraced("item_details_price") {
                     Text(
-                        text = "Price: \$\${storeItem.price}",
+                        text = "Price: $${storeItem.price}",
                         fontSize = 16.sp,
                         modifier = Modifier.padding(top = 8.dp)
                     )
