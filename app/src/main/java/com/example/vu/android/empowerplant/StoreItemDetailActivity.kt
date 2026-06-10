@@ -46,6 +46,7 @@ class StoreItemDetailActivity : ComponentActivity() {
 
         Sentry.setAttribute("screen", "item_detail")
         Sentry.setAttribute("item.sku", storeItem.sku)
+        Sentry.metrics().count("product.viewed")
 
         setContent {
             MaterialTheme {
