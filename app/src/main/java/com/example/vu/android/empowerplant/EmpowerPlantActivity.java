@@ -38,6 +38,7 @@ public class EmpowerPlantActivity extends MyBaseActivity {
         setContentView(R.layout.activity_empowerplant);
 
         Sentry.setAttribute("screen", "store");
+        Sentry.metrics().count("app.launched");
 
         dbQuery();
         addAttachment(true);

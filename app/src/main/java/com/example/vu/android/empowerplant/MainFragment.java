@@ -315,6 +315,9 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         Log.i("checkout", "checkout >>>");
         List<StoreItem> selectedStoreItems = AppDatabase.getInstance(MyApplication.appContext).StoreItemDAO().getSelectedItems();
 
+        Sentry.metrics().count("checkout.attempted");
+        Sentry.metrics().distribution("checkout.cart_size", (double) selectedStoreItems.size());
+
         Sentry.setAttribute("checkout.cart_size", selectedStoreItems.size());
         Sentry.setAttribute("checkout.step", "initiate");
 
