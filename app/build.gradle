@@ -147,6 +147,9 @@ sentry {
     debug = true
     includeSourceContext = true
     additionalSourceDirsForSourceContext = ["src/main/java"]
+    sizeAnalysis {
+        enabled = providers.environmentVariable("GITHUB_ACTIONS").present
+    }
     tracingInstrumentation {
         enabled = true
         logcat {
