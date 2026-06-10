@@ -102,6 +102,9 @@
         <meta-data
             android:name="io.sentry.feedback.use-shake-gesture"
             android:value="true" />
+        <meta-data
+            android:name="io.sentry.anr.profiling.sample-rate"
+            android:value="1.0" />
 
         <provider
             android:exported="false"

@@ -168,10 +168,17 @@ public class MyApplication extends Application {
         User user = new User();
         user.setEmail(email);
         Sentry.setUser(user);
+
+        Sentry.setAttribute("customer.plan", customerType);
+        Sentry.setAttribute("customer.email", email);
+
+        boolean darkMode = Math.random() > 0.5;
+        Sentry.addFeatureFlag("enable-dark-mode", darkMode);
+        Sentry.addFeatureFlag("new-checkout-flow", "enterprise".equals(customerType));
     }
 
     private void launchUserFeedback(SentryId sentryId) {
-        Sentry.showUserFeedbackDialog(sentryId, options -> {
+        Sentry.feedback().show(sentryId, options -> {
             options.setFormTitle("Ooops, Checkout Failed!");
             options.setMessagePlaceholder("OMG! What happened??");
             options.setShowName(true);

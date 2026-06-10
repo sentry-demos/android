@@ -133,6 +133,9 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         progressDialog.setCancelable(false);
         progressDialog.show();
 
+        Sentry.setAttribute("screen", "product_list");
+        Sentry.addFeatureFlag("product-recommendations", true);
+
         ISpan transaction = Sentry.getSpan();
         ISpan productRetrieveSpan = transaction.startChild("product_retrieval", "Product Retrieval");
 
@@ -312,6 +315,15 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
     public void checkout() {
         Log.i("checkout", "checkout >>>");
         List<StoreItem> selectedStoreItems = AppDatabase.getInstance(MyApplication.appContext).StoreItemDAO().getSelectedItems();
+
+        Sentry.configureScope(scope -> scope.clearFeatureFlags());
+        boolean expressCheckout = selectedStoreItems.size() <= 3;
+        Sentry.addFeatureFlag("express-checkout", expressCheckout);
+        Sentry.addFeatureFlag("loyalty-discount", selectedStoreItems.size() >= 5);
+
+        Sentry.setAttribute("checkout.cart_size", selectedStoreItems.size());
+        Sentry.setAttribute("checkout.step", "initiate");
+
         ITransaction checkoutTransaction = Sentry.startTransaction("checkout [android]", "http.client");
         checkoutTransaction.setOperation("http");
         Sentry.configureScope(scope -> scope.setTransaction(checkoutTransaction));
@@ -330,6 +342,8 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
             Thread.currentThread().interrupt();
         }
         processDataSpan.finish();
+
+        Sentry.setAttribute("checkout.step", "submit");
 
         String domain = this.getEmpowerPlantDomain();
         String checkoutURL = domain + this.END_POINT_CHECKOUT;
