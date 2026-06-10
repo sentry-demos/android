@@ -38,7 +38,6 @@ public class EmpowerPlantActivity extends MyBaseActivity {
         setContentView(R.layout.activity_empowerplant);
 
         Sentry.setAttribute("screen", "store");
-        Sentry.addFeatureFlag("new-product-layout", Math.random() > 0.5);
 
         dbQuery();
         addAttachment(true);
