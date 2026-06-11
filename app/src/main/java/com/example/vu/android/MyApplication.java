@@ -125,16 +125,6 @@ public class MyApplication extends Application {
                 }
             });
 
-            options.setProfilesSampler(new SentryOptions.ProfilesSamplerCallback() {
-                @Override public @Nullable Double sample(@NotNull SamplingContext samplingContext) {
-                    if (isRelaunchedForSend) {
-                        Log.i("MyApplication", "Relaunching for send, not sampling profiles");
-                        return 0.0; // Don't sample profiles when relaunching for send
-                    }
-                    return 1.0;
-                }
-            });
-
             options.setBeforeSendReplay(new SentryOptions.BeforeSendReplayCallback() {
                 @Override
                 public @Nullable SentryReplayEvent execute(@NotNull SentryReplayEvent event,
