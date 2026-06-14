@@ -22,6 +22,7 @@ import java.util.Random;
 import com.example.vu.android.MainActivity;
 import com.example.vu.android.MyBaseActivity;
 import com.example.vu.android.R;
+import io.sentry.Sentry;
 
 public class EmpowerPlantActivity extends MyBaseActivity {
 
@@ -35,6 +36,10 @@ public class EmpowerPlantActivity extends MyBaseActivity {
         super.onCreate(savedInstanceState);
         MyApplication.isRelaunchedForSend = getIntent().getBooleanExtra("relaunch_for_send", false);
         setContentView(R.layout.activity_empowerplant);
+
+        Sentry.setAttribute("screen", "store");
+        Sentry.metrics().count("app.launched");
+
         dbQuery();
         addAttachment(true);
         checkRelease();

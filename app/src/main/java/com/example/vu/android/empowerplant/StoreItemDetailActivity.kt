@@ -30,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
+import io.sentry.Sentry
 import io.sentry.compose.SentryModifier.sentryTag
 import io.sentry.compose.SentryTraced
 
@@ -42,6 +43,10 @@ class StoreItemDetailActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         val storeItem = intent.getSerializableExtra(EXTRA_STORE_ITEM) as StoreItem
+
+        Sentry.setAttribute("screen", "item_detail")
+        Sentry.setAttribute("item.sku", storeItem.sku)
+        Sentry.metrics().count("product.viewed")
 
         setContent {
             MaterialTheme {

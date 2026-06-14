@@ -125,16 +125,6 @@ public class MyApplication extends Application {
                 }
             });
 
-            options.setProfilesSampler(new SentryOptions.ProfilesSamplerCallback() {
-                @Override public @Nullable Double sample(@NotNull SamplingContext samplingContext) {
-                    if (isRelaunchedForSend) {
-                        Log.i("MyApplication", "Relaunching for send, not sampling profiles");
-                        return 0.0; // Don't sample profiles when relaunching for send
-                    }
-                    return 1.0;
-                }
-            });
-
             options.setBeforeSendReplay(new SentryOptions.BeforeSendReplayCallback() {
                 @Override
                 public @Nullable SentryReplayEvent execute(@NotNull SentryReplayEvent event,
@@ -168,10 +158,17 @@ public class MyApplication extends Application {
         User user = new User();
         user.setEmail(email);
         Sentry.setUser(user);
+
+        Sentry.setAttribute("customer.plan", customerType);
+        Sentry.setAttribute("customer.email", email);
+
+        boolean darkMode = Math.random() > 0.5;
+        Sentry.addFeatureFlag("enable-dark-mode", darkMode);
+        Sentry.addFeatureFlag("new-checkout-flow", "enterprise".equals(customerType));
     }
 
     private void launchUserFeedback(SentryId sentryId) {
-        Sentry.showUserFeedbackDialog(sentryId, options -> {
+        Sentry.feedback().show(sentryId, options -> {
             options.setFormTitle("Ooops, Checkout Failed!");
             options.setMessagePlaceholder("OMG! What happened??");
             options.setShowName(true);

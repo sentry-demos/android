@@ -90,6 +90,24 @@
         <meta-data
             android:name="io.sentry.traces.time-to-full-display.enable"
             android:value="true" />
+        <meta-data
+            android:name="io.sentry.tombstone.enable"
+            android:value="true" />
+        <meta-data
+            android:name="io.sentry.tombstone.attach-raw"
+            android:value="true" />
+        <meta-data
+            android:name="io.sentry.anr.report-historical"
+            android:value="true" />
+        <meta-data
+            android:name="io.sentry.feedback.use-shake-gesture"
+            android:value="true" />
+        <meta-data
+            android:name="io.sentry.anr.profiling.sample-rate"
+            android:value="1.0" />
+        <meta-data
+            android:name="io.sentry.metrics.enabled"
+            android:value="true" />
 
         <provider
             android:exported="false"
