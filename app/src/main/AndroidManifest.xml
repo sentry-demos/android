@@ -108,6 +108,9 @@
         <meta-data
             android:name="io.sentry.metrics.enabled"
             android:value="true" />
+        <meta-data
+            android:name="io.sentry.standalone-app-start-tracing.enable"
+            android:value="true" />
 
         <provider
             android:exported="false"
