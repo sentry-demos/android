@@ -160,7 +160,7 @@ public class MyBaseActivity extends AppCompatActivity  {
             int iteration = 0;
 
             // Play a guessing game and try to find the index for an existing file in the cache dir
-            while (indexes.contains(index) || index > cacheFiles.length || index < 0) {
+            while (indexes.contains(index) || index >= cacheFiles.length || index < 0) {
                 index = rand.nextInt();
                 iteration++;
                 if (iteration > maxTries) {
