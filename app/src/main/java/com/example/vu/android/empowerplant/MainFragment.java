@@ -151,11 +151,11 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                progressDialog.dismiss();
+                dismissProgressDialogSafely(progressDialog);
                 if (response.isSuccessful()) {
                     String responseStr = response.body().string();
 
-                    progressDialog.dismiss();//why called a second time
+                    dismissProgressDialogSafely(progressDialog);//why called a second time
 
                     if (responseStr != null && !responseStr.equals("")) {
 
@@ -203,7 +203,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                progressDialog.dismiss();
+                dismissProgressDialogSafely(progressDialog);
                 Sentry.reportFullyDisplayed();
                 productRetrieveSpan.finish();
                 transaction.finish(SpanStatus.INTERNAL_ERROR);
@@ -362,7 +362,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                progressDialog.dismiss();
+                dismissProgressDialogSafely(progressDialog);
                 boolean success = response.isSuccessful();
                 response.close();
                 if (!success) {
@@ -370,7 +370,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            progressDialog.dismiss();
+                            dismissProgressDialogSafely(progressDialog);
 
                             processDeliveryItem(checkoutTransaction);
 
@@ -382,7 +382,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                progressDialog.dismiss();
+                dismissProgressDialogSafely(progressDialog);
                 Sentry.captureException(e);
 
                 processDeliveryItem(checkoutTransaction);
@@ -487,6 +487,26 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
 
     public void insertMultipleStoreItems() {
         AppDatabase.getInstance(MyApplication.appContext).StoreItemDAO().insertAll(empowerStoreItems);
+    }
+
+    private void dismissProgressDialogSafely(final ProgressDialog dialog) {
+        if (dialog == null) {
+            return;
+        }
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                // Check if Fragment is still attached to an Activity and Activity is not finishing
+                if (isAdded() && getActivity() != null && !getActivity().isFinishing() && dialog.isShowing()) {
+                    try {
+                        dialog.dismiss();
+                    } catch (Exception e) {
+                        // Catch any exceptions during dismiss to prevent crashes
+                        Log.w("MainFragment", "Error dismissing dialog: " + e.getMessage());
+                    }
+                }
+            }
+        });
     }
 
     private void runOnUiThread(Runnable action) {
