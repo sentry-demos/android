@@ -20,13 +20,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import io.sentry.Sentry;
-import io.sentry.SentryAttribute;
-import io.sentry.SentryAttributes;
 import io.sentry.UserFeedback;
 import io.sentry.android.core.SentryAndroid;
 import io.sentry.SentryLevel;
-import io.sentry.SentryLogLevel;
-import io.sentry.logger.SentryLogParameters;
 import io.sentry.protocol.Feedback;
 import io.sentry.protocol.SentryException;
 import io.sentry.protocol.SentryId;
@@ -169,16 +165,6 @@ public class MyApplication extends Application {
         boolean darkMode = Math.random() > 0.5;
         Sentry.addFeatureFlag("enable-dark-mode", darkMode);
         Sentry.addFeatureFlag("new-checkout-flow", "enterprise".equals(customerType));
-
-        Sentry.logger().log(
-            SentryLogLevel.INFO,
-            SentryLogParameters.create(SentryAttributes.of(
-                SentryAttribute.named("customer.plan", customerType),
-                SentryAttribute.named("customer.email", email),
-                SentryAttribute.named("dark_mode", darkMode)
-            )),
-            "App initialized for %s customer", customerType
-        );
     }
 
     private void launchUserFeedback(SentryId sentryId) {

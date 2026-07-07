@@ -31,12 +31,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import io.sentry.Sentry
-import io.sentry.SentryAttribute
-import io.sentry.SentryAttributes
-import io.sentry.SentryLogLevel
 import io.sentry.compose.SentryModifier.sentryTag
 import io.sentry.compose.SentryTraced
-import io.sentry.logger.SentryLogParameters
 
 class StoreItemDetailActivity : ComponentActivity() {
     companion object {
@@ -51,16 +47,6 @@ class StoreItemDetailActivity : ComponentActivity() {
         Sentry.setAttribute("screen", "item_detail")
         Sentry.setAttribute("item.sku", storeItem.sku)
         Sentry.metrics().count("product.viewed")
-
-        Sentry.logger().log(
-            SentryLogLevel.INFO,
-            SentryLogParameters.create(SentryAttributes.of(
-                SentryAttribute.named("item.sku", storeItem.sku),
-                SentryAttribute.named("item.name", storeItem.name),
-                SentryAttribute.integerAttribute("item.price", storeItem.price)
-            )),
-            "Product viewed: %s", storeItem.name
-        )
 
         setContent {
             MaterialTheme {

@@ -41,11 +41,7 @@ import io.sentry.Attachment;
 import io.sentry.ISpan;
 import io.sentry.ITransaction;
 import io.sentry.Sentry;
-import io.sentry.SentryAttribute;
-import io.sentry.SentryAttributes;
-import io.sentry.SentryLogLevel;
 import io.sentry.SpanStatus;
-import io.sentry.logger.SentryLogParameters;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -324,15 +320,6 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
 
         Sentry.setAttribute("checkout.cart_size", selectedStoreItems.size());
         Sentry.setAttribute("checkout.step", "initiate");
-
-        Sentry.logger().log(
-            SentryLogLevel.INFO,
-            SentryLogParameters.create(SentryAttributes.of(
-                SentryAttribute.named("cart.item_count", selectedStoreItems.size()),
-                SentryAttribute.named("checkout.step", "initiate")
-            )),
-            "Checkout started with %d items", selectedStoreItems.size()
-        );
 
         ITransaction checkoutTransaction = Sentry.startTransaction("checkout [android]", "http.client");
         checkoutTransaction.setOperation("http");
