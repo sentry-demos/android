@@ -142,7 +142,7 @@ tasks.withType(Test) {
 
 sentry {
     autoInstallation {
-        sentryVersion.set("8.47.0")
+        sentryVersion.set("8.48.0")
     }
     autoUpload = true
     uploadNativeSymbols = true
