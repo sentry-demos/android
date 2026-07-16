@@ -365,15 +365,20 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
                 progressDialog.dismiss();
                 boolean success = response.isSuccessful();
                 response.close();
-                if (!success) {
+                if (success) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            processDeliveryItem(checkoutTransaction);
+                            checkoutTransaction.finish(SpanStatus.OK);
+                        }
+                    });
+                } else {
                     Log.w("checkout", "response failed");
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             progressDialog.dismiss();
-
-                            processDeliveryItem(checkoutTransaction);
-
                             checkoutTransaction.finish(SpanStatus.INTERNAL_ERROR);
                         }
                     });
@@ -385,7 +390,6 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
                 progressDialog.dismiss();
                 Sentry.captureException(e);
 
-                processDeliveryItem(checkoutTransaction);
                 checkoutTransaction.finish(SpanStatus.INTERNAL_ERROR);
                 Log.e("checkout", "checkout failed");
             }
@@ -434,18 +438,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         Log.i("processDeliveryItem", "processDeliveryItem >>>");
         ISpan processDeliverySpan = checkoutTransaction.startChild("task", "process delivery");
 
-        try {
-            throw new MainFragment.BackendAPIException("Failed to init delivery workflow");
-        } catch (Exception e) {
-            Log.e("processDeliveryItem", e.getMessage());
-            processDeliverySpan.setThrowable(e);
-            processDeliverySpan.setStatus(SpanStatus.INTERNAL_ERROR);
-            Sentry.captureException(e);
-        }
-
-        if (processDeliverySpan.getStatus() != SpanStatus.INTERNAL_ERROR) {
-            processDeliverySpan.setStatus(SpanStatus.OK);
-        }
+        processDeliverySpan.setStatus(SpanStatus.OK);
         processDeliverySpan.finish();
         Log.i("processDeliveryItem", "<<< processDeliveryItem");
     }
