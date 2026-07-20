@@ -108,7 +108,7 @@ fun StoreItemDetailScreen(storeItem: StoreItem, onBack: () -> Unit) {
                 }
                 SentryTraced("item_details_price") {
                     Text(
-                        text = "Price: $${storeItem.price}",
+                        text = "Price: \$${storeItem.price}",
                         fontSize = 16.sp,
                         modifier = Modifier.padding(top = 8.dp)
                     )

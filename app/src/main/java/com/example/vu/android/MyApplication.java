@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import io.sentry.Hint;
+import io.sentry.ISpan;
 import io.sentry.SamplingContext;
 import io.sentry.SentryOptions;
 import io.sentry.SentryReplayEvent;
@@ -140,6 +141,13 @@ public class MyApplication extends Application {
             });
         });
 
+        Sentry.extendAppStart();
+        ISpan appStartSpan = Sentry.getExtendedAppStartSpan();
+        ISpan initChild = null;
+        if (appStartSpan != null) {
+            initChild = appStartSpan.startChild("app.init", "Post-init setup");
+        }
+
         String[] allCustomerTypes = {"medium-plan", "large-plan", "small-plan", "enterprise"};
         String customerType = allCustomerTypes[(int) (Math.random() * 4)];
         Sentry.setTag("customerType", customerType);
@@ -165,6 +173,11 @@ public class MyApplication extends Application {
         boolean darkMode = Math.random() > 0.5;
         Sentry.addFeatureFlag("enable-dark-mode", darkMode);
         Sentry.addFeatureFlag("new-checkout-flow", "enterprise".equals(customerType));
+
+        if (initChild != null) {
+            initChild.finish();
+        }
+        Sentry.finishExtendedAppStart();
     }
 
     private void launchUserFeedback(SentryId sentryId) {
