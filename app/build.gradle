@@ -1,7 +1,7 @@
 import io.sentry.android.gradle.instrumentation.logcat.LogcatLevel
 
 plugins {
-    id "io.sentry.android.gradle" version "6.14.0"
+    id "io.sentry.android.gradle" version "6.15.0"
     id 'com.android.application'
     id 'kotlin-android'
     id 'com.ydq.android.gradle.native-aar.import'
@@ -142,7 +142,7 @@ tasks.withType(Test) {
 
 sentry {
     autoInstallation {
-        sentryVersion.set("8.48.0")
+        sentryVersion.set("8.49.0")
     }
     autoUpload = true
     uploadNativeSymbols = true
