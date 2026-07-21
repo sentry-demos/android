@@ -40,7 +40,7 @@ public class MainActivity extends MyBaseActivity {
         breadcrumb.setData("Activity Name", activity);
         Sentry.addBreadcrumb( breadcrumb );
 
-        // Unhandled - ArithmeticException
+        // Handled - ArithmeticException
         Button div_by_zero_button = findViewById(R.id.div_zero);
         div_by_zero_button.setOnClickListener(view -> {
             addAttachment(false);
@@ -50,7 +50,11 @@ public class MainActivity extends MyBaseActivity {
             bc.setData("url", "https://sentry.io");
             Sentry.addBreadcrumb(bc);
 
-            int t = 5 / 0;
+            try {
+                int t = 5 / 0;
+            } catch (ArithmeticException e) {
+                Sentry.captureException(e);
+            }
         });
 
         // Unhandled - NegativeArraySizeException
