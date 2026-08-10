@@ -89,7 +89,8 @@ OpenJDK 64-Bit Server VM Homebrew (build 21.0.2, mixed mode, sharing)
 
 1. `make all` if you haven't yet, or have made significant changes to your code. Otherwise run the app.
 2. Run 'app' in Android Studio on an Android Virtual Device.
-3. Open the app, add items to cart, check out; open List App and click error-related buttons
+3. If your device is API 35+ and you care about profiling data, run `./setup_profiling_device.sh` once the device is booted. On API 35+ the SDK uses the platform ProfilingManager (Perfetto) backend, and the Android Framework rate limits profiling requests, so profiles come back sparse or missing without this. Re-run after every cold boot or "Wipe Data". See [the profiling limitations docs](https://docs.sentry.io/platforms/android/profiling/#limitations).
+4. Open the app, add items to cart, check out; open List App and click error-related buttons
 ![demo](screenshots/demo.gif)
 
 ## How To Make a New Release
