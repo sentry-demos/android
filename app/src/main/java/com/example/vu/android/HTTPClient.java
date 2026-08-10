@@ -22,7 +22,7 @@ public class HTTPClient {
 
     public static void makeRequest(Context context) {
         String domain = getEmpowerPlantDomain(context);
-        String getToolsURL = domain + "/details";
+        String getToolsURL = domain + "/products";
 
         Request request = new Request.Builder()
                 .url(getToolsURL)
