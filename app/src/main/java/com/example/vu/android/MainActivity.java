@@ -53,12 +53,22 @@ public class MainActivity extends MyBaseActivity {
             int t = 5 / 0;
         });
 
-        // Unhandled - NegativeArraySizeException
+        // Handled - negative array size is reported instead of crashing
         Button negative_index_button = findViewById(R.id.negative_index);
         negative_index_button.setOnClickListener(view -> {
             addAttachment(false);
             Sentry.addBreadcrumb("Button for NegativeArraySizeException clicked...");
-            int[] a = new int[-5];
+
+            int requestedSize = -5;
+            // Java does not allow negative array sizes, so clamp before allocating
+            int size = Math.max(requestedSize, 0);
+            if (size != requestedSize) {
+                Sentry.captureMessage(
+                    "Requested array size " + requestedSize + " is negative, allocating " + size + " instead",
+                    SentryLevel.WARNING);
+            }
+            int[] a = new int[size];
+            Log.i(activity, "Allocated int array of length " + a.length);
         });
 
         // Handled - ArrayIndexOutOfBoundsException
