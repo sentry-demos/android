@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.vu.android.empowerplant.StoreItem;
 import com.google.gson.Gson;
@@ -50,7 +51,13 @@ public class MainActivity extends MyBaseActivity {
             bc.setData("url", "https://sentry.io");
             Sentry.addBreadcrumb(bc);
 
-            int t = 5 / 0;
+            int divisor = 0;
+            if (divisor == 0) {
+                Sentry.captureException(new ArithmeticException("divide by zero"));
+                Toast.makeText(MainActivity.this, "Cannot divide by zero", Toast.LENGTH_SHORT).show();
+            } else {
+                int t = 5 / divisor;
+            }
         });
 
         // Unhandled - NegativeArraySizeException
