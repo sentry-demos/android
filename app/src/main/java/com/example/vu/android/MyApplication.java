@@ -174,6 +174,12 @@ public class MyApplication extends Application {
         Sentry.addFeatureFlag("enable-dark-mode", darkMode);
         Sentry.addFeatureFlag("new-checkout-flow", "enterprise".equals(customerType));
 
+        if ("enterprise".equals(customerType)) {
+            Sentry.feedback().enableOnShake();
+        } else {
+            Sentry.feedback().disableOnShake();
+        }
+
         if (initChild != null) {
             initChild.finish();
         }
