@@ -41,6 +41,9 @@ import io.sentry.Attachment;
 import io.sentry.ISpan;
 import io.sentry.ITransaction;
 import io.sentry.Sentry;
+import io.sentry.SentryDate;
+import io.sentry.SentryNanotimeDate;
+import io.sentry.SpanOptions;
 import io.sentry.SpanStatus;
 
 import okhttp3.Call;
@@ -323,6 +326,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
 
         ITransaction checkoutTransaction = Sentry.startTransaction("checkout [android]", "http.client");
         checkoutTransaction.setOperation("http");
+        SentryDate cartProcessingStart = new SentryNanotimeDate();
         Sentry.configureScope(scope -> scope.setTransaction(checkoutTransaction));
 
         Log.v("checkout", "showing dialog");
@@ -331,7 +335,9 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         progressDialog.setMessage("Checking Out...");
         progressDialog.show();
 
-        ISpan processDataSpan = checkoutTransaction.startChild("task", "process_cart_data");
+        SpanOptions spanOptions = new SpanOptions();
+        spanOptions.setStartTimestamp(cartProcessingStart);
+        ISpan processDataSpan = checkoutTransaction.startChild("task", "process_cart_data", spanOptions);
         JSONObject object = this.buildJSONPostData(selectedStoreItems);
         try {
             Thread.sleep(500);
