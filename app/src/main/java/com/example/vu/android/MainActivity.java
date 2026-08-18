@@ -40,17 +40,19 @@ public class MainActivity extends MyBaseActivity {
         breadcrumb.setData("Activity Name", activity);
         Sentry.addBreadcrumb( breadcrumb );
 
-        // Unhandled - ArithmeticException
+        // Fixed - ArithmeticException removed
         Button div_by_zero_button = findViewById(R.id.div_zero);
         div_by_zero_button.setOnClickListener(view -> {
             addAttachment(false);
             Breadcrumb bc = new Breadcrumb();
-            bc.setMessage("Button for ArithmeticException clicked...");
-            bc.setLevel(SentryLevel.ERROR);
+            bc.setMessage("Button clicked - ArithmeticException has been fixed");
+            bc.setLevel(SentryLevel.INFO);
             bc.setData("url", "https://sentry.io");
             Sentry.addBreadcrumb(bc);
 
-            int t = 5 / 0;
+            // Fixed: Replaced divide-by-zero with safe division
+            int t = 5 / 1;
+            Log.d("MainActivity", "Division result: " + t);
         });
 
         // Unhandled - NegativeArraySizeException
