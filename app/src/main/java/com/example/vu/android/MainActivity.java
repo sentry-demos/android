@@ -49,8 +49,6 @@ public class MainActivity extends MyBaseActivity {
             bc.setLevel(SentryLevel.ERROR);
             bc.setData("url", "https://sentry.io");
             Sentry.addBreadcrumb(bc);
-
-            int t = 5 / 0;
         });
 
         // Unhandled - NegativeArraySizeException
