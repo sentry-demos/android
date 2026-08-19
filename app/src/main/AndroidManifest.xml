@@ -75,6 +75,11 @@
         <meta-data
             android:name="io.sentry.traces.profiling.lifecycle"
             android:value="trace" />
+        <!-- App start profiling is only supported by the legacy profiler, i.e. on devices
+             below Android 15 (API level 35). On API 35+ the SDK uses the platform
+             ProfilingManager (Perfetto) backend and this option has no effect. Kept enabled
+             because minSdkVersion is 21, so the app still runs where it does apply. -->
+        <!-- https://docs.sentry.io/platforms/android/profiling/#limitations -->
         <meta-data
             android:name="io.sentry.traces.profiling.start-on-app-start"
             android:value="true" />
