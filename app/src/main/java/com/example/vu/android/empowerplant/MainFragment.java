@@ -398,22 +398,27 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         JSONObject cart = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         JSONObject quantities = new JSONObject();
+        int total = 0;
 
         try {
             for (StoreItem s : selectedStoreItems) {
                 jsonObject = new JSONObject();
 
-                jsonObject.put("name", s.getName());
+                // The backend identifies cart items by "title", the same field the /products
+                // endpoint returns. Sending "name" instead makes /checkout fail with a 500.
+                jsonObject.put("title", s.getName());
                 jsonObject.put("price", s.getPrice());
                 jsonObject.put("image", s.getImage());
                 jsonObject.put("id", s.getItemId());
 
                 jsonArray.put(jsonObject);
                 quantities.put(String.valueOf(s.getItemId()), s.getQuantity());
+                total += s.getPrice() * s.getQuantity();
 
             }
             cart.put("items", jsonArray);
             cart.put("quantities", quantities);
+            cart.put("total", total);
             postBody.put("cart", cart);
             postBody.put("form", new JSONObject());// This line currently mocks non existent form data
             postBody.put("validate_inventory", "true");
