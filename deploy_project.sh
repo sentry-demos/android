@@ -9,28 +9,53 @@ if ! command -v gh &> /dev/null; then
   error_exit "gh is not installed, make sure you run 'make init' (see README.md)."
 fi
 
-# When this script is called from release workflow, the version is passed as an argument, otherwise it will be read from the app/build.gradle file
-PACKAGE_VERSION=$1
-if [ -z "$1" ]; then
-  PACKAGE_VERSION=$(grep 'versionName' app/build.gradle | awk -F\" {'print $2'})
-fi
-PACKAGE_NAME=$(grep 'applicationId' app/build.gradle | awk -F\" {'print $2'})
-REPO=sentry-demos/android
-
-# Check if current version was already released
-currentVersion=$(gh release list | awk '{print $1}' | grep -x "$PACKAGE_VERSION")
-if [ "$currentVersion" != "" ]; then
-  error_exit "Version $PACKAGE_VERSION was already released."
+# Check for required arguments
+if [ "$#" -lt 3 ]; then
+  error_exit "Usage: $0 <TAG_NAME> <BUILD_TYPE: release|debug> <OUTPUT_FILE_NAME>"
 fi
 
-# Build the release bundle
-echo "Building the release bundle..."
-./gradlew assemble
+# Potentially could fish out TAG_NAME from the app/build.gradle file
+# but we're currently not using it in release.yml, instead relying on calendar versioning
+# TAG_NAME=$(grep 'versionName' app/build.gradle | awk -F\" {'print $2'})
 
+TAG_NAME=$1
+BUILD_TYPE=$2
+OUTPUT_FILE_NAME=$3
 
-echo "Releasing to Github..."
-gh release create $PACKAGE_VERSION app/build/outputs/apk/debug/app-debug.apk app/build/outputs/apk/release/app-release.apk -t "$PACKAGE_VERSION" --generate-notes || error_exit "Failed to create GitHub release."
+# Validate BUILD_TYPE
+if [ "$BUILD_TYPE" != "release" ] && [ "$BUILD_TYPE" != "debug" ]; then
+  error_exit "BUILD_TYPE must be either 'release' or 'debug'"
+fi
 
-echo "Release created successfully with version $PACKAGE_VERSION!"
+releaseExists=$(gh release list | awk '{print $1}' | grep -x "$TAG_NAME")
+
+# Build the bundle
+# NOTE: in the future this will defined in *.env 
+BUILD_ARTIFACT_PATH="app/build/outputs/apk/$BUILD_TYPE/app-$BUILD_TYPE.apk"
+# NOTE: in the future this will be in build.sh (and BUILD_TYPE defined in *.env)
+echo "Building the $BUILD_TYPE bundle..."
+if [ "$BUILD_TYPE" = "release" ]; then
+  ./gradlew assembleRelease || error_exit "Gradle build failed."
+else
+  ./gradlew assembleDebug || error_exit "Gradle build failed."
+fi
+
+# Check if build artifact exists
+if [ ! -f "$BUILD_ARTIFACT_PATH" ]; then
+  error_exit "$BUILD_ARTIFACT_PATH does not exist."
+fi
+
+# Rename build artifact to OUTPUT_FILE_NAME
+cp "$BUILD_ARTIFACT_PATH" "$OUTPUT_FILE_NAME" || error_exit "Failed to rename build artifact."
+
+if [ "$releaseExists" != "" ]; then
+  echo "Release for $TAG_NAME already exists. Uploading artifact with --clobber..."
+  gh release upload $TAG_NAME "$OUTPUT_FILE_NAME" --clobber || error_exit "Failed to upload artifact to existing release."
+else
+  echo "Releasing to Github..."
+  gh release create $TAG_NAME "$OUTPUT_FILE_NAME" -t "$TAG_NAME" --generate-notes --latest=false || error_exit "Failed to create GitHub release."
+fi
+
+echo "Release process completed successfully for tag $TAG_NAME!"
 
 
