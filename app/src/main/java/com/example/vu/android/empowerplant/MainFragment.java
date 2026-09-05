@@ -288,7 +288,19 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         if (n == 1 || n == 2) {
             return 1;
         }
-        return getIterator(n-1) + getIterator(n-2);
+        
+        // Use iterative approach to avoid exponential recursion that blocks UI thread
+        int prev2 = 1;
+        int prev1 = 1;
+        int current = 0;
+        
+        for (int i = 3; i <= n; i++) {
+            current = prev1 + prev2;
+            prev2 = prev1;
+            prev1 = current;
+        }
+        
+        return current;
     }
 
     String getEmpowerPlantDomain() {
