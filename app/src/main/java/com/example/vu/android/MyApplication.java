@@ -85,6 +85,10 @@ public class MyApplication extends Application {
             options.getSessionReplay().setSessionSampleRate(1.0);
             options.getLogs().setEnabled(true);
 
+            options.getDataCollection().setUserInfo(true);
+            options.getDataCollection().setDatabaseQueryData(true);
+            options.getDataCollection().setFilePaths(true);
+
             options.setBeforeSend((event, hint) -> {
 
                 //Remove PII

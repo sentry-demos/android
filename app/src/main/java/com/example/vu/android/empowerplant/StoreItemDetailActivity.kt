@@ -21,6 +21,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -31,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import io.sentry.Sentry
+import io.sentry.compose.LocalSentrySpan
 import io.sentry.compose.SentryModifier.sentryTag
 import io.sentry.compose.SentryTraced
 
@@ -48,12 +50,23 @@ class StoreItemDetailActivity : ComponentActivity() {
         Sentry.setAttribute("item.sku", storeItem.sku)
         Sentry.metrics().count("product.viewed")
 
+        val activitySpan = Sentry.getSpan()
+
         setContent {
             MaterialTheme {
-                StoreItemDetailScreen(
-                    storeItem = storeItem,
-                    onBack = { finish() }
-                )
+                if (activitySpan != null) {
+                    CompositionLocalProvider(LocalSentrySpan provides activitySpan) {
+                        StoreItemDetailScreen(
+                            storeItem = storeItem,
+                            onBack = { finish() }
+                        )
+                    }
+                } else {
+                    StoreItemDetailScreen(
+                        storeItem = storeItem,
+                        onBack = { finish() }
+                    )
+                }
             }
         }
     }
