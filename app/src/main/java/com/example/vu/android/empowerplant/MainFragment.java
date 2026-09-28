@@ -321,6 +321,9 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
         Sentry.setAttribute("checkout.cart_size", selectedStoreItems.size());
         Sentry.setAttribute("checkout.step", "initiate");
 
+        Sentry.feedback().disableOnShake();
+        Sentry.replay().flush();
+
         ITransaction checkoutTransaction = Sentry.startTransaction("checkout [android]", "http.client");
         checkoutTransaction.setOperation("http");
         Sentry.configureScope(scope -> scope.setTransaction(checkoutTransaction));
@@ -365,6 +368,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
                 progressDialog.dismiss();
                 boolean success = response.isSuccessful();
                 response.close();
+                Sentry.feedback().enableOnShake();
                 if (!success) {
                     Log.w("checkout", "response failed");
                     runOnUiThread(new Runnable() {
@@ -383,6 +387,7 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 progressDialog.dismiss();
+                Sentry.feedback().enableOnShake();
                 Sentry.captureException(e);
 
                 processDeliveryItem(checkoutTransaction);
