@@ -108,7 +108,7 @@ dependencies {
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.2'
     implementation 'androidx.room:room-rxjava3:2.6.1'
 
-    def compose_version = "1.6.3"
+    def compose_version = "1.7.5"
     def compose_material3_version = "1.2.1"
 
     // Compose
