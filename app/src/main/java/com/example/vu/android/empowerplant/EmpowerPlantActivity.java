@@ -140,9 +140,11 @@ public class EmpowerPlantActivity extends MyBaseActivity {
                 .observeSelectedCount()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(count ->
-                    textCartItemCount.setText(String.valueOf(count))
-                )
+                .subscribe(count -> {
+                    if (textCartItemCount != null) {
+                        textCartItemCount.setText(String.valueOf(count));
+                    }
+                })
         );
     }
 
