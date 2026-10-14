@@ -69,6 +69,18 @@ public class MyBaseActivity extends AppCompatActivity  {
     /** Add a delay based on version code. */
     protected void checkRelease() {
         ISpan span = Sentry.getSpan();
+        if (span == null) {
+            // No active transaction/span, skip tracing
+            if (BuildConfig.VERSION_CODE % 2 == 0) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            return;
+        }
+        
         ISpan innerSpan = span.startChild("ui.load", "Screen Operation");
 
         // Even versions will wait 1 second, to make it more obvious the difference between releases
