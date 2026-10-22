@@ -266,7 +266,8 @@ public class MainFragment extends Fragment implements StoreItemAdapter.ItemClick
                 try {
                     client.newCall(request).execute().close();
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    Log.w("MainFragment", "Failed to fetch product info for index " + index, e);
+                    Sentry.captureException(e);
                 }
             }).start();
         }
