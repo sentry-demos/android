@@ -3,6 +3,7 @@ package com.example.vu.android;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Menu;
 import android.widget.Button;
@@ -13,6 +14,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import io.sentry.Breadcrumb;
 import io.sentry.ISpan;
@@ -22,6 +24,10 @@ import io.sentry.SentryLevel;
 public class MainActivity extends MyBaseActivity {
 
     final Object mutex = new Object();
+
+    // Main thread blocks for ~(ANR_LOCK_HOLD_MS - 1000ms post delay), above the 5s ANR threshold, then recovers
+    private static final long ANR_LOCK_HOLD_MS = 7000;
+    private final AtomicBoolean anrInProgress = new AtomicBoolean(false);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,33 +87,38 @@ public class MainActivity extends MyBaseActivity {
         anr_button.setOnClickListener(view -> {
 
             Sentry.addBreadcrumb("Button for ANR clicked...");
-            // try to cause a deadlock by synchronizing on the same lock in two threads
+            if (!anrInProgress.compareAndSet(false, true)) {
+                Sentry.addBreadcrumb("ANR already in progress, ignoring click");
+                return;
+            }
+            // Contend on the same lock from a background thread and the main thread.
+            // The background thread holds the lock for a bounded time, so the main thread
+            // freezes long enough to trigger an ANR and then recovers.
             new Thread(
                 new Runnable() {
                     @Override
                     public void run() {
                         synchronized (mutex) {
-                            while (true) {
-                                try {
-                                    Thread.sleep(10000);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
+                            try {
+                                Thread.sleep(ANR_LOCK_HOLD_MS);
+                            } catch (InterruptedException e) {
+                                Thread.currentThread().interrupt();
+                                Sentry.captureException(e);
                             }
                         }
                     }
                 })
                 .start();
 
-            new Handler()
+            new Handler(Looper.getMainLooper())
                 .postDelayed(
                     new Runnable() {
                         @Override
                         public void run() {
                             synchronized (mutex) {
-                                // Shouldn't happen
-                                throw new IllegalStateException();
+                                Sentry.addBreadcrumb("ANR lock released, main thread resumed");
                             }
+                            anrInProgress.set(false);
                         }
                     },
                     1000);
