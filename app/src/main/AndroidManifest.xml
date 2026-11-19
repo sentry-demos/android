@@ -41,7 +41,7 @@
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
         <meta-data
             android:name="io.sentry.dsn"
-            android:value="https://f5d73f6d72e0ee1698cd1ce23cde4ede@sandbox-mirror.sentry.gg/1" />
+            android:value="https://f5d73f6d72e0ee1698cd1ce23cde4ede@o87286.ingest.us.sentry.io/4508968118321152" />
         <meta-data
             android:name="io.sentry.debug"
             android:value="true" />
